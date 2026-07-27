@@ -30,6 +30,7 @@ Manage systemd units and systemd-networkd configuration on a remote Linux fleet 
 - Public Terraform Registry (phase 2)
 - Bulk import of existing hosts
 - D-Bus via `systemd-stdio-bridge` in-process (CLI is enough)
+- systemd containers / nspawn / portable services (**later** — tracked in [#4](https://github.com/dlarochette/terraform-provider-systemd/issues/4))
 
 ## Architecture
 
