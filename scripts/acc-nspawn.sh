@@ -96,6 +96,14 @@ cleanup() {
   [[ -n "${OUT:-}" ]] && rm -f "${OUT}"
   stop_machine
   if [[ "${ACC_WIPE:-}" == "1" ]]; then
+    if machine_is_active; then
+      # stop_machine already warned above; never rm -rf a rootfs backing a
+      # machine that is still (or again) active — that can corrupt/orphan a
+      # running container. Overrides whatever status the script was about to
+      # exit with: a refused wipe is itself a hard failure to surface.
+      log "refusing to wipe '${MACHINE}': still active after stop timeout"
+      exit 1
+    fi
     log "wiping ${MACHINE} image"
     machinectl remove "${MACHINE}" >/dev/null 2>&1 || rm -rf "${ROOT}"
     rm -f "${NSPAWN_CONF}"
