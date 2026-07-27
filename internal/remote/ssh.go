@@ -400,24 +400,7 @@ func (c *Client) UnitStatus(name string) (UnitStatus, error) {
 	if err != nil {
 		return UnitStatus{}, fmt.Errorf("systemctl show: %w (%s)", err, strings.TrimSpace(out))
 	}
-	st := UnitStatus{}
-	for _, line := range strings.Split(out, "\n") {
-		k, v, ok := strings.Cut(strings.TrimSpace(line), "=")
-		if !ok {
-			continue
-		}
-		switch k {
-		case "LoadState":
-			st.LoadState = v
-		case "ActiveState":
-			st.ActiveState = v
-		case "SubState":
-			st.SubState = v
-		case "UnitFileState":
-			st.UnitFileState = v
-		}
-	}
-	return st, nil
+	return parseUnitStatus(out), nil
 }
 
 func (c *Client) NetworkReload() error {
@@ -432,22 +415,7 @@ func (c *Client) LinkStatus(ifname string) (LinkStatus, error) {
 	if err != nil {
 		return LinkStatus{}, fmt.Errorf("networkctl status: %w (%s)", err, strings.TrimSpace(out))
 	}
-	st := LinkStatus{Name: ifname}
-	for _, line := range strings.Split(out, "\n") {
-		line = strings.TrimSpace(line)
-		if strings.HasPrefix(line, "State:") {
-			// e.g. "State: routable (configured)"
-			rest := strings.TrimSpace(strings.TrimPrefix(line, "State:"))
-			parts := strings.Fields(rest)
-			if len(parts) > 0 {
-				st.OperationalState = parts[0]
-			}
-			if i := strings.Index(rest, "("); i >= 0 {
-				st.SetupState = strings.Trim(rest[i:], "()")
-			}
-		}
-	}
-	return st, nil
+	return parseLinkStatus(ifname, out), nil
 }
 
 func (c *Client) WriteCredential(name, data string) error {
