@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// unitLikeResource manages a typed systemd unit file (.timer, .mount, .automount, …)
+// unitLikeResource manages a typed systemd unit file (.timer, .mount, .automount, .target, …)
 // under /etc/systemd/system via the same SSH + systemctl path as systemd_unit.
 type unitLikeResource struct {
 	client   *Client
@@ -51,6 +51,22 @@ func NewAutomountResource() resource.Resource {
 		typeName: "_automount",
 		suffix:   ".automount",
 		doc:      "Manages a systemd `.automount` unit under `/etc/systemd/system`. Usually paired with a `.mount` unit.",
+	}
+}
+
+func NewSocketResource() resource.Resource {
+	return &unitLikeResource{
+		typeName: "_socket",
+		suffix:   ".socket",
+		doc:      "Manages a systemd `.socket` unit under `/etc/systemd/system`. Pair with a matching `.service`.",
+	}
+}
+
+func NewTargetResource() resource.Resource {
+	return &unitLikeResource{
+		typeName: "_target",
+		suffix:   ".target",
+		doc:      "Manages a systemd `.target` unit under `/etc/systemd/system` (grouping / synchronization point for other units).",
 	}
 }
 

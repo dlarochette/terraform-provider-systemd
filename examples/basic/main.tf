@@ -2,7 +2,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.2.0"
+      version = ">= 0.3.0"
     }
   }
 }
@@ -137,6 +137,59 @@ resource "systemd_automount" "data" {
     entry {
       key   = "Where"
       value = "/data"
+    }
+  }
+  section {
+    name = "Install"
+    entry {
+      key   = "WantedBy"
+      value = "multi-user.target"
+    }
+  }
+}
+
+resource "systemd_socket" "backup" {
+  name   = "backup.socket"
+  enable = true
+  active = true
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "Backup socket activation"
+    }
+  }
+  section {
+    name = "Socket"
+    entry {
+      key   = "ListenStream"
+      value = "8080"
+    }
+  }
+  section {
+    name = "Install"
+    entry {
+      key   = "WantedBy"
+      value = "sockets.target"
+    }
+  }
+}
+
+resource "systemd_target" "app" {
+  name   = "app.target"
+  enable = true
+  active = true
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "Application stack"
+    }
+    entry {
+      key   = "Wants"
+      value = "backup.service"
     }
   }
   section {
