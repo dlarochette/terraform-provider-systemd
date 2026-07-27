@@ -8,8 +8,10 @@ import (
 )
 
 const (
-	DefaultUnitDir    = "/etc/systemd/system"
-	DefaultNetworkDir = "/etc/systemd/network"
+	DefaultUnitDir               = "/etc/systemd/system"
+	DefaultNetworkDir            = "/etc/systemd/network"
+	DefaultCredstoreDir          = "/etc/credstore"
+	DefaultCredstoreEncryptedDir = "/etc/credstore.encrypted"
 )
 
 // UnitStatus mirrors selected systemctl show properties.
@@ -52,6 +54,11 @@ type Host interface {
 
 	NetworkReload() error
 	LinkStatus(ifname string) (LinkStatus, error)
+
+	WriteCredential(name, data string) error
+	WriteCredentialEncrypted(name, data, withKey string) error
+	CredentialExists(name string, encrypted bool) (bool, error)
+	RemoveCredential(name string, encrypted bool) error
 }
 
 func safeName(name string) error {
@@ -86,4 +93,15 @@ func networkPath(networkDir, filename string) (string, error) {
 		return "", err
 	}
 	return path.Join(networkDir, filename), nil
+}
+
+// credPath returns the credstore path for a credential name, plaintext or encrypted.
+func credPath(encrypted bool, name string) (string, error) {
+	if err := safeName(name); err != nil {
+		return "", err
+	}
+	if encrypted {
+		return path.Join(DefaultCredstoreEncryptedDir, name), nil
+	}
+	return path.Join(DefaultCredstoreDir, name), nil
 }

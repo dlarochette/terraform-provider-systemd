@@ -208,6 +208,22 @@ func (c *Client) mustOK(cmd string) error {
 	return nil
 }
 
+// runWithStdin runs cmd on a new session, feeding stdin to it. Output (stdout+stderr) is
+// captured for error reporting only; callers must never log stdin (it may hold secret data).
+func (c *Client) runWithStdin(cmd string, stdin []byte) (string, error) {
+	session, err := c.ssh.NewSession()
+	if err != nil {
+		return "", err
+	}
+	defer session.Close()
+	session.Stdin = bytes.NewReader(stdin)
+	var buf bytes.Buffer
+	session.Stdout = &buf
+	session.Stderr = &buf
+	err = session.Run(cmd)
+	return buf.String(), err
+}
+
 func (c *Client) atomicWrite(remotePath string, content string) error {
 	dir := path.Dir(remotePath)
 	if err := c.sftp.MkdirAll(dir); err != nil {
@@ -410,6 +426,59 @@ func (c *Client) LinkStatus(ifname string) (LinkStatus, error) {
 		}
 	}
 	return st, nil
+}
+
+func (c *Client) WriteCredential(name, data string) error {
+	p, err := credPath(false, name)
+	if err != nil {
+		return err
+	}
+	if err := c.atomicWrite(p, data); err != nil {
+		return err
+	}
+	return c.sftp.Chmod(p, 0o600)
+}
+
+func (c *Client) WriteCredentialEncrypted(name, data, withKey string) error {
+	p, err := credPath(true, name)
+	if err != nil {
+		return err
+	}
+	if err := c.sftp.MkdirAll(path.Dir(p)); err != nil {
+		return err
+	}
+	cmd := "systemd-creds encrypt --name=" + shellQuote(name)
+	if withKey != "" && withKey != "auto" {
+		cmd += " --with-key=" + shellQuote(withKey)
+	}
+	cmd += " - " + shellQuote(p)
+	out, err := c.runWithStdin(cmd, []byte(data))
+	if err != nil {
+		return fmt.Errorf("systemd-creds encrypt %s: %w (%s)", name, err, strings.TrimSpace(out))
+	}
+	return nil
+}
+
+func (c *Client) CredentialExists(name string, encrypted bool) (bool, error) {
+	p, err := credPath(encrypted, name)
+	if err != nil {
+		return false, err
+	}
+	if _, err := c.sftp.Stat(p); err != nil {
+		if os.IsNotExist(err) {
+			return false, nil
+		}
+		return false, err
+	}
+	return true, nil
+}
+
+func (c *Client) RemoveCredential(name string, encrypted bool) error {
+	p, err := credPath(encrypted, name)
+	if err != nil {
+		return err
+	}
+	return c.removeFile(p)
 }
 
 func shellQuote(s string) string {

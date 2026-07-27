@@ -155,6 +155,49 @@ func (f *Fake) UnitStatus(name string) (UnitStatus, error) {
 
 func (f *Fake) NetworkReload() error { return f.note("networkctl reload") }
 
+func (f *Fake) WriteCredential(name, data string) error {
+	p, err := credPath(false, name)
+	if err != nil {
+		return err
+	}
+	return f.write(p, data)
+}
+
+func (f *Fake) WriteCredentialEncrypted(name, data, withKey string) error {
+	p, err := credPath(true, name)
+	if err != nil {
+		return err
+	}
+	cmd := "systemd-creds encrypt --name=" + name
+	if withKey != "" && withKey != "auto" {
+		cmd += " --with-key=" + withKey
+	}
+	cmd += " - " + p
+	if err := f.note(cmd); err != nil {
+		return err
+	}
+	return f.write(p, "encrypted:"+data)
+}
+
+func (f *Fake) CredentialExists(name string, encrypted bool) (bool, error) {
+	p, err := credPath(encrypted, name)
+	if err != nil {
+		return false, err
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	_, ok := f.Files[p]
+	return ok, nil
+}
+
+func (f *Fake) RemoveCredential(name string, encrypted bool) error {
+	p, err := credPath(encrypted, name)
+	if err != nil {
+		return err
+	}
+	return f.remove(p)
+}
+
 func (f *Fake) LinkStatus(ifname string) (LinkStatus, error) {
 	f.mu.Lock()
 	defer f.mu.Unlock()

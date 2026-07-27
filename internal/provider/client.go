@@ -118,3 +118,23 @@ func (c *Client) LinkStatus(ctx context.Context, ifname string) (remote.LinkStat
 	_ = ctx
 	return c.Host.LinkStatus(ifname)
 }
+
+// PutCredential writes a credential to the host, plaintext under /etc/credstore or
+// encrypted (via systemd-creds) under /etc/credstore.encrypted.
+func (c *Client) PutCredential(ctx context.Context, name, data string, encrypted bool, withKey string) error {
+	_ = ctx
+	if encrypted {
+		return c.Host.WriteCredentialEncrypted(name, data, withKey)
+	}
+	return c.Host.WriteCredential(name, data)
+}
+
+func (c *Client) HasCredential(ctx context.Context, name string, encrypted bool) (bool, error) {
+	_ = ctx
+	return c.Host.CredentialExists(name, encrypted)
+}
+
+func (c *Client) DeleteCredential(ctx context.Context, name string, encrypted bool) error {
+	_ = ctx
+	return c.Host.RemoveCredential(name, encrypted)
+}
