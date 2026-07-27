@@ -225,6 +225,14 @@ func (c *Client) runWithStdin(cmd string, stdin []byte) (string, error) {
 }
 
 func (c *Client) atomicWrite(remotePath string, content string) error {
+	return c.atomicWriteMode(remotePath, content, 0o644)
+}
+
+// atomicWriteMode writes content to remotePath atomically (write to a temp file, chmod,
+// then rename), applying mode to the temp file *before* it is renamed into place. This
+// avoids a window where the destination path is briefly visible with the default (looser)
+// permissions — important for secret material such as credentials.
+func (c *Client) atomicWriteMode(remotePath string, content string, mode os.FileMode) error {
 	dir := path.Dir(remotePath)
 	if err := c.sftp.MkdirAll(dir); err != nil {
 		return err
@@ -243,7 +251,10 @@ func (c *Client) atomicWrite(remotePath string, content string) error {
 		_ = c.sftp.Remove(tmp)
 		return err
 	}
-	_ = c.sftp.Chmod(tmp, 0o644)
+	if err := c.sftp.Chmod(tmp, mode); err != nil {
+		_ = c.sftp.Remove(tmp)
+		return err
+	}
 	if err := c.sftp.PosixRename(tmp, remotePath); err != nil {
 		// fallback if PosixRename unsupported
 		_ = c.sftp.Remove(remotePath)
@@ -252,6 +263,17 @@ func (c *Client) atomicWrite(remotePath string, content string) error {
 			return fmt.Errorf("rename: %v / %v", err, err2)
 		}
 	}
+	return nil
+}
+
+// ensureCredstoreDir creates a credstore directory (if missing) and locks it down to 0700,
+// since it holds secret material. Best-effort on the chmod: some servers may already manage
+// this directory's ownership/mode (e.g. pre-created by systemd-creds tooling).
+func (c *Client) ensureCredstoreDir(dir string) error {
+	if err := c.sftp.MkdirAll(dir); err != nil {
+		return err
+	}
+	_ = c.sftp.Chmod(dir, 0o700)
 	return nil
 }
 
@@ -433,10 +455,12 @@ func (c *Client) WriteCredential(name, data string) error {
 	if err != nil {
 		return err
 	}
-	if err := c.atomicWrite(p, data); err != nil {
+	if err := c.ensureCredstoreDir(path.Dir(p)); err != nil {
 		return err
 	}
-	return c.sftp.Chmod(p, 0o600)
+	// mode is applied to the temp file before the atomic rename, so the credential is
+	// never briefly visible at the final path with looser (world/group-readable) permissions.
+	return c.atomicWriteMode(p, data, 0o600)
 }
 
 func (c *Client) WriteCredentialEncrypted(name, data, withKey string) error {
@@ -444,7 +468,7 @@ func (c *Client) WriteCredentialEncrypted(name, data, withKey string) error {
 	if err != nil {
 		return err
 	}
-	if err := c.sftp.MkdirAll(path.Dir(p)); err != nil {
+	if err := c.ensureCredstoreDir(path.Dir(p)); err != nil {
 		return err
 	}
 	cmd := "systemd-creds encrypt --name=" + shellQuote(name)
