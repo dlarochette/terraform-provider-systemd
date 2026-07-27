@@ -2,7 +2,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.1.3"
+      version = ">= 0.2.0"
     }
   }
 }
@@ -27,8 +27,8 @@ variable "insecure" {
   default = false
 }
 
-resource "systemd_unit" "demo" {
-  name   = "terraform-demo.service"
+resource "systemd_unit" "backup" {
+  name   = "backup.service"
   enable = true
   active = false
 
@@ -36,7 +36,7 @@ resource "systemd_unit" "demo" {
     name = "Unit"
     entry {
       key   = "Description"
-      value = "Terraform demo unit"
+      value = "Nightly backup"
     }
   }
   section {
@@ -47,7 +47,68 @@ resource "systemd_unit" "demo" {
     }
     entry {
       key   = "ExecStart"
-      value = "/bin/true"
+      value = "/usr/local/bin/backup.sh"
+    }
+  }
+}
+
+resource "systemd_timer" "backup" {
+  name   = "backup.timer"
+  enable = true
+  active = true
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "Run backup.service nightly"
+    }
+  }
+  section {
+    name = "Timer"
+    entry {
+      key   = "OnCalendar"
+      value = "*-*-* 02:30:00"
+    }
+    entry {
+      key   = "Persistent"
+      value = "true"
+    }
+  }
+  section {
+    name = "Install"
+    entry {
+      key   = "WantedBy"
+      value = "timers.target"
+    }
+  }
+}
+
+resource "systemd_mount" "data" {
+  name   = "data.mount"
+  enable = true
+  active = true
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "Data volume"
+    }
+  }
+  section {
+    name = "Mount"
+    entry {
+      key   = "What"
+      value = "/dev/disk/by-label/DATA"
+    }
+    entry {
+      key   = "Where"
+      value = "/data"
+    }
+    entry {
+      key   = "Type"
+      value = "ext4"
     }
   }
   section {
@@ -59,21 +120,30 @@ resource "systemd_unit" "demo" {
   }
 }
 
-resource "systemd_network" "eth0" {
-  filename = "10-eth0.network"
+resource "systemd_automount" "data" {
+  name   = "data.automount"
+  enable = true
+  active = true
 
   section {
-    name = "Match"
+    name = "Unit"
     entry {
-      key   = "Name"
-      value = "eth0"
+      key   = "Description"
+      value = "Automount /data"
     }
   }
   section {
-    name = "Network"
+    name = "Automount"
     entry {
-      key   = "DHCP"
-      value = "yes"
+      key   = "Where"
+      value = "/data"
+    }
+  }
+  section {
+    name = "Install"
+    entry {
+      key   = "WantedBy"
+      value = "multi-user.target"
     }
   }
 }

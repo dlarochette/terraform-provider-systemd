@@ -61,6 +61,25 @@ func TestNetworkFilenameValidator(t *testing.T) {
 	}
 }
 
+func TestUnitSuffixValidator(t *testing.T) {
+	t.Parallel()
+	v := unitSuffixValidator(".timer")
+	resp := &validator.StringResponse{}
+	v.ValidateString(context.Background(), validator.StringRequest{
+		ConfigValue: types.StringValue("backup.timer"),
+	}, resp)
+	if resp.Diagnostics.HasError() {
+		t.Fatal(resp.Diagnostics)
+	}
+	resp = &validator.StringResponse{}
+	v.ValidateString(context.Background(), validator.StringRequest{
+		ConfigValue: types.StringValue("backup.service"),
+	}, resp)
+	if !resp.Diagnostics.HasError() {
+		t.Fatal("expected .timer required")
+	}
+}
+
 func TestDropinNameValidator(t *testing.T) {
 	t.Parallel()
 	v := dropinNameValidator()

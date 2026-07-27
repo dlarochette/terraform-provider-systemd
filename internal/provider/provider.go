@@ -175,6 +175,9 @@ func (p *SystemdProvider) Configure(ctx context.Context, req provider.ConfigureR
 func (p *SystemdProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewUnitResource,
+		NewTimerResource,
+		NewMountResource,
+		NewAutomountResource,
 		NewDropinResource,
 		NewNetworkResource,
 		NewNetdevResource,

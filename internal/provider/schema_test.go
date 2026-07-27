@@ -28,6 +28,9 @@ func TestResourceSchemas(t *testing.T) {
 	ctx := context.Background()
 	resources := []func() resource.Resource{
 		NewUnitResource,
+		NewTimerResource,
+		NewMountResource,
+		NewAutomountResource,
 		NewDropinResource,
 		NewNetworkResource,
 		NewNetdevResource,

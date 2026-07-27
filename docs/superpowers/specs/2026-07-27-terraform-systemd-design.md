@@ -15,7 +15,7 @@ Manage systemd units and systemd-networkd configuration on a remote Linux fleet 
 
 **In:**
 
-- Units under `/etc/systemd/system/`
+- Units under `/etc/systemd/system/` (generic `systemd_unit` plus dedicated `systemd_timer`, `systemd_mount`, `systemd_automount`)
 - Drop-ins under `/etc/systemd/system/{unit}.d/`
 - networkd files under `/etc/systemd/network/` (`.network`, `.netdev`, `.link`)
 - Enable / disable / start / stop via remote `systemctl`
@@ -26,7 +26,7 @@ Manage systemd units and systemd-networkd configuration on a remote Linux fleet 
 
 - Custom remote agent / Unix socket / HTTP API
 - sudo / non-root (root SSH assumed)
-- Dedicated timer/mount/resolved resources
+- Dedicated resolved resources
 - Public Terraform Registry (phase 2)
 - Bulk import of existing hosts
 - D-Bus via `systemd-stdio-bridge` in-process (CLI is enough)

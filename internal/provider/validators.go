@@ -57,6 +57,17 @@ func unitNameValidator() validator.String {
 	)
 }
 
+func unitSuffixValidator(suffix string) validator.String {
+	esc := strings.ReplaceAll(suffix, ".", `\.`)
+	return stringvalidator.All(
+		noPathSegment(),
+		stringvalidator.RegexMatches(
+			mustCompile(esc+`$`),
+			fmt.Sprintf("unit name must end with %s", suffix),
+		),
+	)
+}
+
 func dropinNameValidator() validator.String {
 	return stringvalidator.All(
 		noPathSegment(),

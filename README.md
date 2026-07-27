@@ -7,7 +7,7 @@ Manage **systemd units** and **systemd-networkd** files on remote Linux hosts ov
 | **Provider address** | `dlarochette/systemd` |
 | **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.1.3](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.1.3) |
+| **Latest release** | [0.2.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.2.0) |
 | **License** | MIT |
 
 ## How it works
@@ -57,7 +57,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.1.3"
+      version = ">= 0.2.0"
     }
   }
 }
@@ -126,7 +126,7 @@ resource "systemd_unit" "demo" {
 }
 ```
 
-The same `section` / `entry` model works on `systemd_dropin`, `systemd_network`, `systemd_netdev`, and `systemd_link`.
+The same `section` / `entry` model works on `systemd_timer`, `systemd_mount`, `systemd_automount`, `systemd_dropin`, and the networkd resources.
 
 See also [`examples/basic`](examples/basic).
 
@@ -151,13 +151,16 @@ Use a **provider alias per host** when managing a fleet.
 
 | Resource | Remote path | Notes |
 |----------|-------------|-------|
-| `systemd_unit` | `/etc/systemd/system/{name}` | Optional `enable` / `active`; start failure fails apply |
+| `systemd_unit` | `/etc/systemd/system/{name}` | Generic units (`.service`, `.socket`, …); optional `enable` / `active` |
+| `systemd_timer` | `/etc/systemd/system/{name}` | `.timer` only; pair with a `.service` |
+| `systemd_mount` | `/etc/systemd/system/{name}` | `.mount` only (e.g. `data.mount` → `/data`) |
+| `systemd_automount` | `/etc/systemd/system/{name}` | `.automount` only; usually with a `.mount` |
 | `systemd_dropin` | `/etc/systemd/system/{unit}.d/{dropin}` | `dropin` must end with `.conf` |
 | `systemd_network` | `/etc/systemd/network/{filename}` | Filename must end with `.network` |
 | `systemd_netdev` | `/etc/systemd/network/{filename}` | Filename must end with `.netdev` |
 | `systemd_link` | `/etc/systemd/network/{filename}` | Filename must end with `.link` |
 
-Destroy: stop/disable (best effort) → remove file → `daemon-reload` / `networkctl reload`.
+Destroy: stop/disable (best effort) → remove file → `daemon-reload` (and `networkctl reload` for networkd files).
 
 ## Data sources
 
