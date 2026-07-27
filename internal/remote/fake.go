@@ -138,7 +138,7 @@ func (f *Fake) RemoveNetwork(filename string) error {
 	return f.remove(p)
 }
 
-func (f *Fake) DaemonReload() error  { return f.note("systemctl daemon-reload") }
+func (f *Fake) DaemonReload() error        { return f.note("systemctl daemon-reload") }
 func (f *Fake) EnableUnit(n string) error  { return f.note("systemctl enable " + n) }
 func (f *Fake) DisableUnit(n string) error { return f.note("systemctl disable " + n) }
 func (f *Fake) StartUnit(n string) error   { return f.note("systemctl start " + n) }

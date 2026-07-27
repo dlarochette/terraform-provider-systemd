@@ -69,7 +69,7 @@ func TestCredentialResourceCRUD(t *testing.T) {
 		t.Fatalf("get read state: %+v", diags)
 	}
 	if read.Data.ValueString() != "s3cr3t" {
-		t.Fatalf("expected data kept from state, got %q", read.Data.ValueString())
+		t.Fatal("expected data kept from state, got a different value")
 	}
 
 	// Delete, then Read: credential gone -> resource removed.
@@ -86,6 +86,122 @@ func TestCredentialResourceCRUD(t *testing.T) {
 	}
 	if !readResp2.State.Raw.IsNull() {
 		t.Fatal("expected resource to be removed from state when credential no longer exists")
+	}
+}
+
+// TestCredentialResourceEncryptedRequiresReplace documents that `encrypted`
+// forces replacement instead of an in-place update. Without this, Terraform
+// could switch a credential between /etc/credstore and
+// /etc/credstore.encrypted via Update, which never removes the file at the
+// old path and leaves an orphaned (potentially plaintext) copy behind.
+func TestCredentialResourceEncryptedRequiresReplace(t *testing.T) {
+	ctx := t.Context()
+	r := &credentialResource{}
+	schemaResp := &resource.SchemaResponse{}
+	r.Schema(ctx, resource.SchemaRequest{}, schemaResp)
+	if schemaResp.Diagnostics.HasError() {
+		t.Fatalf("schema: %+v", schemaResp.Diagnostics)
+	}
+
+	attr, ok := schemaResp.Schema.Attributes["encrypted"]
+	if !ok {
+		t.Fatal("schema has no \"encrypted\" attribute")
+	}
+	boolAttr, ok := attr.(rschema.BoolAttribute)
+	if !ok {
+		t.Fatalf("encrypted attribute is not a BoolAttribute: %T", attr)
+	}
+	if len(boolAttr.PlanModifiers) == 0 {
+		t.Fatal("expected encrypted to have at least one plan modifier")
+	}
+	const wantDescription = "If the value of this attribute changes, Terraform will destroy and recreate the resource."
+	found := false
+	for _, m := range boolAttr.PlanModifiers {
+		if m.Description(ctx) == wantDescription {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatal("expected encrypted to carry a RequiresReplace plan modifier")
+	}
+}
+
+// TestCredentialResourceReplaceOnEncryptedChangeAvoidsOrphan simulates the
+// destroy-then-create cycle Terraform performs when RequiresReplace forces
+// replacement on an `encrypted` change, and asserts that Delete removes the
+// credential at the path matching the old state (so nothing is orphaned)
+// while Create writes only the new path.
+func TestCredentialResourceReplaceOnEncryptedChangeAvoidsOrphan(t *testing.T) {
+	ctx := t.Context()
+	h := remote.NewFake()
+	client := &Client{Host: h}
+
+	r := &credentialResource{client: client}
+	schemaResp := &resource.SchemaResponse{}
+	r.Schema(ctx, resource.SchemaRequest{}, schemaResp)
+	if schemaResp.Diagnostics.HasError() {
+		t.Fatalf("schema: %+v", schemaResp.Diagnostics)
+	}
+
+	encryptedPath := remote.DefaultCredstoreEncryptedDir + "/db-pass"
+	plaintextPath := remote.DefaultCredstoreDir + "/db-pass"
+
+	// Original resource: encrypted = true.
+	oldPlan := credentialModel{
+		Name:      types.StringValue("db-pass"),
+		Data:      types.StringValue("s3cr3t"),
+		Encrypted: types.BoolValue(true),
+		WithKey:   types.StringNull(),
+		ID:        types.StringUnknown(),
+	}
+	oldPlanState := tfsdk.Plan{Schema: schemaResp.Schema}
+	if diags := oldPlanState.Set(ctx, &oldPlan); diags.HasError() {
+		t.Fatalf("set old plan: %+v", diags)
+	}
+	oldCreateResp := &resource.CreateResponse{State: emptyInstanceState(t, schemaResp.Schema)}
+	r.Create(ctx, resource.CreateRequest{Plan: oldPlanState}, oldCreateResp)
+	if oldCreateResp.Diagnostics.HasError() {
+		t.Fatalf("create old: %+v", oldCreateResp.Diagnostics)
+	}
+	if _, ok := h.Files[encryptedPath]; !ok {
+		t.Fatalf("expected %s to exist after create", encryptedPath)
+	}
+
+	// Because encrypted has RequiresReplace, Terraform destroys the old
+	// resource (state: encrypted = true) before creating the new one
+	// (plan: encrypted = false), rather than calling Update.
+	deleteResp := &resource.DeleteResponse{}
+	r.Delete(ctx, resource.DeleteRequest{State: oldCreateResp.State}, deleteResp)
+	if deleteResp.Diagnostics.HasError() {
+		t.Fatalf("delete old: %+v", deleteResp.Diagnostics)
+	}
+	if _, ok := h.Files[encryptedPath]; ok {
+		t.Fatalf("expected %s to be removed by destroy", encryptedPath)
+	}
+
+	newPlan := credentialModel{
+		Name:      types.StringValue("db-pass"),
+		Data:      types.StringValue("s3cr3t"),
+		Encrypted: types.BoolValue(false),
+		WithKey:   types.StringNull(),
+		ID:        types.StringUnknown(),
+	}
+	newPlanState := tfsdk.Plan{Schema: schemaResp.Schema}
+	if diags := newPlanState.Set(ctx, &newPlan); diags.HasError() {
+		t.Fatalf("set new plan: %+v", diags)
+	}
+	newCreateResp := &resource.CreateResponse{State: emptyInstanceState(t, schemaResp.Schema)}
+	r.Create(ctx, resource.CreateRequest{Plan: newPlanState}, newCreateResp)
+	if newCreateResp.Diagnostics.HasError() {
+		t.Fatalf("create new: %+v", newCreateResp.Diagnostics)
+	}
+
+	if _, ok := h.Files[plaintextPath]; !ok {
+		t.Fatalf("expected %s to exist after replace", plaintextPath)
+	}
+	if _, ok := h.Files[encryptedPath]; ok {
+		t.Fatalf("orphan detected: %s still present after replace", encryptedPath)
 	}
 }
 

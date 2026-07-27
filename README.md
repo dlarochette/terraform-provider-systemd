@@ -166,8 +166,26 @@ resource "systemd_instance" "app_bar" {
 
 `systemd_credential` writes a secret to the host credential store, consumable by units via
 `LoadCredential=` (plaintext) or `LoadCredentialEncrypted=` (encrypted, the default). `data` is
-write-only: it is never read back or decrypted from the remote host, so keep it out of version
-control (e.g. a `sensitive` variable, as below).
+never read back or decrypted from the remote host — but it **is persisted in Terraform state**
+(marked `Sensitive`, so it's redacted from CLI output/logs, not from the state file itself).
+Keep `data` out of version control (e.g. a `sensitive` variable, as below) and treat your
+Terraform state as a secret.
+
+Changing `encrypted` forces replacement (`RequiresReplace`): flipping it switches the remote
+path between `/etc/credstore` and `/etc/credstore.encrypted`, so Terraform destroys the
+credential at the old path before creating it at the new one instead of leaving an orphan
+behind.
+
+Two more things this resource does *not* do, since there's no way to signal it to the OS or
+existing processes over SSH:
+
+- **No import**: `systemd_credential` has no `ImportState` — the content is unrecoverable
+  from the remote host (it's encrypted, or simply never read back), so there is nothing
+  Terraform could populate `data` with.
+- **No consumer restart on rotation**: writing a new value only updates the file in the
+  credstore. Units already running with `LoadCredential=`/`LoadCredentialEncrypted=` keep
+  the credential they loaded at their last start; restart them yourself (e.g. via
+  `systemd_instance` or an explicit `terraform apply` step) to pick up the new value.
 
 ```hcl
 resource "systemd_credential" "db" {
@@ -227,11 +245,14 @@ Use a **provider alias per host** when managing a fleet.
 | `systemd_network` | `/etc/systemd/network/{filename}` | Filename must end with `.network` |
 | `systemd_netdev` | `/etc/systemd/network/{filename}` | Filename must end with `.netdev` |
 | `systemd_link` | `/etc/systemd/network/{filename}` | Filename must end with `.link` |
-| `systemd_credential` | `/etc/credstore{,.encrypted}/{name}` | `data` is `Sensitive` and write-only; `encrypted` defaults to `true` |
+| `systemd_credential` | `/etc/credstore{,.encrypted}/{name}` | `data` is `Sensitive`, persisted in state, never read back; `encrypted` defaults to `true` and forces replacement; not importable |
 
 Destroy: stop/disable (best effort) → remove file → `daemon-reload` (and `networkctl reload` for networkd files).
 `systemd_instance` is lifecycle-only (no file of its own): destroy just stops/disables the instance,
 there is nothing to remove on disk.
+`systemd_credential` is not a unit, so its destroy is a carve-out: it only removes the credential
+file at the path matching state (`/etc/credstore/{name}` or `/etc/credstore.encrypted/{name}`) —
+no stop/disable and no `daemon-reload`.
 
 ## Data sources
 

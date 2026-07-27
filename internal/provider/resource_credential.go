@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -19,8 +20,10 @@ var _ resource.ResourceWithValidateConfig = &credentialResource{}
 // credentialResource manages a systemd credential written to the host
 // credential store (`/etc/credstore` or `/etc/credstore.encrypted`), meant to
 // be consumed by units via `LoadCredential=`/`LoadCredentialEncrypted=`. The
-// credential content is write-only: it is never read back from the remote
-// host, so Terraform always keeps `data` as it appears in state/config.
+// credential content is never read back from the remote host, so Terraform
+// always keeps `data` as it appears in state/config — which means the
+// secret is persisted in Terraform state (as a `Sensitive` attribute) and
+// state must be treated/secured accordingly.
 type credentialResource struct {
 	client *Client
 }
@@ -43,8 +46,9 @@ func (r *credentialResource) Schema(_ context.Context, _ resource.SchemaRequest,
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Manages a systemd credential in the host credential store, consumable by units " +
 			"via `LoadCredential=` (plaintext, `/etc/credstore/{name}`) or `LoadCredentialEncrypted=` " +
-			"(encrypted with `systemd-creds`, `/etc/credstore.encrypted/{name}`). `data` is write-only: it is " +
-			"never decrypted or read back from the remote host, so Terraform trusts state/config for drift.",
+			"(encrypted with `systemd-creds`, `/etc/credstore.encrypted/{name}`). `data` is never decrypted or " +
+			"read back from the remote host, so Terraform trusts state/config for drift — but that also means " +
+			"the secret **is stored in Terraform state** (as a `Sensitive` attribute). Treat state as secret.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Required:            true,
@@ -57,9 +61,10 @@ func (r *credentialResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				},
 			},
 			"data": schema.StringAttribute{
-				Required:            true,
-				Sensitive:           true,
-				MarkdownDescription: "Credential content. Never read back from the remote host.",
+				Required:  true,
+				Sensitive: true,
+				MarkdownDescription: "Credential content. Never read back from the remote host, but persisted " +
+					"in Terraform state (marked `Sensitive`) — treat state as secret.",
 				Validators: []validator.String{
 					nonEmptyContent(),
 				},
@@ -68,8 +73,13 @@ func (r *credentialResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Optional: true,
 				Computed: true,
 				MarkdownDescription: "Encrypt the credential with `systemd-creds encrypt` under `/etc/credstore.encrypted` " +
-					"(default `true`) instead of storing it as plaintext under `/etc/credstore`.",
+					"(default `true`) instead of storing it as plaintext under `/etc/credstore`. Forces replacement " +
+					"when changed, since flipping this switches the remote path (`/etc/credstore` vs " +
+					"`/etc/credstore.encrypted`) and an in-place update would orphan the credential at the old path.",
 				Default: booldefault.StaticBool(true),
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.RequiresReplace(),
+				},
 			},
 			"with_key": schema.StringAttribute{
 				Optional: true,
