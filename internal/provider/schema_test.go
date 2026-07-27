@@ -37,6 +37,7 @@ func TestResourceSchemas(t *testing.T) {
 		NewNetworkResource,
 		NewNetdevResource,
 		NewLinkResource,
+		NewInstanceResource,
 	}
 	for _, neo := range resources {
 		r := neo()

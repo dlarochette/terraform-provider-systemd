@@ -176,6 +176,32 @@ resource "systemd_socket" "backup" {
   }
 }
 
+resource "systemd_unit" "app_template" {
+  name = "app@.service"
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "App instance %i"
+    }
+  }
+  section {
+    name = "Service"
+    entry {
+      key   = "ExecStart"
+      value = "/usr/local/bin/app %i"
+    }
+  }
+}
+
+resource "systemd_instance" "app_bar" {
+  template = systemd_unit.app_template.name
+  instance = "bar"
+  enable   = true
+  active   = true
+}
+
 resource "systemd_target" "app" {
   name   = "app.target"
   enable = true

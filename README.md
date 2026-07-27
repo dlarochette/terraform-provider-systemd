@@ -128,6 +128,40 @@ resource "systemd_unit" "demo" {
 
 The same `section` / `entry` model works on `systemd_timer`, `systemd_mount`, `systemd_automount`, `systemd_socket`, `systemd_target`, `systemd_dropin`, and the networkd resources.
 
+### Template units and instances
+
+`systemd_unit` (and the other typed unit resources) also accept template unit names like `app@.service`.
+Use `systemd_instance` to manage the enable/active lifecycle of a specific instance (e.g. `app@bar.service`)
+without duplicating the unit file per instance:
+
+```hcl
+resource "systemd_unit" "app_template" {
+  name = "app@.service"
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "App instance %i"
+    }
+  }
+  section {
+    name = "Service"
+    entry {
+      key   = "ExecStart"
+      value = "/usr/local/bin/app %i"
+    }
+  }
+}
+
+resource "systemd_instance" "app_bar" {
+  template = systemd_unit.app_template.name
+  instance = "bar"
+  enable   = true
+  active   = true
+}
+```
+
 See also [`examples/basic`](examples/basic).
 
 ## Provider configuration
@@ -158,6 +192,7 @@ Use a **provider alias per host** when managing a fleet.
 | `systemd_socket` | `/etc/systemd/system/{name}` | `.socket` only; pair with a `.service` |
 | `systemd_target` | `/etc/systemd/system/{name}` | `.target` only; grouping / sync point |
 | `systemd_dropin` | `/etc/systemd/system/{unit}.d/{dropin}` | `dropin` must end with `.conf` |
+| `systemd_instance` | n/a (lifecycle only) | Enable/start a template unit instance (e.g. `app@bar.service`); `template` + `instance`, both `RequiresReplace` |
 | `systemd_network` | `/etc/systemd/network/{filename}` | Filename must end with `.network` |
 | `systemd_netdev` | `/etc/systemd/network/{filename}` | Filename must end with `.netdev` |
 | `systemd_link` | `/etc/systemd/network/{filename}` | Filename must end with `.link` |

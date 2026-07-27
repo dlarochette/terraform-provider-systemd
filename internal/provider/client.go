@@ -13,22 +13,26 @@ type Client struct {
 }
 
 func (c *Client) PutUnit(ctx context.Context, name, content string, enable, active *bool) error {
-	_ = ctx
 	if err := c.Host.WriteUnit(name, content); err != nil {
 		return err
 	}
 	if err := c.Host.DaemonReload(); err != nil {
 		return err
 	}
+	return c.ApplyUnitLifecycle(ctx, name, enable, active)
+}
+
+// ApplyUnitLifecycle enables/disables and starts/stops a unit according to the
+// desired (possibly nil/unset) enable and active flags.
+func (c *Client) ApplyUnitLifecycle(ctx context.Context, name string, enable, active *bool) error {
+	_ = ctx
 	if enable != nil {
 		if *enable {
 			if err := c.Host.EnableUnit(name); err != nil {
 				return err
 			}
-		} else {
-			if err := c.Host.DisableUnit(name); err != nil {
-				return err
-			}
+		} else if err := c.Host.DisableUnit(name); err != nil {
+			return err
 		}
 	}
 	if active != nil {
@@ -36,13 +40,18 @@ func (c *Client) PutUnit(ctx context.Context, name, content string, enable, acti
 			if err := c.Host.StartUnit(name); err != nil {
 				return fmt.Errorf("start %s: %w", name, err)
 			}
-		} else {
-			if err := c.Host.StopUnit(name); err != nil {
-				return err
-			}
+		} else if err := c.Host.StopUnit(name); err != nil {
+			return err
 		}
 	}
 	return nil
+}
+
+// DeleteUnitLifecycle best-effort stops and disables a unit before removal.
+func (c *Client) DeleteUnitLifecycle(ctx context.Context, name string) {
+	_ = ctx
+	_ = c.Host.StopUnit(name)
+	_ = c.Host.DisableUnit(name)
 }
 
 func (c *Client) GetUnit(ctx context.Context, name string) (string, error) {
@@ -51,9 +60,7 @@ func (c *Client) GetUnit(ctx context.Context, name string) (string, error) {
 }
 
 func (c *Client) DeleteUnit(ctx context.Context, name string) error {
-	_ = ctx
-	_ = c.Host.StopUnit(name)
-	_ = c.Host.DisableUnit(name)
+	c.DeleteUnitLifecycle(ctx, name)
 	if err := c.Host.RemoveUnit(name); err != nil {
 		return err
 	}

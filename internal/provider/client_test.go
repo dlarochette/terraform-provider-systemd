@@ -65,6 +65,24 @@ func TestClientUnitDropinNetwork(t *testing.T) {
 	}
 }
 
+func TestClientApplyAndDeleteUnitLifecycle(t *testing.T) {
+	h := remote.NewFake()
+	c := &Client{Host: h}
+
+	enable, active := true, true
+	if err := c.ApplyUnitLifecycle(t.Context(), "app@bar.service", &enable, &active); err != nil {
+		t.Fatal(err)
+	}
+	c.DeleteUnitLifecycle(t.Context(), "app@bar.service")
+
+	joined := strings.Join(h.Commands, "|")
+	for _, want := range []string{"enable app@bar.service", "start app@bar.service", "stop app@bar.service", "disable app@bar.service"} {
+		if !strings.Contains(joined, want) {
+			t.Fatalf("missing %q in %s", want, joined)
+		}
+	}
+}
+
 func TestClientStartFailure(t *testing.T) {
 	h := remote.NewFake()
 	h.FailCmd = "systemctl start"
