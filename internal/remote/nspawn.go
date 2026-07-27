@@ -63,8 +63,13 @@ func (n *Nspawn) mustOK(args ...string) error {
 	return nil
 }
 
+// copyTo copies localPath into the machine at remotePath, overwriting an existing
+// destination (--force) — writeFile is used for both initial writes and updates
+// (e.g. Terraform re-applying the same unit/network/credential path), and plain
+// `machinectl copy-to` refuses to overwrite an existing file ("Failed to copy:
+// File exists").
 func (n *Nspawn) copyTo(localPath, remotePath string) error {
-	cmd := exec.Command("machinectl", "copy-to", n.Machine, localPath, remotePath)
+	cmd := exec.Command("machinectl", "copy-to", "--force", n.Machine, localPath, remotePath)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("machinectl copy-to: %w (%s)", err, strings.TrimSpace(string(out)))
@@ -81,11 +86,34 @@ func (n *Nspawn) copyFrom(remotePath, localPath string) error {
 	return nil
 }
 
+// stageDir returns a directory for staging local temp files that `machinectl
+// copy-to`/`copy-from` will read from or write into.
+//
+// On SELinux-enforcing hosts, plain files under the default os.TempDir()
+// (usually /tmp, labeled tmp_t) are not readable/writable by the
+// systemd_machined_t domain that `machinectl copy-to`/`copy-from` runs its
+// "(sd-copy)" helper as — every copy fails with "Failed to copy: Access
+// denied" (confirmed via `ausearch -m avc`: `avc: denied { open } ...
+// scontext=system_u:system_r:systemd_machined_t:s0
+// tcontext=unconfined_u:object_r:user_tmp_t:s0`). Files created directly
+// under /var/lib/machines inherit that directory's own
+// systemd_machined_var_lib_t label instead, which the same domain is
+// allowed to open — so stage there rather than in the system temp dir.
+// Falls back to os.TempDir() if /var/lib/machines isn't writable (e.g. non-root).
+func stageDir() string {
+	const machinesDir = "/var/lib/machines"
+	dir := path.Join(machinesDir, ".tf-provider-stage")
+	if err := os.MkdirAll(dir, 0o700); err == nil {
+		return dir
+	}
+	return os.TempDir()
+}
+
 // writeFile writes content to remotePath inside the machine: stage it in a local temp
 // file, machinectl copy-to it into place, then chmod to mode. The parent directory is
 // created first so unit/dropin/network/credential writes all work regardless of layout.
 func (n *Nspawn) writeFile(remotePath, content string, mode os.FileMode) error {
-	tmp, err := os.CreateTemp("", "nspawn-write-*")
+	tmp, err := os.CreateTemp(stageDir(), "nspawn-write-*")
 	if err != nil {
 		return err
 	}
@@ -109,16 +137,24 @@ func (n *Nspawn) writeFile(remotePath, content string, mode os.FileMode) error {
 // readFile reads remotePath from inside the machine via machinectl copy-from into a
 // local temp file.
 func (n *Nspawn) readFile(remotePath string) (string, error) {
-	tmp, err := os.CreateTemp("", "nspawn-read-*")
+	tmp, err := os.CreateTemp(stageDir(), "nspawn-read-*")
 	if err != nil {
 		return "", err
 	}
+	tmpPath := tmp.Name()
 	_ = tmp.Close()
-	defer os.Remove(tmp.Name())
-	if err := n.copyFrom(remotePath, tmp.Name()); err != nil {
+	// `machinectl copy-from` refuses to overwrite an existing destination
+	// (fails with "Failed to copy: File exists") — it creates the file
+	// itself. os.CreateTemp only exists to reserve a unique name; remove it
+	// immediately so copy-from can (re)create it.
+	if err := os.Remove(tmpPath); err != nil {
 		return "", err
 	}
-	b, err := os.ReadFile(tmp.Name())
+	defer os.Remove(tmpPath)
+	if err := n.copyFrom(remotePath, tmpPath); err != nil {
+		return "", err
+	}
+	b, err := os.ReadFile(tmpPath)
 	if err != nil {
 		return "", err
 	}
