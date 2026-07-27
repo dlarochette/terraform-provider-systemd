@@ -7,7 +7,7 @@ Manage **systemd units** and **systemd-networkd** files on remote Linux hosts ov
 | **Provider address** | `dlarochette/systemd` |
 | **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.3.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.3.0) |
+| **Latest release** | [0.2.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.2.0) |
 | **License** | MIT |
 
 ## How it works
