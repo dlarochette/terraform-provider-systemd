@@ -3,6 +3,7 @@
 package provider
 
 import (
+	"context"
 	"strings"
 	"testing"
 )
@@ -29,6 +30,13 @@ func TestAccUnitLifecycle(t *testing.T) {
 	if err := c.PutUnit(ctx, name, content, accBool(true), accBool(true)); err != nil {
 		t.Fatalf("PutUnit: %v", err)
 	}
+	// t.Context() is canceled before Cleanup funcs run, so a safety-net
+	// delete here must use context.Background() rather than ctx.
+	t.Cleanup(func() {
+		if err := c.DeleteUnit(context.Background(), name); err != nil {
+			t.Logf("cleanup DeleteUnit %s: %v", name, err)
+		}
+	})
 
 	got, err := c.GetUnit(ctx, name)
 	if err != nil {

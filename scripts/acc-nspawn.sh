@@ -26,14 +26,22 @@
 set -euo pipefail
 
 MACHINE="${SYSTEMD_ACC_MACHINE:-tf-systemd-acc}"
-ROOT="/var/lib/machines/${MACHINE}"
 SUITE="${ACC_DEBIAN_SUITE:-bookworm}"
 MIRROR="${ACC_DEBIAN_MIRROR:-http://deb.debian.org/debian}"
 READY_RETRIES="${ACC_READY_RETRIES:-90}"
-NSPAWN_CONF="/etc/systemd/nspawn/${MACHINE}.nspawn"
 
 log() { echo "acc-nspawn: $*" >&2; }
 die() { log "$*"; exit 1; }
+
+# MACHINE feeds ROOT (an rm -rf target) and machinectl/systemd-run -M below —
+# reject anything that isn't a plain identifier before it's used anywhere,
+# so a hostile/typo'd SYSTEMD_ACC_MACHINE can't turn into a path traversal or
+# option injection.
+[[ "${MACHINE}" =~ ^[a-zA-Z0-9][a-zA-Z0-9_.-]*$ ]] \
+  || die "invalid SYSTEMD_ACC_MACHINE '${MACHINE}' (must match ^[a-zA-Z0-9][a-zA-Z0-9_.-]*\$)"
+
+ROOT="/var/lib/machines/${MACHINE}"
+NSPAWN_CONF="/etc/systemd/nspawn/${MACHINE}.nspawn"
 
 [[ "$(id -u)" -eq 0 ]] || die "must run as root (try: sudo make testacc)"
 
@@ -85,6 +93,12 @@ EOF
 
 if [[ "${ACC_REBUILD:-}" == "1" ]] || ! rootfs_looks_bootable; then
   stop_machine
+  if machine_is_active; then
+    # Same invariant as the ACC_WIPE path below: never rm -rf a rootfs
+    # backing a machine that is still (or again) active — that can
+    # corrupt/orphan a running container.
+    die "refusing to rebuild '${MACHINE}': still active after stop timeout"
+  fi
   rm -rf "${ROOT}"
   build_rootfs
 fi
@@ -152,7 +166,7 @@ status="${PIPESTATUS[0]}"
 set -e
 
 if [[ "${status}" -eq 0 ]] && ! grep -q '^=== RUN[[:space:]]*TestAcc' "${OUT}"; then
-  log "warning: no TestAcc* tests matched -run 'TestAcc' (expected until the ACC test matrix lands)"
+  die "no TestAcc* tests matched -run 'TestAcc' (harness ran nothing — that's a hard failure, not a pass)"
 fi
 
 exit "${status}"

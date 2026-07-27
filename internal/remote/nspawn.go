@@ -161,11 +161,12 @@ func (n *Nspawn) readFile(remotePath string) (string, error) {
 	return string(b), nil
 }
 
-// removeFile removes remotePath inside the machine, best-effort (mirrors SSH semantics:
-// a missing file is not an error).
+// removeFile removes remotePath inside the machine. `rm -f` already exits 0 when the
+// path is missing (mirrors SSH semantics: a missing file is not an error), so any
+// remaining error here is a genuine transport/exec failure (systemd-run/machine
+// unreachable, etc.) and must be propagated rather than swallowed.
 func (n *Nspawn) removeFile(remotePath string) error {
-	_, _ = n.run("rm", "-f", remotePath)
-	return nil
+	return n.mustOK("rm", "-f", remotePath)
 }
 
 func (n *Nspawn) WriteUnit(name, content string) error {
