@@ -346,7 +346,28 @@ make build
 make schema
 ```
 
-CI and releases run on GitHub Actions. Tags use Semantic Versioning **without** a `v` prefix (`0.1.1`, not `v0.1.1`). Pushing a tag builds and publishes binaries with GoReleaser.
+## Acceptance tests
+
+Unit tests: `make test` (fake host, no privileges).
+
+ACC tests exercise the provider's resources against a **real systemd** running inside a
+`systemd-nspawn` container (not SSH — see [`internal/remote/nspawn.go`](internal/remote)):
+
+```bash
+sudo apt-get install -y systemd-container debootstrap
+sudo make testacc
+```
+
+The first run debootstraps a Debian rootfs under `/var/lib/machines/`, which takes a few
+minutes; subsequent runs reuse it. Env vars (see [`scripts/acc-nspawn.sh`](scripts/acc-nspawn.sh)):
+
+| Var | Default | Purpose |
+|-----|---------|---------|
+| `SYSTEMD_ACC_MACHINE` | `tf-systemd-acc` | nspawn machine name |
+| `ACC_REBUILD` | unset | `=1` forces a rootfs rebuild |
+| `ACC_WIPE` | unset | `=1` removes the machine image after the run |
+
+CI and releases run on GitHub Actions. Tags use Semantic Versioning **without** a `v` prefix (`0.1.1`, not `v0.1.1`). Pushing a tag builds and publishes binaries with GoReleaser. The `testacc` job must pass before a tag release publishes.
 
 ## License
 

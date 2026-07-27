@@ -17,9 +17,24 @@ jobs:
       - run: go test ./...
       - run: go build -o bin/terraform-provider-systemd .
 
+  testacc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Install nspawn tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y systemd-container debootstrap dbus
+      - name: Acceptance tests (nspawn)
+        run: sudo make testacc
+
   release:
     if: startsWith(github.ref, 'refs/tags/')
-    needs: test
+    needs: [test, testacc]
     runs-on: ubuntu-latest
     permissions:
       contents: write
