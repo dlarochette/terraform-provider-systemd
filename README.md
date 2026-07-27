@@ -354,7 +354,7 @@ ACC tests exercise the provider's resources against a **real systemd** running i
 `systemd-nspawn` container (not SSH — see [`internal/remote/nspawn.go`](internal/remote)):
 
 ```bash
-sudo apt-get install -y systemd-container debootstrap
+sudo apt-get install -y systemd-container debootstrap dbus
 sudo make testacc
 ```
 
