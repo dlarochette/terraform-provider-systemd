@@ -179,6 +179,7 @@ func (p *SystemdProvider) Resources(_ context.Context) []func() resource.Resourc
 		NewMountResource,
 		NewAutomountResource,
 		NewSocketResource,
+		NewPathResource,
 		NewTargetResource,
 		NewDropinResource,
 		NewNetworkResource,

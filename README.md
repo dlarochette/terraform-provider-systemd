@@ -7,7 +7,7 @@ Manage **systemd units** and **systemd-networkd** files on remote Linux hosts ov
 | **Provider address** | `dlarochette/systemd` |
 | **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.3.1](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.3.1) |
+| **Latest release** | [0.4.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.4.0) |
 | **License** | MIT |
 
 ## How it works
@@ -57,7 +57,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.3.0"
+      version = ">= 0.4.0"
     }
   }
 }
@@ -126,7 +126,7 @@ resource "systemd_unit" "demo" {
 }
 ```
 
-The same `section` / `entry` model works on `systemd_timer`, `systemd_mount`, `systemd_automount`, `systemd_socket`, `systemd_target`, `systemd_dropin`, and the networkd resources.
+The same `section` / `entry` model works on `systemd_timer`, `systemd_mount`, `systemd_automount`, `systemd_socket`, `systemd_path`, `systemd_target`, `systemd_dropin`, and the networkd resources.
 
 ### Template units and instances
 
@@ -307,6 +307,7 @@ Use a **provider alias per host** when managing a fleet.
 | `systemd_mount` | `/etc/systemd/system/{name}` | `.mount` only (e.g. `data.mount` → `/data`) |
 | `systemd_automount` | `/etc/systemd/system/{name}` | `.automount` only; usually with a `.mount` |
 | `systemd_socket` | `/etc/systemd/system/{name}` | `.socket` only; pair with a `.service` |
+| `systemd_path` | `/etc/systemd/system/{name}` | `.path` only; pair with a `.service` |
 | `systemd_target` | `/etc/systemd/system/{name}` | `.target` only; grouping / sync point |
 | `systemd_dropin` | `/etc/systemd/system/{unit}.d/{dropin}` | `dropin` must end with `.conf` |
 | `systemd_instance` | n/a (lifecycle only) | Enable/start a template unit instance (e.g. `app@bar.service`); `template` + `instance`, both `RequiresReplace` |

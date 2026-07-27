@@ -2,7 +2,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.3.1"
+      version = ">= 0.4.0"
     }
   }
 }
@@ -177,6 +177,63 @@ resource "systemd_socket" "backup" {
     entry {
       key   = "WantedBy"
       value = "sockets.target"
+    }
+  }
+}
+
+resource "systemd_unit" "watch_inbox" {
+  name   = "watch-inbox.service"
+  enable = false
+  active = false
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "Process new inbox files"
+    }
+  }
+  section {
+    name = "Service"
+    entry {
+      key   = "Type"
+      value = "oneshot"
+    }
+    entry {
+      key   = "ExecStart"
+      value = "/usr/local/bin/process-inbox.sh"
+    }
+  }
+}
+
+resource "systemd_path" "watch_inbox" {
+  name   = "watch-inbox.path"
+  enable = true
+  active = true
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "Watch /var/inbox for new files"
+    }
+  }
+  section {
+    name = "Path"
+    entry {
+      key   = "PathExists"
+      value = "/var/inbox"
+    }
+    entry {
+      key   = "DirectoryNotEmpty"
+      value = "/var/inbox"
+    }
+  }
+  section {
+    name = "Install"
+    entry {
+      key   = "WantedBy"
+      value = "paths.target"
     }
   }
 }

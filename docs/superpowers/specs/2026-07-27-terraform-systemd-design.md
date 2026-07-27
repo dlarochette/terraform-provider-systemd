@@ -15,7 +15,7 @@ Manage systemd units and systemd-networkd configuration on a remote Linux fleet 
 
 **In:**
 
-- Units under `/etc/systemd/system/` (generic `systemd_unit` plus dedicated `systemd_timer`, `systemd_mount`, `systemd_automount`, `systemd_socket`, `systemd_target`)
+- Units under `/etc/systemd/system/` (generic `systemd_unit` plus dedicated `systemd_timer`, `systemd_mount`, `systemd_automount`, `systemd_socket`, `systemd_path`, `systemd_target`)
 - Drop-ins under `/etc/systemd/system/{unit}.d/`
 - networkd files under `/etc/systemd/network/` (`.network`, `.netdev`, `.link`)
 - Enable / disable / start / stop via remote `systemctl`
@@ -91,6 +91,7 @@ These modes are mutually exclusive. Validation fails if both or neither are set.
 | `systemd_mount` | `/etc/systemd/system/{name}` | `.mount` only |
 | `systemd_automount` | `/etc/systemd/system/{name}` | `.automount` only |
 | `systemd_socket` | `/etc/systemd/system/{name}` | `.socket` only |
+| `systemd_path` | `/etc/systemd/system/{name}` | `.path` only |
 | `systemd_target` | `/etc/systemd/system/{name}` | `.target` only |
 | `systemd_dropin` | `/etc/systemd/system/{unit}.d/{dropin}.conf` | ID = `unit/dropin` |
 | `systemd_network` | `/etc/systemd/network/{filename}` | ID = `filename` |
