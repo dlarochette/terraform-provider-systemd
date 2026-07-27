@@ -1,6 +1,9 @@
 package remote
 
-import "testing"
+import (
+	"os/exec"
+	"testing"
+)
 
 func TestNewNspawnDefaultMachine(t *testing.T) {
 	n := NewNspawn("")
@@ -31,6 +34,28 @@ func TestParseUnitStatus(t *testing.T) {
 	want := UnitStatus{LoadState: "loaded", ActiveState: "active", SubState: "running", UnitFileState: "enabled"}
 	if st != want {
 		t.Fatalf("got %+v, want %+v", st, want)
+	}
+}
+
+func TestExitCode(t *testing.T) {
+	if got := exitCode(nil); got != -1 {
+		t.Fatalf("nil err: got %d, want -1", got)
+	}
+
+	// LookPath failure: not an *exec.ExitError, must not be mistaken for exit code 1.
+	notFoundErr := exec.Command("definitely-not-a-real-binary-xyz").Run()
+	if got := exitCode(notFoundErr); got != -1 {
+		t.Fatalf("lookup err: got %d, want -1", got)
+	}
+
+	exit1Err := exec.Command("sh", "-c", "exit 1").Run()
+	if got := exitCode(exit1Err); got != 1 {
+		t.Fatalf("exit 1: got %d, want 1", got)
+	}
+
+	exit3Err := exec.Command("sh", "-c", "exit 3").Run()
+	if got := exitCode(exit3Err); got != 3 {
+		t.Fatalf("exit 3: got %d, want 3", got)
 	}
 }
 

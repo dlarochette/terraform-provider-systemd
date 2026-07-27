@@ -2,6 +2,7 @@ package remote
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -277,15 +278,34 @@ func (n *Nspawn) WriteCredentialEncrypted(name, data, withKey string) error {
 	return nil
 }
 
+// exitCode extracts the process exit code from err, or -1 if err is nil or is not an
+// *exec.ExitError (e.g. the systemd-run/machinectl binary itself could not be started,
+// or the connection to the machine failed) — such errors must not be mistaken for a
+// clean "command ran and reported false".
+func exitCode(err error) int {
+	var exitErr *exec.ExitError
+	if errors.As(err, &exitErr) {
+		return exitErr.ExitCode()
+	}
+	return -1
+}
+
 func (n *Nspawn) CredentialExists(name string, encrypted bool) (bool, error) {
 	p, err := credPath(encrypted, name)
 	if err != nil {
 		return false, err
 	}
-	if _, err := n.run("test", "-e", p); err != nil {
+	_, err = n.run("test", "-e", p)
+	if err == nil {
+		return true, nil
+	}
+	// `test -e` exits 1 when the path is absent; any other failure (transport error,
+	// systemd-run/machinectl not found, machine unreachable, etc.) must be propagated
+	// rather than silently reported as "credential does not exist".
+	if exitCode(err) == 1 {
 		return false, nil
 	}
-	return true, nil
+	return false, fmt.Errorf("test -e %s: %w", p, err)
 }
 
 func (n *Nspawn) RemoveCredential(name string, encrypted bool) error {
