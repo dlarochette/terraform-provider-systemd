@@ -208,8 +208,76 @@ resource "systemd_unit" "app" {
 }
 ```
 
-A relative `LoadCredentialEncrypted=db-pass` (no `/`) makes systemd look up `db-pass` under
-`/etc/credstore.encrypted/`; plaintext `LoadCredential=` looks under `/etc/credstore/`.
+Relative credential names search `/etc/credstore.encrypted/` (or `/etc/credstore/` for
+`LoadCredential=`). You can also pass an absolute path:
+`db-pass:/etc/credstore.encrypted/db-pass`.
+
+### networkd (`.network` / `.netdev` / `.link`)
+
+Same `section` / `entry` (or raw `content`) model. Apply writes under `/etc/systemd/network/`
+then runs `networkctl reload`. There is no `enable`/`active` — networkd picks files up by
+name/Match.
+
+```hcl
+resource "systemd_link" "eth0" {
+  filename = "10-eth0.link"
+  section {
+    name = "Match"
+    entry {
+      key   = "MACAddress"
+      value = "aa:bb:cc:dd:ee:ff"
+    }
+  }
+  section {
+    name = "Link"
+    entry {
+      key   = "Name"
+      value = "eth0"
+    }
+  }
+}
+
+resource "systemd_netdev" "br0" {
+  filename = "20-br0.netdev"
+  section {
+    name = "NetDev"
+    entry {
+      key   = "Name"
+      value = "br0"
+    }
+    entry {
+      key   = "Kind"
+      value = "bridge"
+    }
+  }
+}
+
+resource "systemd_network" "br0" {
+  filename = "30-br0.network"
+  section {
+    name = "Match"
+    entry {
+      key   = "Name"
+      value = "br0"
+    }
+  }
+  section {
+    name = "Network"
+    entry {
+      key   = "Address"
+      value = "192.0.2.10/24"
+    }
+    entry {
+      key   = "Gateway"
+      value = "192.0.2.1"
+    }
+  }
+}
+
+data "systemd_link" "br0" {
+  name = "br0"
+}
+```
 
 See also [`examples/basic`](examples/basic).
 

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.3.0"
+      version = ">= 0.3.1"
     }
   }
 }
@@ -258,6 +258,70 @@ resource "systemd_target" "app" {
     entry {
       key   = "WantedBy"
       value = "multi-user.target"
+    }
+  }
+}
+
+# --- systemd-networkd ---
+
+resource "systemd_link" "eth0" {
+  filename = "10-eth0.link"
+
+  section {
+    name = "Match"
+    entry {
+      key   = "MACAddress"
+      value = "aa:bb:cc:dd:ee:ff"
+    }
+  }
+  section {
+    name = "Link"
+    entry {
+      key   = "Name"
+      value = "eth0"
+    }
+  }
+}
+
+resource "systemd_netdev" "br0" {
+  filename = "20-br0.netdev"
+
+  section {
+    name = "NetDev"
+    entry {
+      key   = "Name"
+      value = "br0"
+    }
+    entry {
+      key   = "Kind"
+      value = "bridge"
+    }
+  }
+}
+
+resource "systemd_network" "br0" {
+  filename = "30-br0.network"
+
+  section {
+    name = "Match"
+    entry {
+      key   = "Name"
+      value = "br0"
+    }
+  }
+  section {
+    name = "Network"
+    entry {
+      key   = "Address"
+      value = "192.0.2.10/24"
+    }
+    entry {
+      key   = "Gateway"
+      value = "192.0.2.1"
+    }
+    entry {
+      key   = "DNS"
+      value = "9.9.9.9"
     }
   }
 }
