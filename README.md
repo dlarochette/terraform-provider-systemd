@@ -7,7 +7,7 @@ Manage **systemd units** and **systemd-networkd** files on remote Linux hosts ov
 | **Provider address** | `dlarochette/systemd` |
 | **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.1.2](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.1.2) |
+| **Latest release** | [0.1.3](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.1.3) |
 | **License** | MIT |
 
 ## How it works
@@ -57,7 +57,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.1.2"
+      version = ">= 0.1.3"
     }
   }
 }
@@ -66,15 +66,16 @@ provider "systemd" {
   alias = "ymir"
   host  = "ymir.example"
   user  = "root"
-  # private_key_path = "~/.ssh/id_ed25519"
-  # ssh_agent        = true
 }
+```
 
+### Raw `content`
+
+```hcl
 resource "systemd_unit" "demo" {
   provider = systemd.ymir
   name     = "demo.service"
   enable   = true
-  active   = false
   content  = <<-EOT
     [Unit]
     Description=Demo unit managed by Terraform
@@ -86,6 +87,46 @@ resource "systemd_unit" "demo" {
   EOT
 }
 ```
+
+### Structured `section` blocks
+
+`content` and `section` are mutually exclusive. Duplicate keys (e.g. multiple `ExecStart`) are allowed.
+
+```hcl
+resource "systemd_unit" "demo" {
+  provider = systemd.ymir
+  name     = "demo.service"
+  enable   = true
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "Demo unit managed by Terraform"
+    }
+  }
+  section {
+    name = "Service"
+    entry {
+      key   = "Type"
+      value = "oneshot"
+    }
+    entry {
+      key   = "ExecStart"
+      value = "/bin/true"
+    }
+  }
+  section {
+    name = "Install"
+    entry {
+      key   = "WantedBy"
+      value = "multi-user.target"
+    }
+  }
+}
+```
+
+The same `section` / `entry` model works on `systemd_dropin`, `systemd_network`, `systemd_netdev`, and `systemd_link`.
 
 See also [`examples/basic`](examples/basic).
 

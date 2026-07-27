@@ -12,6 +12,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+var _ resource.Resource = &networkFileResource{}
+var _ resource.ResourceWithImportState = &networkFileResource{}
+var _ resource.ResourceWithValidateConfig = &networkFileResource{}
+
 type networkFileResource struct {
 	client   *Client
 	typeName string
@@ -20,9 +24,10 @@ type networkFileResource struct {
 }
 
 type networkFileModel struct {
-	Filename types.String `tfsdk:"filename"`
-	Content  types.String `tfsdk:"content"`
-	ID       types.String `tfsdk:"id"`
+	Filename types.String   `tfsdk:"filename"`
+	Content  types.String   `tfsdk:"content"`
+	Sections []sectionModel `tfsdk:"section"`
+	ID       types.String   `tfsdk:"id"`
 }
 
 func NewNetworkResource() resource.Resource {
@@ -65,9 +70,23 @@ func (r *networkFileResource) Schema(_ context.Context, _ resource.SchemaRequest
 					networkFilenameValidator(r.suffix),
 				},
 			},
-			"content": contentAttribute(),
+			"content": optionalContentAttribute(),
 			"id":      idAttribute(),
 		},
+		Blocks: map[string]schema.Block{
+			"section": sectionBlockSchema(),
+		},
+	}
+}
+
+func (r *networkFileResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var cfg networkFileModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &cfg)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if err := validateContentOrSections(cfg.Content, cfg.Sections); err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
 
@@ -89,10 +108,16 @@ func (r *networkFileResource) Create(ctx context.Context, req resource.CreateReq
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if err := r.client.PutNetwork(ctx, plan.Filename.ValueString(), plan.Content.ValueString()); err != nil {
+	body, err := resolveFileContent(plan.Content, plan.Sections)
+	if err != nil {
+		resp.Diagnostics.AddError("resolve content", err.Error())
+		return
+	}
+	if err := r.client.PutNetwork(ctx, plan.Filename.ValueString(), body); err != nil {
 		resp.Diagnostics.AddError("create network file", err.Error())
 		return
 	}
+	plan.Content = types.StringValue(body)
 	plan.ID = plan.Filename
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -119,10 +144,16 @@ func (r *networkFileResource) Update(ctx context.Context, req resource.UpdateReq
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if err := r.client.PutNetwork(ctx, plan.Filename.ValueString(), plan.Content.ValueString()); err != nil {
+	body, err := resolveFileContent(plan.Content, plan.Sections)
+	if err != nil {
+		resp.Diagnostics.AddError("resolve content", err.Error())
+		return
+	}
+	if err := r.client.PutNetwork(ctx, plan.Filename.ValueString(), body); err != nil {
 		resp.Diagnostics.AddError("update network file", err.Error())
 		return
 	}
+	plan.Content = types.StringValue(body)
 	plan.ID = plan.Filename
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }

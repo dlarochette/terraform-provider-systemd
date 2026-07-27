@@ -15,16 +15,18 @@ import (
 
 var _ resource.Resource = &dropinResource{}
 var _ resource.ResourceWithImportState = &dropinResource{}
+var _ resource.ResourceWithValidateConfig = &dropinResource{}
 
 func NewDropinResource() resource.Resource { return &dropinResource{} }
 
 type dropinResource struct{ client *Client }
 
 type dropinModel struct {
-	Unit    types.String `tfsdk:"unit"`
-	Dropin  types.String `tfsdk:"dropin"`
-	Content types.String `tfsdk:"content"`
-	ID      types.String `tfsdk:"id"`
+	Unit     types.String   `tfsdk:"unit"`
+	Dropin   types.String   `tfsdk:"dropin"`
+	Content  types.String   `tfsdk:"content"`
+	Sections []sectionModel `tfsdk:"section"`
+	ID       types.String   `tfsdk:"id"`
 }
 
 func (r *dropinResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -55,9 +57,23 @@ func (r *dropinResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 					dropinNameValidator(),
 				},
 			},
-			"content": contentAttribute(),
+			"content": optionalContentAttribute(),
 			"id":      idAttribute(),
 		},
+		Blocks: map[string]schema.Block{
+			"section": sectionBlockSchema(),
+		},
+	}
+}
+
+func (r *dropinResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var cfg dropinModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &cfg)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if err := validateContentOrSections(cfg.Content, cfg.Sections); err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
 
@@ -79,10 +95,16 @@ func (r *dropinResource) Create(ctx context.Context, req resource.CreateRequest,
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if err := r.client.PutDropin(ctx, plan.Unit.ValueString(), plan.Dropin.ValueString(), plan.Content.ValueString()); err != nil {
+	body, err := resolveFileContent(plan.Content, plan.Sections)
+	if err != nil {
+		resp.Diagnostics.AddError("resolve content", err.Error())
+		return
+	}
+	if err := r.client.PutDropin(ctx, plan.Unit.ValueString(), plan.Dropin.ValueString(), body); err != nil {
 		resp.Diagnostics.AddError("create dropin", err.Error())
 		return
 	}
+	plan.Content = types.StringValue(body)
 	plan.ID = types.StringValue(plan.Unit.ValueString() + "/" + plan.Dropin.ValueString())
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -109,10 +131,16 @@ func (r *dropinResource) Update(ctx context.Context, req resource.UpdateRequest,
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if err := r.client.PutDropin(ctx, plan.Unit.ValueString(), plan.Dropin.ValueString(), plan.Content.ValueString()); err != nil {
+	body, err := resolveFileContent(plan.Content, plan.Sections)
+	if err != nil {
+		resp.Diagnostics.AddError("resolve content", err.Error())
+		return
+	}
+	if err := r.client.PutDropin(ctx, plan.Unit.ValueString(), plan.Dropin.ValueString(), body); err != nil {
 		resp.Diagnostics.AddError("update dropin", err.Error())
 		return
 	}
+	plan.Content = types.StringValue(body)
 	plan.ID = types.StringValue(plan.Unit.ValueString() + "/" + plan.Dropin.ValueString())
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }

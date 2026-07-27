@@ -71,7 +71,12 @@ resource "systemd_unit" "demo" {
 
 ### HCL content model
 
-MVP resources take raw `content` strings. Structured INI helpers live in `internal/unitfile` for future schema blocks.
+Each file-backed resource accepts **either**:
+
+- structured `section` / `entry` blocks (mapped to systemd INI), **or**
+- a raw `content` string
+
+These modes are mutually exclusive. Validation fails if both or neither are set. When using `section`, `content` is computed from the rendered INI after apply.
 
 ## Resources and data sources
 

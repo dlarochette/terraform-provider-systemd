@@ -208,13 +208,3 @@ func idAttribute() schema.StringAttribute {
 		},
 	}
 }
-
-func contentAttribute() schema.StringAttribute {
-	return schema.StringAttribute{
-		Required:            true,
-		MarkdownDescription: "Raw file contents written on the remote host.",
-		Validators: []validator.String{
-			nonEmptyContent(),
-		},
-	}
-}

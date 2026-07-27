@@ -2,7 +2,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.1.0"
+      version = ">= 0.1.3"
     }
   }
 }
@@ -31,23 +31,49 @@ resource "systemd_unit" "demo" {
   name   = "terraform-demo.service"
   enable = true
   active = false
-  content = <<-EOT
-    [Unit]
-    Description=Terraform demo unit
-    [Service]
-    Type=oneshot
-    ExecStart=/bin/true
-    [Install]
-    WantedBy=multi-user.target
-  EOT
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "Terraform demo unit"
+    }
+  }
+  section {
+    name = "Service"
+    entry {
+      key   = "Type"
+      value = "oneshot"
+    }
+    entry {
+      key   = "ExecStart"
+      value = "/bin/true"
+    }
+  }
+  section {
+    name = "Install"
+    entry {
+      key   = "WantedBy"
+      value = "multi-user.target"
+    }
+  }
 }
 
 resource "systemd_network" "eth0" {
   filename = "10-eth0.network"
-  content  = <<-EOT
-    [Match]
-    Name=eth0
-    [Network]
-    DHCP=yes
-  EOT
+
+  section {
+    name = "Match"
+    entry {
+      key   = "Name"
+      value = "eth0"
+    }
+  }
+  section {
+    name = "Network"
+    entry {
+      key   = "DHCP"
+      value = "yes"
+    }
+  }
 }

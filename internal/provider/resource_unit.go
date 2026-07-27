@@ -14,6 +14,7 @@ import (
 
 var _ resource.Resource = &unitResource{}
 var _ resource.ResourceWithImportState = &unitResource{}
+var _ resource.ResourceWithValidateConfig = &unitResource{}
 
 func NewUnitResource() resource.Resource { return &unitResource{} }
 
@@ -22,11 +23,12 @@ type unitResource struct {
 }
 
 type unitModel struct {
-	Name    types.String `tfsdk:"name"`
-	Content types.String `tfsdk:"content"`
-	Enable  types.Bool   `tfsdk:"enable"`
-	Active  types.Bool   `tfsdk:"active"`
-	ID      types.String `tfsdk:"id"`
+	Name     types.String   `tfsdk:"name"`
+	Content  types.String   `tfsdk:"content"`
+	Sections []sectionModel `tfsdk:"section"`
+	Enable   types.Bool     `tfsdk:"enable"`
+	Active   types.Bool     `tfsdk:"active"`
+	ID       types.String   `tfsdk:"id"`
 }
 
 func (r *unitResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -47,7 +49,7 @@ func (r *unitResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 					unitNameValidator(),
 				},
 			},
-			"content": contentAttribute(),
+			"content": optionalContentAttribute(),
 			"enable": schema.BoolAttribute{
 				Optional:            true,
 				MarkdownDescription: "Whether the unit should be enabled (`systemctl enable` / `disable`).",
@@ -58,6 +60,20 @@ func (r *unitResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 			},
 			"id": idAttribute(),
 		},
+		Blocks: map[string]schema.Block{
+			"section": sectionBlockSchema(),
+		},
+	}
+}
+
+func (r *unitResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var cfg unitModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &cfg)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if err := validateContentOrSections(cfg.Content, cfg.Sections); err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
 
@@ -79,6 +95,11 @@ func (r *unitResource) Create(ctx context.Context, req resource.CreateRequest, r
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	body, err := resolveFileContent(plan.Content, plan.Sections)
+	if err != nil {
+		resp.Diagnostics.AddError("resolve content", err.Error())
+		return
+	}
 	var enable, active *bool
 	if !plan.Enable.IsNull() {
 		v := plan.Enable.ValueBool()
@@ -88,10 +109,11 @@ func (r *unitResource) Create(ctx context.Context, req resource.CreateRequest, r
 		v := plan.Active.ValueBool()
 		active = &v
 	}
-	if err := r.client.PutUnit(ctx, plan.Name.ValueString(), plan.Content.ValueString(), enable, active); err != nil {
+	if err := r.client.PutUnit(ctx, plan.Name.ValueString(), body, enable, active); err != nil {
 		resp.Diagnostics.AddError("create unit", err.Error())
 		return
 	}
+	plan.Content = types.StringValue(body)
 	plan.ID = plan.Name
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -118,6 +140,11 @@ func (r *unitResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	body, err := resolveFileContent(plan.Content, plan.Sections)
+	if err != nil {
+		resp.Diagnostics.AddError("resolve content", err.Error())
+		return
+	}
 	var enable, active *bool
 	if !plan.Enable.IsNull() {
 		v := plan.Enable.ValueBool()
@@ -127,10 +154,11 @@ func (r *unitResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		v := plan.Active.ValueBool()
 		active = &v
 	}
-	if err := r.client.PutUnit(ctx, plan.Name.ValueString(), plan.Content.ValueString(), enable, active); err != nil {
+	if err := r.client.PutUnit(ctx, plan.Name.ValueString(), body, enable, active); err != nil {
 		resp.Diagnostics.AddError("update unit", err.Error())
 		return
 	}
+	plan.Content = types.StringValue(body)
 	plan.ID = plan.Name
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
