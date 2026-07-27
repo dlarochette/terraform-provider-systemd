@@ -2,10 +2,10 @@
 
 Date: 2026-07-27  
 Status: approved (SSH-only revision)  
-Module: `github.com/toxn/terraform-provider-systemd`  
+Module: `github.com/dlarochette/terraform-provider-systemd`  
 Provider address: `dlarochette/systemd`  
 Binary: `terraform-provider-systemd`  
-Remote: `github.com/toxn/terraform-provider-systemd`
+Remote: `github.com/dlarochette/terraform-provider-systemd`
 
 ## Goal
 

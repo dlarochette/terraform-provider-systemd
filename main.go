@@ -7,7 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 
-	"github.com/toxn/terraform-provider-systemd/internal/provider"
+	"github.com/dlarochette/terraform-provider-systemd/internal/provider"
 )
 
 func main() {

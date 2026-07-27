@@ -1,4 +1,4 @@
-module github.com/toxn/terraform-provider-systemd
+module github.com/dlarochette/terraform-provider-systemd
 
 go 1.25.0
 

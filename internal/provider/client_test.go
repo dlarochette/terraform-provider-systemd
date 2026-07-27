@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/toxn/terraform-provider-systemd/internal/remote"
+	"github.com/dlarochette/terraform-provider-systemd/internal/remote"
 )
 
 func TestClientUnitDropinNetwork(t *testing.T) {

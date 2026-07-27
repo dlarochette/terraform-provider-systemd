@@ -18,7 +18,7 @@ import (
 
 	"fmt"
 
-	"github.com/toxn/terraform-provider-systemd/internal/remote"
+	"github.com/dlarochette/terraform-provider-systemd/internal/remote"
 )
 
 var _ provider.Provider = &SystemdProvider{}

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/toxn/terraform-provider-systemd/internal/remote"
+	"github.com/dlarochette/terraform-provider-systemd/internal/remote"
 )
 
 // Client wraps a remote.Host with Terraform-oriented unit/network helpers.

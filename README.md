@@ -5,8 +5,9 @@ Manage **systemd units** and **systemd-networkd** files on remote Linux hosts ov
 | | |
 |---|---|
 | **Provider address** | `dlarochette/systemd` |
+| **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.1.1](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.1.1) |
+| **Latest release** | [0.1.2](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.1.2) |
 | **License** | MIT |
 
 ## How it works
@@ -56,7 +57,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.1.1"
+      version = ">= 0.1.2"
     }
   }
 }
