@@ -51,8 +51,28 @@ func unitNameValidator() validator.String {
 	return stringvalidator.All(
 		noPathSegment(),
 		stringvalidator.RegexMatches(
-			mustCompile(`\.(service|socket|timer|path|mount|automount|swap|target|slice|scope|device)$`),
+			mustCompile(`^[^/@]+(@[^/@]*)?\.(service|socket|timer|path|mount|automount|swap|target|slice|scope|device)$`),
 			"must end with a known systemd unit suffix (e.g. .service, .timer, .socket)",
+		),
+	)
+}
+
+func templateNameValidator() validator.String {
+	return stringvalidator.All(
+		noPathSegment(),
+		stringvalidator.RegexMatches(
+			mustCompile(`^[^/@]+@\.(service|socket|timer|path|mount|automount|swap|target|slice|scope|device)$`),
+			"must be a template unit name (e.g. app@.service)",
+		),
+	)
+}
+
+func instanceStringValidator() validator.String {
+	return stringvalidator.All(
+		stringvalidator.LengthAtLeast(1),
+		stringvalidator.RegexMatches(
+			mustCompile(`^[^/@]+$`),
+			"instance must not contain '@' or '/'",
 		),
 	)
 }

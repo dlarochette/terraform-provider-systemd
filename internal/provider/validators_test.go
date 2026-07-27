@@ -80,6 +80,33 @@ func TestUnitSuffixValidator(t *testing.T) {
 	}
 }
 
+func TestUnitNameAllowsTemplate(t *testing.T) {
+	t.Parallel()
+	v := unitNameValidator()
+	for _, ok := range []string{"app@.service", "app@bar.service"} {
+		resp := &validator.StringResponse{}
+		v.ValidateString(context.Background(), validator.StringRequest{ConfigValue: types.StringValue(ok)}, resp)
+		if resp.Diagnostics.HasError() {
+			t.Fatalf("%s: %v", ok, resp.Diagnostics)
+		}
+	}
+}
+
+func TestTemplateNameValidator(t *testing.T) {
+	t.Parallel()
+	v := templateNameValidator()
+	ok := &validator.StringResponse{}
+	v.ValidateString(context.Background(), validator.StringRequest{ConfigValue: types.StringValue("app@.service")}, ok)
+	if ok.Diagnostics.HasError() {
+		t.Fatal(ok.Diagnostics)
+	}
+	bad := &validator.StringResponse{}
+	v.ValidateString(context.Background(), validator.StringRequest{ConfigValue: types.StringValue("app@bar.service")}, bad)
+	if !bad.Diagnostics.HasError() {
+		t.Fatal("expected reject instantiated name as template")
+	}
+}
+
 func TestDropinNameValidator(t *testing.T) {
 	t.Parallel()
 	v := dropinNameValidator()
