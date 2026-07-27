@@ -1,0 +1,29 @@
+# Binaries
+/terraform-provider-systemd
+/dist/
+/bin/
+
+# Schema dump scratch
+.schema-work/
+
+# Go
+*.exe
+*.test
+*.out
+vendor/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+*_override.tf
+.terraformrc
+terraform.rc
