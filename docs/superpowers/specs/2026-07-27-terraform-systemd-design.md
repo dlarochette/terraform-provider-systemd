@@ -80,6 +80,9 @@ These modes are mutually exclusive. Validation fails if both or neither are set.
 
 ## Resources and data sources
 
+> Extended by [2026-07-27-systemd-creds-templates-design.md](2026-07-27-systemd-creds-templates-design.md):
+> `systemd_socket`, `systemd_target`, template units + `systemd_instance`, and `systemd_credential`.
+
 | Type | Path / identity | Notes |
 |------|-----------------|-------|
 | `systemd_unit` | `/etc/systemd/system/{name}` | generic units; `name` is ID; optional enable/active |

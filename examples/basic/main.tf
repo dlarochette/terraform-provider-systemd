@@ -27,6 +27,11 @@ variable "insecure" {
   default = false
 }
 
+variable "db_password" {
+  type      = string
+  sensitive = true
+}
+
 resource "systemd_unit" "backup" {
   name   = "backup.service"
   enable = true
@@ -200,6 +205,36 @@ resource "systemd_instance" "app_bar" {
   instance = "bar"
   enable   = true
   active   = true
+}
+
+resource "systemd_credential" "db" {
+  name      = "db-pass"
+  data      = var.db_password
+  encrypted = true
+  with_key  = "host"
+}
+
+resource "systemd_unit" "app" {
+  name = "app.service"
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "App using a host credential"
+    }
+  }
+  section {
+    name = "Service"
+    entry {
+      key   = "LoadCredentialEncrypted"
+      value = "db-pass"
+    }
+    entry {
+      key   = "ExecStart"
+      value = "/usr/local/bin/app"
+    }
+  }
 }
 
 resource "systemd_target" "app" {

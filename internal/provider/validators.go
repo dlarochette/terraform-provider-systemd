@@ -116,3 +116,7 @@ func portValidator() validator.Int64 {
 func nonEmptyContent() validator.String {
 	return stringvalidator.LengthAtLeast(1)
 }
+
+func credentialKeySourceValidator() validator.String {
+	return stringvalidator.OneOf("auto", "host", "tpm2", "host+tpm2")
+}

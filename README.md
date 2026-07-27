@@ -162,6 +162,37 @@ resource "systemd_instance" "app_bar" {
 }
 ```
 
+### Credentials
+
+`systemd_credential` writes a secret to the host credential store, consumable by units via
+`LoadCredential=` (plaintext) or `LoadCredentialEncrypted=` (encrypted, the default). `data` is
+write-only: it is never read back or decrypted from the remote host, so keep it out of version
+control (e.g. a `sensitive` variable, as below).
+
+```hcl
+resource "systemd_credential" "db" {
+  name      = "db-pass"
+  data      = var.db_password # sensitive
+  encrypted = true
+  with_key  = "host"
+}
+
+resource "systemd_unit" "app" {
+  name = "app.service"
+  # …
+  section {
+    name = "Service"
+    entry {
+      key   = "LoadCredentialEncrypted"
+      value = "db-pass"
+    }
+  }
+}
+```
+
+A relative `LoadCredentialEncrypted=db-pass` (no `/`) makes systemd look up `db-pass` under
+`/etc/credstore.encrypted/`; plaintext `LoadCredential=` looks under `/etc/credstore/`.
+
 See also [`examples/basic`](examples/basic).
 
 ## Provider configuration
@@ -196,8 +227,11 @@ Use a **provider alias per host** when managing a fleet.
 | `systemd_network` | `/etc/systemd/network/{filename}` | Filename must end with `.network` |
 | `systemd_netdev` | `/etc/systemd/network/{filename}` | Filename must end with `.netdev` |
 | `systemd_link` | `/etc/systemd/network/{filename}` | Filename must end with `.link` |
+| `systemd_credential` | `/etc/credstore{,.encrypted}/{name}` | `data` is `Sensitive` and write-only; `encrypted` defaults to `true` |
 
 Destroy: stop/disable (best effort) → remove file → `daemon-reload` (and `networkctl reload` for networkd files).
+`systemd_instance` is lifecycle-only (no file of its own): destroy just stops/disables the instance,
+there is nothing to remove on disk.
 
 ## Data sources
 
