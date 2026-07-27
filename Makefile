@@ -9,8 +9,12 @@ build:
 test:
 	go test ./...
 
+# Real acceptance tests against a systemd-nspawn machine (root required):
+#   sudo apt-get install -y systemd-container debootstrap dbus
+#   sudo make testacc
+# See scripts/acc-nspawn.sh for env vars (ACC_REBUILD, ACC_WIPE, SYSTEMD_ACC_MACHINE, ...).
 testacc:
-	TF_ACC=1 go test ./internal/provider/ -v -timeout 30m
+	./scripts/acc-nspawn.sh
 
 fmt:
 	gofmt -s -w .
