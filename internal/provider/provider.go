@@ -189,6 +189,7 @@ func (p *SystemdProvider) Resources(_ context.Context) []func() resource.Resourc
 		NewLinkResource,
 		NewInstanceResource,
 		NewCredentialResource,
+		NewMachineResource,
 	}
 }
 

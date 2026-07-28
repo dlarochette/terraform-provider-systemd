@@ -59,6 +59,14 @@ type Host interface {
 	WriteCredentialEncrypted(name, data, withKey string) error
 	CredentialExists(name string, encrypted bool) (bool, error)
 	RemoveCredential(name string, encrypted bool) error
+
+	// Machine (systemd-nspawn) image + /etc/systemd/nspawn settings.
+	EnsureMachineImage(name, imageType, source string) error
+	RemoveMachineImage(name string) error
+	WriteNspawnFile(name, content string) error
+	ReadNspawnFile(name string) (string, error)
+	RemoveNspawnFile(name string) error
+	ShowMachine(name string) (MachineStatus, error)
 }
 
 func safeName(name string) error {

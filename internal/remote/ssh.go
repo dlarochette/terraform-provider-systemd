@@ -473,6 +473,86 @@ func (c *Client) RemoveCredential(name string, encrypted bool) error {
 	return c.removeFile(p)
 }
 
+func shellJoin(args []string) string {
+	parts := make([]string, len(args))
+	for i, a := range args {
+		parts[i] = shellQuote(a)
+	}
+	return strings.Join(parts, " ")
+}
+
+// EnsureMachineImage pulls or imports an image. If an image with the same name
+// already exists, it is removed first.
+func (c *Client) EnsureMachineImage(name, imageType, source string) error {
+	t, err := ParseMachineImageType(imageType)
+	if err != nil {
+		return err
+	}
+	args, err := MachinectlEnsureArgs(name, t, source)
+	if err != nil {
+		return err
+	}
+	if _, err := c.run("machinectl show-image -- " + shellQuote(name)); err == nil {
+		_ = c.mustOK("machinectl remove -- " + shellQuote(name))
+	}
+	return c.mustOK("machinectl " + shellJoin(args))
+}
+
+func (c *Client) RemoveMachineImage(name string) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	return c.mustOK("machinectl remove -- " + shellQuote(name))
+}
+
+func (c *Client) WriteNspawnFile(name, content string) error {
+	p, err := nspawnSettingsPath(name)
+	if err != nil {
+		return err
+	}
+	if err := c.mustOK("mkdir -p " + shellQuote(path.Dir(p))); err != nil {
+		return err
+	}
+	return c.atomicWrite(p, content)
+}
+
+func (c *Client) ReadNspawnFile(name string) (string, error) {
+	p, err := nspawnSettingsPath(name)
+	if err != nil {
+		return "", err
+	}
+	return c.readFile(p)
+}
+
+func (c *Client) RemoveNspawnFile(name string) error {
+	p, err := nspawnSettingsPath(name)
+	if err != nil {
+		return err
+	}
+	return c.removeFile(p)
+}
+
+func (c *Client) ShowMachine(name string) (MachineStatus, error) {
+	if err := safeName(name); err != nil {
+		return MachineStatus{}, err
+	}
+	st := MachineStatus{}
+	if _, err := c.run("machinectl show-image -- " + shellQuote(name)); err == nil {
+		st.ImagePresent = true
+	}
+	unit, err := c.UnitStatus(NspawnUnitName(name))
+	if err != nil {
+		return MachineStatus{}, err
+	}
+	st.Unit = unit
+	if body, err := c.ReadNspawnFile(name); err == nil {
+		st.Settings = body
+	} else if !os.IsNotExist(err) {
+		return MachineStatus{}, err
+	}
+	return st, nil
+}
+
 func shellQuote(s string) string {
 	return "'" + strings.ReplaceAll(s, "'", `'\''`) + "'"
 }

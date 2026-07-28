@@ -128,6 +128,38 @@ resource "systemd_unit" "demo" {
 
 The same `section` / `entry` model works on `systemd_timer`, `systemd_mount`, `systemd_automount`, `systemd_socket`, `systemd_path`, `systemd_swap`, `systemd_slice`, `systemd_target`, `systemd_dropin`, and the networkd resources.
 
+### Machines (systemd-nspawn)
+
+`systemd_machine` manages an nspawn image (`machinectl import-*` / `pull-tar` / `pull-raw` / `pull-dkr`), optional
+`/etc/systemd/nspawn/{name}.nspawn` settings (`content` XOR `section`), and `systemd-nspawn@{name}.service`
+via `systemctl`. On destroy, `delete_image` defaults to `true` (`machinectl remove`).
+
+```hcl
+resource "systemd_machine" "demo" {
+  name         = "demo"
+  enable       = true
+  active       = true
+  delete_image = true
+
+  image {
+    type   = "local" # or tar | raw | oci
+    source = "/var/tmp/demo.tar"
+  }
+
+  content = <<-EOT
+    [Exec]
+    Boot=no
+    PrivateUsers=no
+    Parameters=/usr/bin/sleep infinity
+  EOT
+}
+```
+
+OCI example: `image { type = "oci", source = "docker.io/library/debian:bookworm" }` (`machinectl pull-dkr`).
+Acceptance tests use a local tar fixture only (no registry pull in CI). Nested container
+**start** is not exercised in ACC (cgroup mounts fail inside the outer nspawn guest); ACC
+covers image import, `.nspawn` write/update, enable, and `delete_image`.
+
 ### Template units and instances
 
 `systemd_unit` (and the other typed unit resources) also accept template unit names like `app@.service`.

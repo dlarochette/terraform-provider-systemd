@@ -138,3 +138,45 @@ func (c *Client) DeleteCredential(ctx context.Context, name string, encrypted bo
 	_ = ctx
 	return c.Host.RemoveCredential(name, encrypted)
 }
+
+// PutMachine ensures the image, optionally writes/clears .nspawn settings, then
+// applies enable/active on systemd-nspawn@<name>.service.
+//
+// settings:
+//   - nil: leave .nspawn file untouched
+//   - non-nil empty string: remove .nspawn if present
+//   - non-nil non-empty: write settings
+func (c *Client) PutMachine(ctx context.Context, name, imageType, source string, settings *string, enable, active *bool) error {
+	if err := c.Host.EnsureMachineImage(name, imageType, source); err != nil {
+		return err
+	}
+	if settings != nil {
+		if *settings == "" {
+			if err := c.Host.RemoveNspawnFile(name); err != nil {
+				return err
+			}
+		} else if err := c.Host.WriteNspawnFile(name, *settings); err != nil {
+			return err
+		}
+	}
+	if err := c.Host.DaemonReload(); err != nil {
+		return err
+	}
+	return c.ApplyUnitLifecycle(ctx, remote.NspawnUnitName(name), enable, active)
+}
+
+func (c *Client) GetMachine(ctx context.Context, name string) (remote.MachineStatus, error) {
+	_ = ctx
+	return c.Host.ShowMachine(name)
+}
+
+func (c *Client) DeleteMachine(ctx context.Context, name string, deleteImage bool) error {
+	c.DeleteUnitLifecycle(ctx, remote.NspawnUnitName(name))
+	_ = c.Host.RemoveNspawnFile(name)
+	if deleteImage {
+		if err := c.Host.RemoveMachineImage(name); err != nil {
+			return err
+		}
+	}
+	return nil
+}

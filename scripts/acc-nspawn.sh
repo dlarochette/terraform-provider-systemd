@@ -75,7 +75,7 @@ rootfs_looks_bootable() {
 
 build_rootfs() {
   log "debootstrapping ${SUITE} into ${ROOT} (mirror: ${MIRROR})"
-  debootstrap --include=systemd,dbus,systemd-sysv,libpam-systemd,systemd-resolved \
+  debootstrap --include=systemd,dbus,systemd-sysv,libpam-systemd,systemd-resolved,systemd-container \
     "${SUITE}" "${ROOT}" "${MIRROR}"
 
   systemd-machine-id-setup --root="${ROOT}"
@@ -83,8 +83,12 @@ build_rootfs() {
   mkdir -p "/etc/systemd/nspawn"
   cat > "${NSPAWN_CONF}" <<EOF
 # Managed by scripts/acc-nspawn.sh — regenerated on every rootfs rebuild.
+# Capability=all + PrivateUsers=no so nested systemd_machine ACC can start
+# an inner nspawn (sysfs mount / UID map) inside this guest.
 [Exec]
 Boot=yes
+PrivateUsers=no
+Capability=all
 
 [Files]
 BindReadOnly=/etc/resolv.conf
@@ -127,6 +131,18 @@ trap cleanup EXIT
 
 if ! machine_is_active; then
   log "starting ${MACHINE}"
+  # Keep outer .nspawn aligned even when rootfs is reused (no ACC_REBUILD).
+  mkdir -p "/etc/systemd/nspawn"
+  cat > "${NSPAWN_CONF}" <<EOF
+# Managed by scripts/acc-nspawn.sh
+[Exec]
+Boot=yes
+PrivateUsers=no
+Capability=all
+
+[Files]
+BindReadOnly=/etc/resolv.conf
+EOF
   machinectl start "${MACHINE}"
 fi
 
@@ -151,14 +167,44 @@ done
 
 log "${MACHINE} ready (systemctl is-system-running: ${state})"
 
+# Nested systemd_machine ACC needs machinectl inside the guest. Fresh rootfs
+# installs systemd-container via debootstrap; existing images may lack it, and
+# the guest often has no working DNS — so download .debs on the host and dpkg -i.
+ensure_guest_machinectl() {
+  if systemd-run -M "${MACHINE}" -q -P --wait -- test -x /usr/bin/machinectl; then
+    return 0
+  fi
+  die "machinectl missing in guest (rebuild with: sudo ACC_REBUILD=1 make testacc — debootstrap must include systemd-container)"
+}
+
+ensure_guest_machinectl
+
+# Mini Boot=no rootfs tar for TestAccMachineLifecycle (local import only).
+log "staging nested machine fixture tar in ${MACHINE}"
+systemd-run -M "${MACHINE}" -P --wait -- bash -c '
+  set -euo pipefail
+  FIX=/var/tmp/tf-acc-mini
+  rm -rf "$FIX" /var/tmp/tf-acc-mini.tar
+  mkdir -p "$FIX/usr/bin"
+  cp -a "$(command -v sleep)" "$FIX/usr/bin/sleep"
+  tar -C "$FIX" -cf /var/tmp/tf-acc-mini.tar .
+' || die "failed to stage /var/tmp/tf-acc-mini.tar in ${MACHINE}"
+
 export TF_ACC=1
 export SYSTEMD_ACC_MACHINE="${MACHINE}"
 
 # Staging dir for machinectl copy-to/from (SELinux-friendly). Writable by the
 # user who will run go test so we do not leave root-owned junk in GOCACHE.
+# /var/lib/machines is often mode 0700; open traverse so SUDO_USER can reach
+# the sticky stage dir (otherwise Go falls back to /tmp and SELinux denies
+# systemd_machined_t open on user_tmp_t → "Failed to copy: Access denied").
 STAGE_DIR="/var/lib/machines/.tf-provider-stage"
+chmod 755 /var/lib/machines
 mkdir -p "${STAGE_DIR}"
 chmod 1777 "${STAGE_DIR}"
+if command -v restorecon >/dev/null 2>&1; then
+  restorecon -R "${STAGE_DIR}" >/dev/null 2>&1 || true
+fi
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT="$(mktemp)"

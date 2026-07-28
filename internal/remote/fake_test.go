@@ -80,10 +80,33 @@ func TestPathHelpersReject(t *testing.T) {
 	}
 }
 
-func TestStartFailure(t *testing.T) {
+func TestFakeMachine(t *testing.T) {
 	h := NewFake()
-	h.FailCmd = "systemctl start"
-	if err := h.StartUnit("x.service"); err == nil {
-		t.Fatal("expected fail")
+	if err := h.EnsureMachineImage("web", "local", "/tmp/a.tar"); err != nil {
+		t.Fatal(err)
+	}
+	st, err := h.ShowMachine("web")
+	if err != nil || !st.ImagePresent {
+		t.Fatalf("%+v %v", st, err)
+	}
+	body := "[Exec]\nBoot=no\n"
+	if err := h.WriteNspawnFile("web", body); err != nil {
+		t.Fatal(err)
+	}
+	got, err := h.ReadNspawnFile("web")
+	if err != nil || got != body {
+		t.Fatalf("%v %q", err, got)
+	}
+	h.Statuses[NspawnUnitName("web")] = UnitStatus{ActiveState: "active", LoadState: "loaded"}
+	st, err = h.ShowMachine("web")
+	if err != nil || st.Unit.ActiveState != "active" || st.Settings != body {
+		t.Fatalf("%+v %v", st, err)
+	}
+	if err := h.RemoveMachineImage("web"); err != nil {
+		t.Fatal(err)
+	}
+	st, _ = h.ShowMachine("web")
+	if st.ImagePresent {
+		t.Fatal("expected image gone")
 	}
 }

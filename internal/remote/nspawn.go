@@ -114,7 +114,10 @@ func (n *Nspawn) copyFrom(remotePath, localPath string) error {
 func stageDir() string {
 	const machinesDir = "/var/lib/machines"
 	dir := path.Join(machinesDir, ".tf-provider-stage")
-	if err := os.MkdirAll(dir, 0o700); err == nil {
+	if err := os.MkdirAll(dir, 0o1777); err == nil {
+		// Ensure the sticky bit survives umask (MkdirAll may not set 1777 on
+		// an existing directory). Best-effort; harness also chmod's this path.
+		_ = os.Chmod(dir, 0o1777)
 		return dir
 	}
 	return os.TempDir()
@@ -362,4 +365,80 @@ func (n *Nspawn) RemoveCredential(name string, encrypted bool) error {
 		return err
 	}
 	return n.removeFile(p)
+}
+
+// EnsureMachineImage pulls or imports an image inside the ACC machine.
+// If an image with the same name already exists, it is removed first.
+func (n *Nspawn) EnsureMachineImage(name, imageType, source string) error {
+	t, err := ParseMachineImageType(imageType)
+	if err != nil {
+		return err
+	}
+	args, err := MachinectlEnsureArgs(name, t, source)
+	if err != nil {
+		return err
+	}
+	if _, err := n.run(append([]string{"machinectl", "show-image", "--"}, name)...); err == nil {
+		_ = n.mustOK("machinectl", "remove", "--", name)
+	}
+	cmd := append([]string{"machinectl"}, args...)
+	return n.mustOK(cmd...)
+}
+
+func (n *Nspawn) RemoveMachineImage(name string) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	return n.mustOK("machinectl", "remove", "--", name)
+}
+
+func (n *Nspawn) WriteNspawnFile(name, content string) error {
+	p, err := nspawnSettingsPath(name)
+	if err != nil {
+		return err
+	}
+	if err := n.mustOK("mkdir", "-p", path.Dir(p)); err != nil {
+		return err
+	}
+	return n.writeFile(p, content, 0o644)
+}
+
+func (n *Nspawn) ReadNspawnFile(name string) (string, error) {
+	p, err := nspawnSettingsPath(name)
+	if err != nil {
+		return "", err
+	}
+	return n.readFile(p)
+}
+
+func (n *Nspawn) RemoveNspawnFile(name string) error {
+	p, err := nspawnSettingsPath(name)
+	if err != nil {
+		return err
+	}
+	return n.removeFile(p)
+}
+
+func (n *Nspawn) ShowMachine(name string) (MachineStatus, error) {
+	if err := safeName(name); err != nil {
+		return MachineStatus{}, err
+	}
+	st := MachineStatus{}
+	if _, err := n.run("machinectl", "show-image", "--", name); err == nil {
+		st.ImagePresent = true
+	}
+	unit, err := n.UnitStatus(NspawnUnitName(name))
+	if err != nil {
+		return MachineStatus{}, err
+	}
+	st.Unit = unit
+	if body, err := n.ReadNspawnFile(name); err == nil {
+		st.Settings = body
+	} else if !os.IsNotExist(err) {
+		// nspawn readFile may wrap missing files differently — treat common miss as empty
+		if !strings.Contains(err.Error(), "No such file") && !errors.Is(err, os.ErrNotExist) {
+			return MachineStatus{}, err
+		}
+	}
+	return st, nil
 }
