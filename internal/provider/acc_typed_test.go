@@ -4,21 +4,21 @@ package provider
 
 import "testing"
 
-// TestAccTypedUnits writes+enables one unit of each "typed" kind (timer,
-// path, socket, swap, slice) via Client.PutUnit + EnableUnit and asserts each loads and
-// enables cleanly. None of them are started: a timer/path/socket unit
-// without a matching `tf-acc.service` would fail as soon as its trigger
-// condition (elapsed time, PathExists, incoming connection) fires, and a
-// .swap without a real device would fail on start — so this test only
-// exercises write/enable/status, matching the brief.
+// TestAccTypedUnits writes typed units and checks load/enable state.
+// Timer/path/socket/swap are enabled; slices without [Install] stay
+// UnitFileState=static. None are started (swap would need a real device).
 func TestAccTypedUnits(t *testing.T) {
 	c := accClient(t)
 	ctx := t.Context()
 
-	cases := []struct {
-		name    string
-		content string
-	}{
+	type tc struct {
+		name       string
+		content    string
+		enable     bool
+		wantLoad   string
+		wantEnable string // empty = do not assert UnitFileState
+	}
+	cases := []tc{
 		{
 			name: "tf-acc.timer",
 			content: "[Unit]\n" +
@@ -30,6 +30,9 @@ func TestAccTypedUnits(t *testing.T) {
 				"\n" +
 				"[Install]\n" +
 				"WantedBy=timers.target\n",
+			enable:     true,
+			wantLoad:   "loaded",
+			wantEnable: "enabled",
 		},
 		{
 			name: "tf-acc.path",
@@ -41,6 +44,9 @@ func TestAccTypedUnits(t *testing.T) {
 				"\n" +
 				"[Install]\n" +
 				"WantedBy=multi-user.target\n",
+			enable:     true,
+			wantLoad:   "loaded",
+			wantEnable: "enabled",
 		},
 		{
 			name: "tf-acc.socket",
@@ -52,17 +58,24 @@ func TestAccTypedUnits(t *testing.T) {
 				"\n" +
 				"[Install]\n" +
 				"WantedBy=sockets.target\n",
+			enable:     true,
+			wantLoad:   "loaded",
+			wantEnable: "enabled",
 		},
 		{
-			name: "tf-acc-swap.swap",
+			// Unit name must match What= (/swapfile → swapfile.swap).
+			name: "swapfile.swap",
 			content: "[Unit]\n" +
 				"Description=tf-acc swap\n" +
 				"\n" +
 				"[Swap]\n" +
-				"What=/var/tf-acc.swapfile\n" +
+				"What=/swapfile\n" +
 				"\n" +
 				"[Install]\n" +
 				"WantedBy=swap.target\n",
+			enable:     true,
+			wantLoad:   "loaded",
+			wantEnable: "enabled",
 		},
 		{
 			name: "tf-acc.slice",
@@ -71,12 +84,19 @@ func TestAccTypedUnits(t *testing.T) {
 				"\n" +
 				"[Slice]\n" +
 				"MemoryMax=64M\n",
+			enable:     false,
+			wantLoad:   "loaded",
+			wantEnable: "static",
 		},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			if err := c.PutUnit(ctx, tc.name, tc.content, accBool(true), nil); err != nil {
+			var en *bool
+			if tc.enable {
+				en = accBool(true)
+			}
+			if err := c.PutUnit(ctx, tc.name, tc.content, en, nil); err != nil {
 				t.Fatalf("PutUnit %s: %v", tc.name, err)
 			}
 			t.Cleanup(func() {
@@ -89,11 +109,11 @@ func TestAccTypedUnits(t *testing.T) {
 			if err != nil {
 				t.Fatalf("UnitStatus %s: %v", tc.name, err)
 			}
-			if st.LoadState != "loaded" {
-				t.Fatalf("expected LoadState=loaded for %s, got %+v", tc.name, st)
+			if tc.wantLoad != "" && st.LoadState != tc.wantLoad {
+				t.Fatalf("expected LoadState=%s for %s, got %+v", tc.wantLoad, tc.name, st)
 			}
-			if st.UnitFileState != "enabled" {
-				t.Fatalf("expected UnitFileState=enabled for %s, got %+v", tc.name, st)
+			if tc.wantEnable != "" && st.UnitFileState != tc.wantEnable {
+				t.Fatalf("expected UnitFileState=%s for %s, got %+v", tc.wantEnable, tc.name, st)
 			}
 		})
 	}

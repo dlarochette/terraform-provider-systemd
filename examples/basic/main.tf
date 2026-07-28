@@ -260,7 +260,7 @@ resource "systemd_slice" "app" {
 }
 
 resource "systemd_swap" "var_swap" {
-  name   = "var-swap.swap"
+  name   = "var-swapfile.swap"
   enable = true
   active = false
 
