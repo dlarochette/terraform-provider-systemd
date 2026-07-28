@@ -5,11 +5,12 @@ package provider
 import "testing"
 
 // TestAccTypedUnits writes+enables one unit of each "typed" kind (timer,
-// path, socket) via Client.PutUnit + EnableUnit and asserts each loads and
+// path, socket, swap, slice) via Client.PutUnit + EnableUnit and asserts each loads and
 // enables cleanly. None of them are started: a timer/path/socket unit
 // without a matching `tf-acc.service` would fail as soon as its trigger
-// condition (elapsed time, PathExists, incoming connection) fires, so this
-// test only exercises write/enable/status, matching the brief.
+// condition (elapsed time, PathExists, incoming connection) fires, and a
+// .swap without a real device would fail on start — so this test only
+// exercises write/enable/status, matching the brief.
 func TestAccTypedUnits(t *testing.T) {
 	c := accClient(t)
 	ctx := t.Context()
@@ -51,6 +52,25 @@ func TestAccTypedUnits(t *testing.T) {
 				"\n" +
 				"[Install]\n" +
 				"WantedBy=sockets.target\n",
+		},
+		{
+			name: "tf-acc-swap.swap",
+			content: "[Unit]\n" +
+				"Description=tf-acc swap\n" +
+				"\n" +
+				"[Swap]\n" +
+				"What=/var/tf-acc.swapfile\n" +
+				"\n" +
+				"[Install]\n" +
+				"WantedBy=swap.target\n",
+		},
+		{
+			name: "tf-acc.slice",
+			content: "[Unit]\n" +
+				"Description=tf-acc slice\n" +
+				"\n" +
+				"[Slice]\n" +
+				"MemoryMax=64M\n",
 		},
 	}
 

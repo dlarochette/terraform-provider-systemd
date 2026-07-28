@@ -33,6 +33,8 @@ func TestResourceSchemas(t *testing.T) {
 		NewAutomountResource,
 		NewSocketResource,
 		NewPathResource,
+		NewSwapResource,
+		NewSliceResource,
 		NewTargetResource,
 		NewDropinResource,
 		NewNetworkResource,

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.5.0"
+      version = ">= 0.6.0"
     }
   }
 }
@@ -234,6 +234,55 @@ resource "systemd_path" "watch_inbox" {
     entry {
       key   = "WantedBy"
       value = "paths.target"
+    }
+  }
+}
+
+resource "systemd_slice" "app" {
+  name   = "app.slice"
+  enable = true
+  active = true
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "Application workload slice"
+    }
+  }
+  section {
+    name = "Slice"
+    entry {
+      key   = "MemoryMax"
+      value = "1G"
+    }
+  }
+}
+
+resource "systemd_swap" "var_swap" {
+  name   = "var-swap.swap"
+  enable = true
+  active = false
+
+  section {
+    name = "Unit"
+    entry {
+      key   = "Description"
+      value = "Swap file under /var"
+    }
+  }
+  section {
+    name = "Swap"
+    entry {
+      key   = "What"
+      value = "/var/swapfile"
+    }
+  }
+  section {
+    name = "Install"
+    entry {
+      key   = "WantedBy"
+      value = "swap.target"
     }
   }
 }
