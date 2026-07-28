@@ -2,7 +2,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.4.0"
+      version = ">= 0.5.0"
     }
   }
 }
