@@ -442,3 +442,130 @@ func (n *Nspawn) ShowMachine(name string) (MachineStatus, error) {
 	}
 	return st, nil
 }
+
+func (n *Nspawn) EnsurePortableImage(name, imageType, source string) error {
+	t, err := ValidatePortableImageType(imageType)
+	if err != nil {
+		return err
+	}
+	if err := safeName(name); err != nil {
+		return err
+	}
+	if source == "" {
+		return fmt.Errorf("image.source is required")
+	}
+	_, _ = n.run("portablectl", "detach", "--now", "--enable", "--", name)
+	_, _ = n.run("portablectl", "remove", "--", name)
+	_ = n.mustOK("rm", "-rf", path.Join(DefaultPortablesDir, name), path.Join(DefaultPortablesDir, name+".raw"))
+	if err := n.mustOK("mkdir", "-p", DefaultPortablesDir); err != nil {
+		return err
+	}
+	raw := IsPortableRawSource(imageType, source)
+	dest, err := PortableImagePath(name, raw)
+	if err != nil {
+		return err
+	}
+	switch t {
+	case MachineImageLocal:
+		if raw {
+			return n.mustOK("cp", "-a", "--", source, dest)
+		}
+		lower := strings.ToLower(source)
+		if strings.HasSuffix(lower, ".tar") || strings.HasSuffix(lower, ".tar.gz") ||
+			strings.HasSuffix(lower, ".tgz") || strings.HasSuffix(lower, ".tar.xz") {
+			if err := n.mustOK("mkdir", "-p", dest); err != nil {
+				return err
+			}
+			return n.mustOK("tar", "-C", dest, "-xf", source)
+		}
+		return fmt.Errorf("local portable image.source %q must be a .tar/.tar.gz/.tgz/.tar.xz/.raw path", source)
+	case MachineImageTar:
+		if err := n.mustOK("mkdir", "-p", dest); err != nil {
+			return err
+		}
+		return n.mustOK("bash", "-c", "set -euo pipefail; curl -fsSL "+source+" | tar -C "+dest+" -x")
+	case MachineImageRaw:
+		return n.mustOK("bash", "-c", "set -euo pipefail; curl -fsSL "+source+" -o "+dest)
+	default:
+		return fmt.Errorf("unsupported portable image type %q", t)
+	}
+}
+
+func (n *Nspawn) RemovePortableImage(name string) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	_, _ = n.run("portablectl", "remove", "--", name)
+	_ = n.mustOK("rm", "-rf", path.Join(DefaultPortablesDir, name), path.Join(DefaultPortablesDir, name+".raw"))
+	return nil
+}
+
+func (n *Nspawn) AttachPortable(name string, enable, active bool) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	img := path.Join(DefaultPortablesDir, name)
+	if _, err := n.run("test", "-e", img); err != nil {
+		img = path.Join(DefaultPortablesDir, name+".raw")
+	}
+	args := []string{"portablectl", "attach", "--profile=trusted"}
+	if enable {
+		args = append(args, "--enable")
+	}
+	if active {
+		args = append(args, "--now")
+	}
+	args = append(args, "--", img)
+	return n.mustOK(args...)
+}
+
+func (n *Nspawn) DetachPortable(name string, enable, active bool) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	args := []string{"portablectl", "detach"}
+	if enable {
+		args = append(args, "--enable")
+	}
+	if active {
+		args = append(args, "--now")
+	}
+	args = append(args, "--")
+	for _, id := range []string{
+		name,
+		path.Join(DefaultPortablesDir, name),
+		path.Join(DefaultPortablesDir, name+".raw"),
+	} {
+		_, _ = n.run(append(append([]string{}, args...), id)...)
+	}
+	return nil
+}
+
+func (n *Nspawn) ShowPortable(name string) (PortableStatus, error) {
+	if err := safeName(name); err != nil {
+		return PortableStatus{}, err
+	}
+	st := PortableStatus{}
+	dir := path.Join(DefaultPortablesDir, name)
+	raw := path.Join(DefaultPortablesDir, name+".raw")
+	if _, err := n.run("test", "-e", dir); err == nil {
+		st.ImagePresent = true
+		st.ImagePath = dir
+	} else if _, err := n.run("test", "-e", raw); err == nil {
+		st.ImagePresent = true
+		st.ImagePath = raw
+	}
+	if st.ImagePresent {
+		if _, err := n.run("portablectl", "is-attached", "--", name); err == nil {
+			st.Attached = true
+		} else if _, err := n.run("portablectl", "is-attached", "--", st.ImagePath); err == nil {
+			st.Attached = true
+		}
+	}
+	unit, err := n.UnitStatus(PortablePrimaryUnit(name))
+	if err != nil {
+		return PortableStatus{}, err
+	}
+	st.Unit = unit
+	return st, nil
+}

@@ -7,7 +7,7 @@ Manage **systemd units** and **systemd-networkd** files on remote Linux hosts ov
 | **Provider address** | `dlarochette/systemd` |
 | **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.7.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.7.0) |
+| **Latest release** | [0.8.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.8.0) |
 | **License** | MIT |
 
 ## How it works
@@ -57,7 +57,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.6.0"
+      version = ">= 0.8.0"
     }
   }
 }
@@ -159,6 +159,29 @@ OCI example: `image { type = "oci", source = "docker.io/library/debian:bookworm"
 Acceptance tests use a local tar fixture only (no registry pull in CI). Nested container
 **start** is not exercised in ACC (cgroup mounts fail inside the outer nspawn guest); ACC
 covers image import, `.nspawn` write/update, enable, and `delete_image`.
+
+### Portable services
+
+`systemd_portable` materializes an image under `/var/lib/portables/{name}` (or `{name}.raw`) and
+attaches it with `portablectl` (`--profile=trusted`). `image.type` is `local` | `tar` | `raw`
+(`oci` is not supported for portable images).
+
+```hcl
+resource "systemd_portable" "app" {
+  name         = "app"
+  enable       = true
+  active       = false
+  delete_image = true
+
+  image {
+    type   = "local"
+    source = "/var/tmp/app.tar"
+  }
+}
+```
+
+The image must contain matching unit files (prefix = image name) and an `os-release`. Unit
+overrides after attach use existing `systemd_dropin` / unit resources.
 
 ### Template units and instances
 

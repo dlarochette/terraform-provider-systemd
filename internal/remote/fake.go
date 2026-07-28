@@ -16,20 +16,24 @@ type Fake struct {
 	FailCmd  string // if a command contains this substring, it fails
 	Statuses map[string]UnitStatus
 	Links    map[string]LinkStatus
-	Images   map[string]bool
-	UnitDir  string
-	NetDir   string
+	Images            map[string]bool
+	Portables         map[string]bool // name → image present under /var/lib/portables
+	PortableAttached  map[string]bool
+	UnitDir           string
+	NetDir            string
 }
 
 // NewFake returns an empty fake host.
 func NewFake() *Fake {
 	return &Fake{
-		Files:    map[string]string{},
-		Statuses: map[string]UnitStatus{},
-		Links:    map[string]LinkStatus{},
-		Images:   map[string]bool{},
-		UnitDir:  DefaultUnitDir,
-		NetDir:   DefaultNetworkDir,
+		Files:            map[string]string{},
+		Statuses:         map[string]UnitStatus{},
+		Links:            map[string]LinkStatus{},
+		Images:           map[string]bool{},
+		Portables:        map[string]bool{},
+		PortableAttached: map[string]bool{},
+		UnitDir:          DefaultUnitDir,
+		NetDir:           DefaultNetworkDir,
 	}
 }
 
@@ -281,5 +285,112 @@ func (f *Fake) ShowMachine(name string) (MachineStatus, error) {
 	if c, ok := f.Files[path.Join(DefaultNspawnDir, name+".nspawn")]; ok {
 		st.Settings = c
 	}
+	return st, nil
+}
+
+func (f *Fake) EnsurePortableImage(name, imageType, source string) error {
+	if _, err := ValidatePortableImageType(imageType); err != nil {
+		return err
+	}
+	if err := safeName(name); err != nil {
+		return err
+	}
+	if source == "" {
+		return fmt.Errorf("image.source is required")
+	}
+	if err := f.note("portable ensure " + name + " " + imageType + " " + source); err != nil {
+		return err
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	if f.Portables == nil {
+		f.Portables = map[string]bool{}
+	}
+	f.Portables[name] = true
+	return nil
+}
+
+func (f *Fake) RemovePortableImage(name string) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	if err := f.note("portablectl remove " + name); err != nil {
+		return err
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	delete(f.Portables, name)
+	delete(f.PortableAttached, name)
+	return nil
+}
+
+func (f *Fake) AttachPortable(name string, enable, active bool) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	cmd := "portablectl attach " + name
+	if enable {
+		cmd += " --enable"
+	}
+	if active {
+		cmd += " --now"
+	}
+	if err := f.note(cmd); err != nil {
+		return err
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	if f.PortableAttached == nil {
+		f.PortableAttached = map[string]bool{}
+	}
+	f.PortableAttached[name] = true
+	if enable || active {
+		st := f.Statuses[PortablePrimaryUnit(name)]
+		if enable {
+			st.UnitFileState = "enabled"
+		}
+		if active {
+			st.ActiveState = "active"
+			st.LoadState = "loaded"
+		}
+		f.Statuses[PortablePrimaryUnit(name)] = st
+	}
+	return nil
+}
+
+func (f *Fake) DetachPortable(name string, enable, active bool) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	cmd := "portablectl detach " + name
+	if enable {
+		cmd += " --enable"
+	}
+	if active {
+		cmd += " --now"
+	}
+	if err := f.note(cmd); err != nil {
+		return err
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	delete(f.PortableAttached, name)
+	return nil
+}
+
+func (f *Fake) ShowPortable(name string) (PortableStatus, error) {
+	if err := safeName(name); err != nil {
+		return PortableStatus{}, err
+	}
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	st := PortableStatus{
+		ImagePresent: f.Portables[name],
+		Attached:     f.PortableAttached[name],
+	}
+	if p, err := PortableImagePath(name, false); err == nil {
+		st.ImagePath = p
+	}
+	st.Unit = f.Statuses[PortablePrimaryUnit(name)]
 	return st, nil
 }

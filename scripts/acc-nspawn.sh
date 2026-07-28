@@ -190,6 +190,30 @@ systemd-run -M "${MACHINE}" -P --wait -- bash -c '
   tar -C "$FIX" -cf /var/tmp/tf-acc-mini.tar .
 ' || die "failed to stage /var/tmp/tf-acc-mini.tar in ${MACHINE}"
 
+# Portable service tree for TestAccPortableLifecycle (local tar → /var/lib/portables).
+# Portable service tree for TestAccPortableLifecycle (local tar → /var/lib/portables).
+log "staging portable fixture tar in ${MACHINE}"
+STAGE_SCRIPT_SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/acc-stage-portable.sh"
+[[ -f "${STAGE_SCRIPT_SRC}" ]] || die "missing ${STAGE_SCRIPT_SRC}"
+chmod 755 /var/lib/machines
+mkdir -p /var/lib/machines/.tf-provider-stage
+chmod 1777 /var/lib/machines/.tf-provider-stage
+STAGE_SCRIPT_HOST="/var/lib/machines/.tf-provider-stage/acc-stage-portable.sh"
+cp -a "${STAGE_SCRIPT_SRC}" "${STAGE_SCRIPT_HOST}"
+chmod 0755 "${STAGE_SCRIPT_HOST}"
+# Drop the home-dir SELinux label so machinectl (sd-copy) can open the file.
+if command -v chcon >/dev/null 2>&1; then
+  chcon -t systemd_machined_var_lib_t "${STAGE_SCRIPT_HOST}" >/dev/null 2>&1 \
+    || restorecon -F "${STAGE_SCRIPT_HOST}" >/dev/null 2>&1 \
+    || true
+elif command -v restorecon >/dev/null 2>&1; then
+  restorecon -F "${STAGE_SCRIPT_HOST}" >/dev/null 2>&1 || true
+fi
+machinectl copy-to --force "${MACHINE}" "${STAGE_SCRIPT_HOST}" /var/tmp/acc-stage-portable.sh \
+  || die "machinectl copy-to acc-stage-portable.sh failed"
+systemd-run -M "${MACHINE}" -P --wait -- bash /var/tmp/acc-stage-portable.sh \
+  || die "failed to stage /var/tmp/tf-acc-portable.tar in ${MACHINE}"
+
 export TF_ACC=1
 export SYSTEMD_ACC_MACHINE="${MACHINE}"
 

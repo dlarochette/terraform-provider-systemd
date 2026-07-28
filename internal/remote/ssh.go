@@ -553,6 +553,139 @@ func (c *Client) ShowMachine(name string) (MachineStatus, error) {
 	return st, nil
 }
 
+// EnsurePortableImage materializes a portable image under /var/lib/portables.
+// Existing image with the same name is removed first (best-effort detach+remove).
+func (c *Client) EnsurePortableImage(name, imageType, source string) error {
+	t, err := ValidatePortableImageType(imageType)
+	if err != nil {
+		return err
+	}
+	if err := safeName(name); err != nil {
+		return err
+	}
+	if source == "" {
+		return fmt.Errorf("image.source is required")
+	}
+	_ = c.mustOK("portablectl detach --now --enable -- " + shellQuote(name))
+	_ = c.mustOK("portablectl remove -- " + shellQuote(name))
+	_ = c.mustOK("rm -rf " + shellQuote(path.Join(DefaultPortablesDir, name)) + " " + shellQuote(path.Join(DefaultPortablesDir, name+".raw")))
+
+	if err := c.mustOK("mkdir -p " + shellQuote(DefaultPortablesDir)); err != nil {
+		return err
+	}
+	raw := IsPortableRawSource(imageType, source)
+	dest, err := PortableImagePath(name, raw)
+	if err != nil {
+		return err
+	}
+	switch t {
+	case MachineImageLocal:
+		if raw {
+			return c.mustOK("cp -a -- " + shellQuote(source) + " " + shellQuote(dest))
+		}
+		lower := strings.ToLower(source)
+		if strings.HasSuffix(lower, ".tar") || strings.HasSuffix(lower, ".tar.gz") ||
+			strings.HasSuffix(lower, ".tgz") || strings.HasSuffix(lower, ".tar.xz") {
+			if err := c.mustOK("mkdir -p " + shellQuote(dest)); err != nil {
+				return err
+			}
+			return c.mustOK("tar -C " + shellQuote(dest) + " -xf " + shellQuote(source))
+		}
+		return fmt.Errorf("local portable image.source %q must be a .tar/.tar.gz/.tgz/.tar.xz/.raw path", source)
+	case MachineImageTar:
+		if err := c.mustOK("mkdir -p " + shellQuote(dest)); err != nil {
+			return err
+		}
+		inner := "set -euo pipefail; curl -fsSL " + shellQuote(source) + " | tar -C " + shellQuote(dest) + " -x"
+		return c.mustOK("bash -c " + shellQuote(inner))
+	case MachineImageRaw:
+		inner := "set -euo pipefail; curl -fsSL " + shellQuote(source) + " -o " + shellQuote(dest)
+		return c.mustOK("bash -c " + shellQuote(inner))
+	default:
+		return fmt.Errorf("unsupported portable image type %q", t)
+	}
+}
+
+func (c *Client) RemovePortableImage(name string) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	_ = c.mustOK("portablectl remove -- " + shellQuote(name))
+	_ = c.mustOK("rm -rf " + shellQuote(path.Join(DefaultPortablesDir, name)) + " " + shellQuote(path.Join(DefaultPortablesDir, name+".raw")))
+	return nil
+}
+
+func (c *Client) AttachPortable(name string, enable, active bool) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	// Prefer directory, then .raw.
+	img := path.Join(DefaultPortablesDir, name)
+	if _, err := c.run("test -e " + shellQuote(img)); err != nil {
+		img = path.Join(DefaultPortablesDir, name+".raw")
+	}
+	args := []string{"attach", "--profile=trusted"}
+	if enable {
+		args = append(args, "--enable")
+	}
+	if active {
+		args = append(args, "--now")
+	}
+	args = append(args, "--", img)
+	return c.mustOK("portablectl " + shellJoin(args))
+}
+
+func (c *Client) DetachPortable(name string, enable, active bool) error {
+	if err := safeName(name); err != nil {
+		return err
+	}
+	args := []string{"detach"}
+	if enable {
+		args = append(args, "--enable")
+	}
+	if active {
+		args = append(args, "--now")
+	}
+	args = append(args, "--")
+	for _, id := range []string{
+		name,
+		path.Join(DefaultPortablesDir, name),
+		path.Join(DefaultPortablesDir, name+".raw"),
+	} {
+		_, _ = c.run("portablectl " + shellJoin(append(append([]string{}, args...), id)))
+	}
+	return nil
+}
+
+func (c *Client) ShowPortable(name string) (PortableStatus, error) {
+	if err := safeName(name); err != nil {
+		return PortableStatus{}, err
+	}
+	st := PortableStatus{}
+	dir := path.Join(DefaultPortablesDir, name)
+	raw := path.Join(DefaultPortablesDir, name+".raw")
+	if _, err := c.run("test -e " + shellQuote(dir)); err == nil {
+		st.ImagePresent = true
+		st.ImagePath = dir
+	} else if _, err := c.run("test -e " + shellQuote(raw)); err == nil {
+		st.ImagePresent = true
+		st.ImagePath = raw
+	}
+	if st.ImagePresent {
+		if _, err := c.run("portablectl is-attached -- " + shellQuote(name)); err == nil {
+			st.Attached = true
+		} else if _, err := c.run("portablectl is-attached -- " + shellQuote(st.ImagePath)); err == nil {
+			st.Attached = true
+		}
+	}
+	unit, err := c.UnitStatus(PortablePrimaryUnit(name))
+	if err != nil {
+		return PortableStatus{}, err
+	}
+	st.Unit = unit
+	return st, nil
+}
+
 func shellQuote(s string) string {
 	return "'" + strings.ReplaceAll(s, "'", `'\''`) + "'"
 }

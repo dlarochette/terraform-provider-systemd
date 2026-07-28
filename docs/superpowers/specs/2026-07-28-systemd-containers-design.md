@@ -200,8 +200,8 @@ If `portablectl` is missing on the host, Create fails with a clear error. ACC sk
 
 ## Success criteria
 
-- [ ] Spec approved; implementation plan written for phase 1
-- [ ] `systemd_machine` CRUD works over SSH against a real host
-- [ ] ACC green with local image fixture
-- [ ] Tagged release with docs/examples
-- [ ] Phase 2 planned/implemented later without redesigning phase 1 image block
+- [x] Spec approved; implementation plan written for phase 1
+- [x] `systemd_machine` CRUD works over SSH against a real host
+- [x] ACC green with local image fixture
+- [x] Tagged release with docs/examples (0.7.0)
+- [x] Phase 2 (`systemd_portable`) implemented (0.8.0); `oci` not supported for portable

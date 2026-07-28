@@ -67,6 +67,13 @@ type Host interface {
 	ReadNspawnFile(name string) (string, error)
 	RemoveNspawnFile(name string) error
 	ShowMachine(name string) (MachineStatus, error)
+
+	// Portable services (portablectl).
+	EnsurePortableImage(name, imageType, source string) error
+	RemovePortableImage(name string) error
+	AttachPortable(name string, enable, active bool) error
+	DetachPortable(name string, enable, active bool) error
+	ShowPortable(name string) (PortableStatus, error)
 }
 
 func safeName(name string) error {

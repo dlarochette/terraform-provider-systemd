@@ -180,3 +180,39 @@ func (c *Client) DeleteMachine(ctx context.Context, name string, deleteImage boo
 	}
 	return nil
 }
+
+// PutPortable ensures the portable image, attaches it, then applies enable/active
+// on the primary <name>.service unit when flags are set after attach.
+func (c *Client) PutPortable(ctx context.Context, name, imageType, source string, enable, active *bool) error {
+	if err := c.Host.EnsurePortableImage(name, imageType, source); err != nil {
+		return err
+	}
+	en, act := false, false
+	if enable != nil {
+		en = *enable
+	}
+	if active != nil {
+		act = *active
+	}
+	// Detach first so re-attach picks up a replaced image.
+	_ = c.Host.DetachPortable(name, true, true)
+	if err := c.Host.AttachPortable(name, en, act); err != nil {
+		return err
+	}
+	// portablectl --enable/--now covers initial attach; still apply systemctl for explicit nil-safe updates.
+	return c.ApplyUnitLifecycle(ctx, remote.PortablePrimaryUnit(name), enable, active)
+}
+
+func (c *Client) GetPortable(ctx context.Context, name string) (remote.PortableStatus, error) {
+	_ = ctx
+	return c.Host.ShowPortable(name)
+}
+
+func (c *Client) DeletePortable(ctx context.Context, name string, deleteImage bool) error {
+	_ = ctx
+	_ = c.Host.DetachPortable(name, true, true)
+	if deleteImage {
+		return c.Host.RemovePortableImage(name)
+	}
+	return nil
+}
