@@ -9,12 +9,17 @@ build:
 test:
 	go test ./...
 
-# Real acceptance tests against a systemd-nspawn machine (root required):
-#   sudo apt-get install -y systemd-container debootstrap dbus
-#   sudo make testacc
+# Real acceptance tests against a systemd-nspawn machine.
+# Elevates only the harness (nspawn/debootstrap); go test runs as SUDO_USER
+# so GOCACHE/GOMODCACHE stay owned by you, not root.
+#   make testacc
 # See scripts/acc-nspawn.sh for env vars (ACC_REBUILD, ACC_WIPE, SYSTEMD_ACC_MACHINE, ...).
 testacc:
-	./scripts/acc-nspawn.sh
+	@if [ "$$(id -u)" -eq 0 ]; then \
+		./scripts/acc-nspawn.sh; \
+	else \
+		sudo ./scripts/acc-nspawn.sh; \
+	fi
 
 fmt:
 	gofmt -s -w .

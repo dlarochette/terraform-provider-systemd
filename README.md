@@ -355,7 +355,7 @@ ACC tests exercise the provider's resources against a **real systemd** running i
 
 ```bash
 sudo apt-get install -y systemd-container debootstrap dbus
-sudo make testacc
+make testacc
 ```
 
 The first run debootstraps a Debian rootfs under `/var/lib/machines/`, which takes a few

@@ -43,7 +43,7 @@ die() { log "$*"; exit 1; }
 ROOT="/var/lib/machines/${MACHINE}"
 NSPAWN_CONF="/etc/systemd/nspawn/${MACHINE}.nspawn"
 
-[[ "$(id -u)" -eq 0 ]] || die "must run as root (try: sudo make testacc)"
+[[ "$(id -u)" -eq 0 ]] || die "must run as root (Makefile runs: sudo ./scripts/acc-nspawn.sh)"
 
 for bin in machinectl systemd-nspawn systemd-run debootstrap; do
   command -v "${bin}" >/dev/null 2>&1 \
@@ -154,15 +154,42 @@ log "${MACHINE} ready (systemctl is-system-running: ${state})"
 export TF_ACC=1
 export SYSTEMD_ACC_MACHINE="${MACHINE}"
 
+# Staging dir for machinectl copy-to/from (SELinux-friendly). Writable by the
+# user who will run go test so we do not leave root-owned junk in GOCACHE.
+STAGE_DIR="/var/lib/machines/.tf-provider-stage"
+mkdir -p "${STAGE_DIR}"
+chmod 1777 "${STAGE_DIR}"
+
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT="$(mktemp)"
 
-set +e
-(
+# Run go test as the invoking user when elevated via sudo, so module/build
+# caches under $HOME stay owned by that user (not root/root).
+run_go_test() {
   cd "${REPO_ROOT}"
   go test ./internal/provider/ -run 'TestAcc' -count=1 -timeout 45m -v
-) 2>&1 | tee "${OUT}"
-status="${PIPESTATUS[0]}"
+}
+
+set +e
+if [[ -n "${SUDO_USER:-}" && "${SUDO_USER}" != "root" ]]; then
+  TEST_HOME="$(getent passwd "${SUDO_USER}" | cut -d: -f6)"
+  # Capture the user's Go env before dropping (paths under their home).
+  USER_GOCACHE="$(sudo -u "${SUDO_USER}" go env GOCACHE)"
+  USER_GOMODCACHE="$(sudo -u "${SUDO_USER}" go env GOMODCACHE)"
+  USER_GOPATH="$(sudo -u "${SUDO_USER}" go env GOPATH)"
+  (
+    sudo -u "${SUDO_USER}" --preserve-env=TF_ACC,SYSTEMD_ACC_MACHINE,PATH \
+      env HOME="${TEST_HOME}" \
+          GOCACHE="${USER_GOCACHE}" \
+          GOMODCACHE="${USER_GOMODCACHE}" \
+          GOPATH="${USER_GOPATH}" \
+          bash -c "cd \"${REPO_ROOT}\" && go test ./internal/provider/ -run 'TestAcc' -count=1 -timeout 45m -v"
+  ) 2>&1 | tee "${OUT}"
+  status="${PIPESTATUS[0]}"
+else
+  ( run_go_test ) 2>&1 | tee "${OUT}"
+  status="${PIPESTATUS[0]}"
+fi
 set -e
 
 if [[ "${status}" -eq 0 ]] && ! grep -q '^=== RUN[[:space:]]*TestAcc' "${OUT}"; then

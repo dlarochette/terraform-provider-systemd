@@ -29,9 +29,20 @@ var _ Host = (*Nspawn)(nil)
 
 func (n *Nspawn) Close() error { return nil }
 
+// hostCmd builds an exec.Cmd for a host-side privileged tool (machinectl /
+// systemd-run). When the ACC process is not root (Makefile runs go test as
+// SUDO_USER), wrap with `sudo -n` so the caller's cached sudo ticket from
+// `make testacc` is enough — no root-owned GOCACHE.
+func hostCmd(name string, args ...string) *exec.Cmd {
+	if os.Geteuid() == 0 {
+		return exec.Command(name, args...)
+	}
+	return exec.Command("sudo", append([]string{"-n", name}, args...)...)
+}
+
 // run executes args inside the machine via `systemd-run -M <machine> -P --wait --`.
 func (n *Nspawn) run(args ...string) (string, error) {
-	cmd := exec.Command("systemd-run", append([]string{
+	cmd := hostCmd("systemd-run", append([]string{
 		"-M", n.Machine, "-P", "--wait", "--",
 	}, args...)...)
 	var buf bytes.Buffer
@@ -44,7 +55,7 @@ func (n *Nspawn) run(args ...string) (string, error) {
 // runWithStdin is like run but feeds stdin to the invoked command. Callers must never
 // log stdin (it may hold secret data).
 func (n *Nspawn) runWithStdin(stdin []byte, args ...string) (string, error) {
-	cmd := exec.Command("systemd-run", append([]string{
+	cmd := hostCmd("systemd-run", append([]string{
 		"-M", n.Machine, "-P", "--wait", "--",
 	}, args...)...)
 	cmd.Stdin = bytes.NewReader(stdin)
@@ -69,7 +80,7 @@ func (n *Nspawn) mustOK(args ...string) error {
 // `machinectl copy-to` refuses to overwrite an existing file ("Failed to copy:
 // File exists").
 func (n *Nspawn) copyTo(localPath, remotePath string) error {
-	cmd := exec.Command("machinectl", "copy-to", "--force", n.Machine, localPath, remotePath)
+	cmd := hostCmd("machinectl", "copy-to", "--force", n.Machine, localPath, remotePath)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("machinectl copy-to: %w (%s)", err, strings.TrimSpace(string(out)))
@@ -78,7 +89,7 @@ func (n *Nspawn) copyTo(localPath, remotePath string) error {
 }
 
 func (n *Nspawn) copyFrom(remotePath, localPath string) error {
-	cmd := exec.Command("machinectl", "copy-from", n.Machine, remotePath, localPath)
+	cmd := hostCmd("machinectl", "copy-from", n.Machine, remotePath, localPath)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("machinectl copy-from: %w (%s)", err, strings.TrimSpace(string(out)))
