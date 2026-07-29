@@ -1,0 +1,104 @@
+//go:build !skip_acc
+
+package provider
+
+import (
+	"strings"
+	"testing"
+
+	"github.com/dlarochette/terraform-provider-systemd/internal/remote"
+)
+
+func TestAccResolvedDropin(t *testing.T) {
+	c := accClient(t)
+	ctx := t.Context()
+
+	if err := c.ApplyUnitLifecycle(ctx, "systemd-resolved.service", accBool(true), accBool(true)); err != nil {
+		t.Fatalf("start systemd-resolved: %v", err)
+	}
+
+	const name = "90-tf-acc.conf"
+	const content = "[Resolve]\n" +
+		"DNS=9.9.9.9\n"
+
+	if err := c.PutResolvedDropin(ctx, name, content); err != nil {
+		t.Fatalf("PutResolvedDropin: %v", err)
+	}
+	t.Cleanup(func() {
+		if err := c.DeleteResolvedDropin(ctx, name); err != nil {
+			t.Logf("cleanup DeleteResolvedDropin: %v", err)
+		}
+	})
+
+	got, err := c.GetResolvedDropin(ctx, name)
+	if err != nil {
+		t.Fatalf("GetResolvedDropin: %v", err)
+	}
+	if !strings.Contains(got, "DNS=9.9.9.9") {
+		t.Fatalf("unexpected drop-in content: %q", got)
+	}
+
+	st, err := c.ResolveStatus(ctx, "")
+	if err != nil {
+		t.Fatalf("ResolveStatus: %v", err)
+	}
+	if strings.TrimSpace(st) == "" {
+		t.Fatal("empty resolvectl status")
+	}
+}
+
+func TestAccResolveLink(t *testing.T) {
+	c := accClient(t)
+	ctx := t.Context()
+
+	n, ok := c.Host.(*remote.Nspawn)
+	if !ok {
+		t.Fatal("ACC expects *remote.Nspawn host")
+	}
+
+	if err := c.ApplyUnitLifecycle(ctx, "systemd-resolved.service", accBool(true), accBool(true)); err != nil {
+		t.Fatalf("start systemd-resolved: %v", err)
+	}
+
+	const link = "tfaccdn0"
+	_ = n.Exec("ip", "link", "del", link)
+	if err := n.Exec("ip", "link", "add", link, "type", "dummy"); err != nil {
+		t.Fatalf("ip link add: %v", err)
+	}
+	t.Cleanup(func() {
+		_ = c.DeleteResolveLink(ctx, link)
+		_ = n.Exec("ip", "link", "del", link)
+	})
+	if err := n.Exec("ip", "link", "set", link, "up"); err != nil {
+		t.Fatalf("ip link set up: %v", err)
+	}
+
+	desired := ResolveLinkDesired{
+		DNS:     []string{"1.1.1.1", "1.0.0.1"},
+		Domains: []string{"~tf-acc.test"},
+	}
+	if err := c.PutResolveLink(ctx, link, desired); err != nil {
+		t.Fatalf("PutResolveLink: %v", err)
+	}
+
+	dns, err := c.GetResolveLinkDNS(ctx, link)
+	if err != nil {
+		t.Fatalf("GetResolveLinkDNS: %v", err)
+	}
+	joined := strings.Join(dns, " ")
+	if !strings.Contains(joined, "1.1.1.1") {
+		t.Fatalf("dns not applied: %v", dns)
+	}
+
+	st, err := c.ResolveStatus(ctx, link)
+	if err != nil {
+		t.Fatalf("ResolveStatus link: %v", err)
+	}
+	if !strings.Contains(st, link) && !strings.Contains(st, "1.1.1.1") {
+		t.Fatalf("unexpected status: %q", st)
+	}
+
+	if err := c.DeleteResolveLink(ctx, link); err != nil {
+		t.Fatalf("DeleteResolveLink: %v", err)
+	}
+}

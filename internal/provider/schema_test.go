@@ -44,6 +44,9 @@ func TestResourceSchemas(t *testing.T) {
 		NewCredentialResource,
 		NewMachineResource,
 		NewPortableResource,
+		NewResolvedResource,
+		NewResolvedDropinResource,
+		NewResolveLinkResource,
 	}
 	for _, neo := range resources {
 		r := neo()
@@ -68,6 +71,7 @@ func TestDataSourceSchemas(t *testing.T) {
 	sources := []func() datasource.DataSource{
 		NewUnitDataSource,
 		NewLinkDataSource,
+		NewResolveStatusDataSource,
 	}
 	for _, neo := range sources {
 		d := neo()

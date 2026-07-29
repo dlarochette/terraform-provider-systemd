@@ -191,6 +191,9 @@ func (p *SystemdProvider) Resources(_ context.Context) []func() resource.Resourc
 		NewCredentialResource,
 		NewMachineResource,
 		NewPortableResource,
+		NewResolvedResource,
+		NewResolvedDropinResource,
+		NewResolveLinkResource,
 	}
 }
 
@@ -198,6 +201,7 @@ func (p *SystemdProvider) DataSources(_ context.Context) []func() datasource.Dat
 	return []func() datasource.DataSource{
 		NewUnitDataSource,
 		NewLinkDataSource,
+		NewResolveStatusDataSource,
 	}
 }
 

@@ -166,3 +166,78 @@ func (d *linkDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	cfg.ID = cfg.Name
 	resp.Diagnostics.Append(resp.State.Set(ctx, &cfg)...)
 }
+
+var _ datasource.DataSource = &resolveStatusDataSource{}
+
+func NewResolveStatusDataSource() datasource.DataSource { return &resolveStatusDataSource{} }
+
+type resolveStatusDataSource struct{ client *Client }
+
+type resolveStatusModel struct {
+	Link   types.String `tfsdk:"link"`
+	Status types.String `tfsdk:"status"`
+	ID     types.String `tfsdk:"id"`
+}
+
+func (d *resolveStatusDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_resolve_status"
+}
+
+func (d *resolveStatusDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+	resp.Schema = schema.Schema{
+		MarkdownDescription: "Reads systemd-resolved status via remote `resolvectl status [link]`.",
+		Attributes: map[string]schema.Attribute{
+			"link": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "Optional interface name. When unset, returns global status.",
+				Validators: []validator.String{
+					noPathSegment(),
+				},
+			},
+			"status": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "Raw stdout from `resolvectl status`.",
+			},
+			"id": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "Link name, or `global` when unset.",
+			},
+		},
+	}
+}
+
+func (d *resolveStatusDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+	if req.ProviderData == nil {
+		return
+	}
+	c, err := clientFrom(req.ProviderData)
+	if err != nil {
+		resp.Diagnostics.AddError("configure", err.Error())
+		return
+	}
+	d.client = c
+}
+
+func (d *resolveStatusDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var cfg resolveStatusModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &cfg)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	link := ""
+	if !cfg.Link.IsNull() && !cfg.Link.IsUnknown() {
+		link = cfg.Link.ValueString()
+	}
+	out, err := d.client.ResolveStatus(ctx, link)
+	if err != nil {
+		resp.Diagnostics.AddError("resolve status", err.Error())
+		return
+	}
+	cfg.Status = types.StringValue(out)
+	if link == "" {
+		cfg.ID = types.StringValue("global")
+	} else {
+		cfg.ID = types.StringValue(link)
+	}
+	resp.Diagnostics.Append(resp.State.Set(ctx, &cfg)...)
+}

@@ -1,20 +1,20 @@
 # Terraform Provider: systemd
 
-Manage **systemd units** and **systemd-networkd** files on remote Linux hosts over SSH — same idea as `systemctl --host=user@host`.
+Manage **systemd units**, **systemd-networkd**, and **systemd-resolved** on remote Linux hosts over SSH — same idea as `systemctl --host=user@host`.
 
 | | |
 |---|---|
 | **Provider address** | `dlarochette/systemd` |
 | **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.8.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.8.0) |
+| **Latest release** | [0.9.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.9.0) |
 | **License** | MIT |
 
 ## How it works
 
 1. The provider opens an **SSH** session to the target host (optional bastion).
-2. Unit / network files are written with **SFTP** (atomic temp file + rename).
-3. Desired state is applied with remote **`systemctl`** and **`networkctl`**.
+2. Unit / network / resolved files are written with **SFTP** (atomic temp file + rename).
+3. Desired state is applied with remote **`systemctl`**, **`networkctl`**, and **`resolvectl`**.
 
 No agent, no Unix socket API, no extra daemon on the host. Root SSH is assumed for the MVP.
 
@@ -23,7 +23,7 @@ Design notes: [docs/superpowers/specs/2026-07-27-terraform-systemd-design.md](do
 ## Requirements
 
 - Terraform ≥ 1.5 or OpenTofu ≥ 1.6
-- Target host: Linux with systemd; `networkctl` if you manage networkd files
+- Target host: Linux with systemd; `networkctl` if you manage networkd files; `resolvectl` / `systemd-resolved` for resolved resources
 - SSH access as a user that can write `/etc/systemd` and run `systemctl` (typically `root`)
 
 ## Install
@@ -57,7 +57,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.8.0"
+      version = ">= 0.9.0"
     }
   }
 }
@@ -334,7 +334,50 @@ data "systemd_link" "br0" {
 }
 ```
 
-See also [`examples/basic`](examples/basic).
+### systemd-resolved
+
+Global config and drop-ins use the same `content` XOR `section` model. Apply writes the file then
+runs `systemctl restart systemd-resolved.service`. Destroying `systemd_resolved` **removes**
+`/etc/systemd/resolved.conf` (vendor defaults apply again).
+
+`systemd_resolve_link` is **runtime-only** (`resolvectl`); settings are cleared on reboot unless
+also configured in a `.network` file. Destroy runs `resolvectl revert <link>`.
+
+```hcl
+resource "systemd_resolved" "main" {
+  section {
+    name = "Resolve"
+    entry {
+      key   = "DNS"
+      value = "1.1.1.1"
+    }
+  }
+}
+
+resource "systemd_resolved_dropin" "lab" {
+  name = "10-lab.conf"
+  section {
+    name = "Resolve"
+    entry {
+      key   = "Domains"
+      value = "~lab.example"
+    }
+  }
+}
+
+resource "systemd_resolve_link" "eth0" {
+  link          = "eth0"
+  dns           = ["1.1.1.1", "1.0.0.1"]
+  domains       = ["~example.com"]
+  default_route = true
+}
+
+data "systemd_resolve_status" "eth0" {
+  link = "eth0"
+}
+```
+
+See also [`examples/resolved`](examples/resolved) and [`examples/basic`](examples/basic).
 
 ## Provider configuration
 
@@ -372,13 +415,18 @@ Use a **provider alias per host** when managing a fleet.
 | `systemd_netdev` | `/etc/systemd/network/{filename}` | Filename must end with `.netdev` |
 | `systemd_link` | `/etc/systemd/network/{filename}` | Filename must end with `.link` |
 | `systemd_credential` | `/etc/credstore{,.encrypted}/{name}` | `data` is `Sensitive`, persisted in state, never read back; `encrypted` defaults to `true` and forces replacement; not importable |
+| `systemd_resolved` | `/etc/systemd/resolved.conf` | Singleton; restart `systemd-resolved` on apply/destroy; destroy removes the file |
+| `systemd_resolved_dropin` | `/etc/systemd/resolved.conf.d/{name}` | `name` must end with `.conf`; restart on apply/destroy |
+| `systemd_resolve_link` | n/a (`resolvectl`) | Runtime-only per-link DNS; destroy → `resolvectl revert` |
 
-Destroy: stop/disable (best effort) → remove file → `daemon-reload` (and `networkctl reload` for networkd files).
+Destroy: stop/disable (best effort) → remove file → `daemon-reload` (and `networkctl reload` for networkd files;
+`systemctl restart systemd-resolved.service` for resolved files).
 `systemd_instance` is lifecycle-only (no file of its own): destroy just stops/disables the instance,
 there is nothing to remove on disk.
 `systemd_credential` is not a unit, so its destroy is a carve-out: it only removes the credential
 file at the path matching state (`/etc/credstore/{name}` or `/etc/credstore.encrypted/{name}`) —
 no stop/disable and no `daemon-reload`.
+`systemd_resolve_link` destroy only runs `resolvectl revert` (no file on disk).
 
 ## Data sources
 
@@ -386,6 +434,7 @@ no stop/disable and no `daemon-reload`.
 |-------------|---------|
 | `systemd_unit` | `systemctl show` (`load_state`, `active_state`, `sub_state`, `unit_file_state`) |
 | `systemd_link` | `networkctl status` (`operational_state`, `setup_state`) |
+| `systemd_resolve_status` | `resolvectl status [link]` (raw `status` text) |
 
 ## Schema validation / linting
 

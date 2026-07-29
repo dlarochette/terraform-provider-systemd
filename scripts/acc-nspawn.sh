@@ -80,19 +80,35 @@ build_rootfs() {
 
   systemd-machine-id-setup --root="${ROOT}"
 
+  # Host /etc/resolv.conf is often a symlink to stub-resolv.conf. Binding that
+  # read-only into the guest mounts over /run/systemd/resolve and breaks
+  # systemd-resolved (RUNTIME_DIRECTORY → Read-only file system). Use a plain
+  # static resolv.conf in the guest instead.
+  rm -f "${ROOT}/etc/resolv.conf"
+  printf 'nameserver 1.1.1.1\nnameserver 9.9.9.9\n' > "${ROOT}/etc/resolv.conf"
+
+  mkdir -p "/etc/systemd/nspawn"
+  write_nspawn_conf
+}
+
+write_nspawn_conf() {
   mkdir -p "/etc/systemd/nspawn"
   cat > "${NSPAWN_CONF}" <<EOF
-# Managed by scripts/acc-nspawn.sh — regenerated on every rootfs rebuild.
+# Managed by scripts/acc-nspawn.sh — regenerated on every rootfs rebuild / start.
 # Capability=all + PrivateUsers=no so nested systemd_machine ACC can start
 # an inner nspawn (sysfs mount / UID map) inside this guest.
+# Do not BindReadOnly=/etc/resolv.conf (host stub breaks guest systemd-resolved).
 [Exec]
 Boot=yes
 PrivateUsers=no
 Capability=all
-
-[Files]
-BindReadOnly=/etc/resolv.conf
 EOF
+}
+
+# Ensure a plain resolv.conf on existing images (no ACC_REBUILD).
+ensure_guest_resolv_conf() {
+  rm -f "${ROOT}/etc/resolv.conf"
+  printf 'nameserver 1.1.1.1\nnameserver 9.9.9.9\n' > "${ROOT}/etc/resolv.conf"
 }
 
 if [[ "${ACC_REBUILD:-}" == "1" ]] || ! rootfs_looks_bootable; then
@@ -132,18 +148,14 @@ trap cleanup EXIT
 if ! machine_is_active; then
   log "starting ${MACHINE}"
   # Keep outer .nspawn aligned even when rootfs is reused (no ACC_REBUILD).
-  mkdir -p "/etc/systemd/nspawn"
-  cat > "${NSPAWN_CONF}" <<EOF
-# Managed by scripts/acc-nspawn.sh
-[Exec]
-Boot=yes
-PrivateUsers=no
-Capability=all
-
-[Files]
-BindReadOnly=/etc/resolv.conf
-EOF
+  ensure_guest_resolv_conf
+  write_nspawn_conf
   machinectl start "${MACHINE}"
+else
+  # Machine already up: still refresh .nspawn for next boot, and warn if the
+  # old BindReadOnly resolv bind may still be poisoning /run/systemd/resolve.
+  write_nspawn_conf
+  ensure_guest_resolv_conf
 fi
 
 log "waiting for ${MACHINE} to become ready (up to $((READY_RETRIES * 2))s)"

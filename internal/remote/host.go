@@ -10,6 +10,8 @@ import (
 const (
 	DefaultUnitDir               = "/etc/systemd/system"
 	DefaultNetworkDir            = "/etc/systemd/network"
+	DefaultResolvedConf          = "/etc/systemd/resolved.conf"
+	DefaultResolvedDropinDir     = "/etc/systemd/resolved.conf.d"
 	DefaultCredstoreDir          = "/etc/credstore"
 	DefaultCredstoreEncryptedDir = "/etc/credstore.encrypted"
 )
@@ -74,6 +76,26 @@ type Host interface {
 	AttachPortable(name string, enable, active bool) error
 	DetachPortable(name string, enable, active bool) error
 	ShowPortable(name string) (PortableStatus, error)
+
+	// systemd-resolved global config + resolvectl.
+	WriteResolvedConf(content string) error
+	ReadResolvedConf() (string, error)
+	RemoveResolvedConf() error
+	WriteResolvedDropin(name, content string) error
+	ReadResolvedDropin(name string) (string, error)
+	RemoveResolvedDropin(name string) error
+	ResolvedRestart() error
+	ResolvectlDNS(link string, servers []string) error
+	ResolvectlDomain(link string, domains []string) error
+	ResolvectlDefaultRoute(link string, enable bool) error
+	ResolvectlLLMNR(link, mode string) error
+	ResolvectlMDNS(link, mode string) error
+	ResolvectlDNSSEC(link, mode string) error
+	ResolvectlDNSOverTLS(link, mode string) error
+	ResolvectlRevert(link string) error
+	ResolvectlStatus(link string) (string, error)
+	ResolvectlDNSGet(link string) ([]string, error)
+	ResolvectlDomainGet(link string) ([]string, error)
 }
 
 func safeName(name string) error {
@@ -108,6 +130,16 @@ func networkPath(networkDir, filename string) (string, error) {
 		return "", err
 	}
 	return path.Join(networkDir, filename), nil
+}
+
+func resolvedDropinPath(name string) (string, error) {
+	if err := safeName(name); err != nil {
+		return "", err
+	}
+	if !strings.HasSuffix(name, ".conf") {
+		return "", fmt.Errorf("resolved drop-in name %q must end with .conf", name)
+	}
+	return path.Join(DefaultResolvedDropinDir, name), nil
 }
 
 // credPath returns the credstore path for a credential name, plaintext or encrypted.

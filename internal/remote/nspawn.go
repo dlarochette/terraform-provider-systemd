@@ -259,6 +259,11 @@ func (n *Nspawn) DaemonReload() error {
 	return n.mustOK("systemctl", "daemon-reload")
 }
 
+// Exec runs an arbitrary command in the guest (used by ACC helpers).
+func (n *Nspawn) Exec(args ...string) error {
+	return n.mustOK(args...)
+}
+
 func (n *Nspawn) EnableUnit(name string) error {
 	return n.mustOK("systemctl", "enable", "--", name)
 }
@@ -568,4 +573,144 @@ func (n *Nspawn) ShowPortable(name string) (PortableStatus, error) {
 	}
 	st.Unit = unit
 	return st, nil
+}
+
+func (n *Nspawn) WriteResolvedConf(content string) error {
+	return n.writeFile(DefaultResolvedConf, content, 0o644)
+}
+
+func (n *Nspawn) ReadResolvedConf() (string, error) {
+	return n.readFile(DefaultResolvedConf)
+}
+
+func (n *Nspawn) RemoveResolvedConf() error {
+	return n.removeFile(DefaultResolvedConf)
+}
+
+func (n *Nspawn) WriteResolvedDropin(name, content string) error {
+	p, err := resolvedDropinPath(name)
+	if err != nil {
+		return err
+	}
+	if err := n.mustOK("mkdir", "-p", DefaultResolvedDropinDir); err != nil {
+		return err
+	}
+	return n.writeFile(p, content, 0o644)
+}
+
+func (n *Nspawn) ReadResolvedDropin(name string) (string, error) {
+	p, err := resolvedDropinPath(name)
+	if err != nil {
+		return "", err
+	}
+	return n.readFile(p)
+}
+
+func (n *Nspawn) RemoveResolvedDropin(name string) error {
+	p, err := resolvedDropinPath(name)
+	if err != nil {
+		return err
+	}
+	return n.removeFile(p)
+}
+
+func (n *Nspawn) ResolvedRestart() error {
+	return n.mustOK("systemctl", "restart", "systemd-resolved.service")
+}
+
+func (n *Nspawn) ResolvectlDNS(link string, servers []string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	args := append([]string{"resolvectl", "dns", link}, servers...)
+	return n.mustOK(args...)
+}
+
+func (n *Nspawn) ResolvectlDomain(link string, domains []string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	args := append([]string{"resolvectl", "domain", link}, domains...)
+	return n.mustOK(args...)
+}
+
+func (n *Nspawn) ResolvectlDefaultRoute(link string, enable bool) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return n.mustOK("resolvectl", "default-route", link, boolWord(enable))
+}
+
+func (n *Nspawn) ResolvectlLLMNR(link, mode string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return n.mustOK("resolvectl", "llmnr", link, mode)
+}
+
+func (n *Nspawn) ResolvectlMDNS(link, mode string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return n.mustOK("resolvectl", "mdns", link, mode)
+}
+
+func (n *Nspawn) ResolvectlDNSSEC(link, mode string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return n.mustOK("resolvectl", "dnssec", link, mode)
+}
+
+func (n *Nspawn) ResolvectlDNSOverTLS(link, mode string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return n.mustOK("resolvectl", "dnsovertls", link, mode)
+}
+
+func (n *Nspawn) ResolvectlRevert(link string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return n.mustOK("resolvectl", "revert", link)
+}
+
+func (n *Nspawn) ResolvectlStatus(link string) (string, error) {
+	if link != "" {
+		if err := validateLinkName(link); err != nil {
+			return "", err
+		}
+	}
+	args := []string{"resolvectl", "status"}
+	if link != "" {
+		args = append(args, link)
+	}
+	out, err := n.run(args...)
+	if err != nil {
+		return "", fmt.Errorf("resolvectl status: %w (%s)", err, strings.TrimSpace(out))
+	}
+	return out, nil
+}
+
+func (n *Nspawn) ResolvectlDNSGet(link string) ([]string, error) {
+	if err := validateLinkName(link); err != nil {
+		return nil, err
+	}
+	out, err := n.run("resolvectl", "dns", link)
+	if err != nil {
+		return nil, fmt.Errorf("resolvectl dns: %w (%s)", err, strings.TrimSpace(out))
+	}
+	return parseResolvectlList(out), nil
+}
+
+func (n *Nspawn) ResolvectlDomainGet(link string) ([]string, error) {
+	if err := validateLinkName(link); err != nil {
+		return nil, err
+	}
+	out, err := n.run("resolvectl", "domain", link)
+	if err != nil {
+		return nil, fmt.Errorf("resolvectl domain: %w (%s)", err, strings.TrimSpace(out))
+	}
+	return parseResolvectlList(out), nil
 }

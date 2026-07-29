@@ -65,6 +65,48 @@ func TestClientUnitDropinNetwork(t *testing.T) {
 	}
 }
 
+func TestClientResolved(t *testing.T) {
+	h := remote.NewFake()
+	c := &Client{Host: h}
+	ctx := t.Context()
+
+	if err := c.PutResolvedConf(ctx, "[Resolve]\nDNS=8.8.8.8\n"); err != nil {
+		t.Fatal(err)
+	}
+	if got, err := c.GetResolvedConf(ctx); err != nil || !strings.Contains(got, "8.8.8.8") {
+		t.Fatalf("%v %q", err, got)
+	}
+	if err := c.PutResolvedDropin(ctx, "10-x.conf", "[Resolve]\nDNS=1.1.1.1\n"); err != nil {
+		t.Fatal(err)
+	}
+	route := true
+	if err := c.PutResolveLink(ctx, "eth0", ResolveLinkDesired{
+		DNS:          []string{"1.1.1.1"},
+		Domains:      []string{"~lan"},
+		DefaultRoute: &route,
+		LLMNR:        "no",
+	}); err != nil {
+		t.Fatal(err)
+	}
+	st, err := c.ResolveStatus(ctx, "eth0")
+	if err != nil || !strings.Contains(st, "1.1.1.1") {
+		t.Fatalf("%v %q", err, st)
+	}
+	if err := c.DeleteResolveLink(ctx, "eth0"); err != nil {
+		t.Fatal(err)
+	}
+	if err := c.DeleteResolvedDropin(ctx, "10-x.conf"); err != nil {
+		t.Fatal(err)
+	}
+	if err := c.DeleteResolvedConf(ctx); err != nil {
+		t.Fatal(err)
+	}
+	joined := strings.Join(h.Commands, "|")
+	if !strings.Contains(joined, "systemd-resolved.service") || !strings.Contains(joined, "resolvectl revert") {
+		t.Fatalf("commands: %s", joined)
+	}
+}
+
 func TestClientApplyAndDeleteUnitLifecycle(t *testing.T) {
 	h := remote.NewFake()
 	c := &Client{Host: h}

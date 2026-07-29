@@ -686,6 +686,146 @@ func (c *Client) ShowPortable(name string) (PortableStatus, error) {
 	return st, nil
 }
 
+func (c *Client) WriteResolvedConf(content string) error {
+	return c.atomicWrite(DefaultResolvedConf, content)
+}
+
+func (c *Client) ReadResolvedConf() (string, error) {
+	return c.readFile(DefaultResolvedConf)
+}
+
+func (c *Client) RemoveResolvedConf() error {
+	return c.removeFile(DefaultResolvedConf)
+}
+
+func (c *Client) WriteResolvedDropin(name, content string) error {
+	p, err := resolvedDropinPath(name)
+	if err != nil {
+		return err
+	}
+	if err := c.mustOK("mkdir -p " + shellQuote(DefaultResolvedDropinDir)); err != nil {
+		return err
+	}
+	return c.atomicWrite(p, content)
+}
+
+func (c *Client) ReadResolvedDropin(name string) (string, error) {
+	p, err := resolvedDropinPath(name)
+	if err != nil {
+		return "", err
+	}
+	return c.readFile(p)
+}
+
+func (c *Client) RemoveResolvedDropin(name string) error {
+	p, err := resolvedDropinPath(name)
+	if err != nil {
+		return err
+	}
+	return c.removeFile(p)
+}
+
+func (c *Client) ResolvedRestart() error {
+	return c.mustOK("systemctl restart systemd-resolved.service")
+}
+
+func (c *Client) ResolvectlDNS(link string, servers []string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	args := append([]string{"resolvectl", "dns", link}, servers...)
+	return c.mustOK(shellJoin(args))
+}
+
+func (c *Client) ResolvectlDomain(link string, domains []string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	args := append([]string{"resolvectl", "domain", link}, domains...)
+	return c.mustOK(shellJoin(args))
+}
+
+func (c *Client) ResolvectlDefaultRoute(link string, enable bool) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return c.mustOK(shellJoin([]string{"resolvectl", "default-route", link, boolWord(enable)}))
+}
+
+func (c *Client) ResolvectlLLMNR(link, mode string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return c.mustOK(shellJoin([]string{"resolvectl", "llmnr", link, mode}))
+}
+
+func (c *Client) ResolvectlMDNS(link, mode string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return c.mustOK(shellJoin([]string{"resolvectl", "mdns", link, mode}))
+}
+
+func (c *Client) ResolvectlDNSSEC(link, mode string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return c.mustOK(shellJoin([]string{"resolvectl", "dnssec", link, mode}))
+}
+
+func (c *Client) ResolvectlDNSOverTLS(link, mode string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return c.mustOK(shellJoin([]string{"resolvectl", "dnsovertls", link, mode}))
+}
+
+func (c *Client) ResolvectlRevert(link string) error {
+	if err := validateLinkName(link); err != nil {
+		return err
+	}
+	return c.mustOK(shellJoin([]string{"resolvectl", "revert", link}))
+}
+
+func (c *Client) ResolvectlStatus(link string) (string, error) {
+	if link != "" {
+		if err := validateLinkName(link); err != nil {
+			return "", err
+		}
+	}
+	args := []string{"resolvectl", "status"}
+	if link != "" {
+		args = append(args, link)
+	}
+	out, err := c.run(shellJoin(args))
+	if err != nil {
+		return "", fmt.Errorf("resolvectl status: %w (%s)", err, strings.TrimSpace(out))
+	}
+	return out, nil
+}
+
+func (c *Client) ResolvectlDNSGet(link string) ([]string, error) {
+	if err := validateLinkName(link); err != nil {
+		return nil, err
+	}
+	out, err := c.run(shellJoin([]string{"resolvectl", "dns", link}))
+	if err != nil {
+		return nil, fmt.Errorf("resolvectl dns: %w (%s)", err, strings.TrimSpace(out))
+	}
+	return parseResolvectlList(out), nil
+}
+
+func (c *Client) ResolvectlDomainGet(link string) ([]string, error) {
+	if err := validateLinkName(link); err != nil {
+		return nil, err
+	}
+	out, err := c.run(shellJoin([]string{"resolvectl", "domain", link}))
+	if err != nil {
+		return nil, fmt.Errorf("resolvectl domain: %w (%s)", err, strings.TrimSpace(out))
+	}
+	return parseResolvectlList(out), nil
+}
+
 func shellQuote(s string) string {
 	return "'" + strings.ReplaceAll(s, "'", `'\''`) + "'"
 }

@@ -216,3 +216,116 @@ func (c *Client) DeletePortable(ctx context.Context, name string, deleteImage bo
 	}
 	return nil
 }
+
+func (c *Client) PutResolvedConf(ctx context.Context, content string) error {
+	_ = ctx
+	if err := c.Host.WriteResolvedConf(content); err != nil {
+		return err
+	}
+	return c.Host.ResolvedRestart()
+}
+
+func (c *Client) GetResolvedConf(ctx context.Context) (string, error) {
+	_ = ctx
+	return c.Host.ReadResolvedConf()
+}
+
+func (c *Client) DeleteResolvedConf(ctx context.Context) error {
+	_ = ctx
+	if err := c.Host.RemoveResolvedConf(); err != nil {
+		return err
+	}
+	return c.Host.ResolvedRestart()
+}
+
+func (c *Client) PutResolvedDropin(ctx context.Context, name, content string) error {
+	_ = ctx
+	if err := c.Host.WriteResolvedDropin(name, content); err != nil {
+		return err
+	}
+	return c.Host.ResolvedRestart()
+}
+
+func (c *Client) GetResolvedDropin(ctx context.Context, name string) (string, error) {
+	_ = ctx
+	return c.Host.ReadResolvedDropin(name)
+}
+
+func (c *Client) DeleteResolvedDropin(ctx context.Context, name string) error {
+	_ = ctx
+	if err := c.Host.RemoveResolvedDropin(name); err != nil {
+		return err
+	}
+	return c.Host.ResolvedRestart()
+}
+
+// ResolveLinkDesired is the desired per-link resolvectl configuration.
+type ResolveLinkDesired struct {
+	DNS          []string
+	Domains      []string
+	DefaultRoute *bool
+	LLMNR        string
+	MDNS         string
+	DNSSEC       string
+	DNSOverTLS   string
+}
+
+func (c *Client) PutResolveLink(ctx context.Context, link string, d ResolveLinkDesired) error {
+	_ = ctx
+	if d.DNS != nil {
+		if err := c.Host.ResolvectlDNS(link, d.DNS); err != nil {
+			return err
+		}
+	}
+	if d.Domains != nil {
+		if err := c.Host.ResolvectlDomain(link, d.Domains); err != nil {
+			return err
+		}
+	}
+	if d.DefaultRoute != nil {
+		if err := c.Host.ResolvectlDefaultRoute(link, *d.DefaultRoute); err != nil {
+			return err
+		}
+	}
+	if d.LLMNR != "" {
+		if err := c.Host.ResolvectlLLMNR(link, d.LLMNR); err != nil {
+			return err
+		}
+	}
+	if d.MDNS != "" {
+		if err := c.Host.ResolvectlMDNS(link, d.MDNS); err != nil {
+			return err
+		}
+	}
+	if d.DNSSEC != "" {
+		if err := c.Host.ResolvectlDNSSEC(link, d.DNSSEC); err != nil {
+			return err
+		}
+	}
+	if d.DNSOverTLS != "" {
+		if err := c.Host.ResolvectlDNSOverTLS(link, d.DNSOverTLS); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c *Client) GetResolveLinkDNS(ctx context.Context, link string) ([]string, error) {
+	_ = ctx
+	return c.Host.ResolvectlDNSGet(link)
+}
+
+func (c *Client) GetResolveLinkDomains(ctx context.Context, link string) ([]string, error) {
+	_ = ctx
+	return c.Host.ResolvectlDomainGet(link)
+}
+
+func (c *Client) DeleteResolveLink(ctx context.Context, link string) error {
+	_ = ctx
+	return c.Host.ResolvectlRevert(link)
+}
+
+func (c *Client) ResolveStatus(ctx context.Context, link string) (string, error) {
+	_ = ctx
+	return c.Host.ResolvectlStatus(link)
+}

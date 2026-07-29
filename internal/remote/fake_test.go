@@ -80,6 +80,51 @@ func TestPathHelpersReject(t *testing.T) {
 	}
 }
 
+func TestFakeResolved(t *testing.T) {
+	h := NewFake()
+	body := "[Resolve]\nDNS=9.9.9.9\n"
+	if err := h.WriteResolvedConf(body); err != nil {
+		t.Fatal(err)
+	}
+	got, err := h.ReadResolvedConf()
+	if err != nil || got != body {
+		t.Fatalf("%v %q", err, got)
+	}
+	if err := h.WriteResolvedDropin("10-tf.conf", "[Resolve]\nDNS=1.1.1.1\n"); err != nil {
+		t.Fatal(err)
+	}
+	if err := h.ResolvedRestart(); err != nil {
+		t.Fatal(err)
+	}
+	if err := h.ResolvectlDNS("eth0", []string{"1.1.1.1", "1.0.0.1"}); err != nil {
+		t.Fatal(err)
+	}
+	dns, err := h.ResolvectlDNSGet("eth0")
+	if err != nil || len(dns) != 2 || dns[0] != "1.1.1.1" {
+		t.Fatalf("%v %v", err, dns)
+	}
+	st, err := h.ResolvectlStatus("eth0")
+	if err != nil || !strings.Contains(st, "1.1.1.1") {
+		t.Fatalf("%v %q", err, st)
+	}
+	if err := h.ResolvectlRevert("eth0"); err != nil {
+		t.Fatal(err)
+	}
+	if err := h.RemoveResolvedDropin("10-tf.conf"); err != nil {
+		t.Fatal(err)
+	}
+	if err := h.RemoveResolvedConf(); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestParseResolvectlList(t *testing.T) {
+	got := parseResolvectlList("Link 2 (eth0): 1.1.1.1 1.0.0.1\n")
+	if len(got) != 2 || got[0] != "1.1.1.1" {
+		t.Fatalf("%v", got)
+	}
+}
+
 func TestFakeMachine(t *testing.T) {
 	h := NewFake()
 	if err := h.EnsureMachineImage("web", "local", "/tmp/a.tar"); err != nil {
