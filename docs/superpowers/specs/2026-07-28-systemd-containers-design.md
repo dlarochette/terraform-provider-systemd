@@ -1,7 +1,7 @@
 # Design: systemd containers (nspawn + portable)
 
 Date: 2026-07-28  
-Status: approved (approach 1 — single resource + machinectl / portablectl)  
+Status: shipped (`systemd_machine` in **0.7.0**, `systemd_portable` in **0.8.0**)  
 Module: `github.com/dlarochette/terraform-provider-systemd`  
 Provider address: `dlarochette/systemd`  
 Tracks: [#4](https://github.com/dlarochette/terraform-provider-systemd/issues/4)

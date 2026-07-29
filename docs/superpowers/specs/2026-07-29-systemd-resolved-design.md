@@ -1,7 +1,7 @@
 # Design: systemd-resolved resources
 
 Date: 2026-07-29  
-Status: approved (scope C)  
+Status: shipped in **0.9.0**  
 Module: `github.com/dlarochette/terraform-provider-systemd`  
 Provider address: `dlarochette/systemd`  
 Target release: `0.9.0`

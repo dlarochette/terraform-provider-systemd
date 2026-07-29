@@ -7,7 +7,7 @@ Manage **systemd units**, **systemd-networkd**, and **systemd-resolved** on remo
 | **Provider address** | `dlarochette/systemd` |
 | **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.9.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.9.0) |
+| **Latest release** | [0.9.1](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.9.1) |
 | **License** | MIT |
 
 ## How it works
@@ -415,6 +415,8 @@ Use a **provider alias per host** when managing a fleet.
 | `systemd_netdev` | `/etc/systemd/network/{filename}` | Filename must end with `.netdev` |
 | `systemd_link` | `/etc/systemd/network/{filename}` | Filename must end with `.link` |
 | `systemd_credential` | `/etc/credstore{,.encrypted}/{name}` | `data` is `Sensitive`, persisted in state, never read back; `encrypted` defaults to `true` and forces replacement; not importable |
+| `systemd_machine` | image + `/etc/systemd/nspawn/{name}.nspawn` | nspawn image lifecycle (`machinectl`) + settings + `systemd-nspawn@` enable/active; `delete_image` default true |
+| `systemd_portable` | `/var/lib/portables/{name}` + attach | `portablectl` attach/detach; image types `local` \| `tar` \| `raw` (no `oci`) |
 | `systemd_resolved` | `/etc/systemd/resolved.conf` | Singleton; restart `systemd-resolved` on apply/destroy; destroy removes the file |
 | `systemd_resolved_dropin` | `/etc/systemd/resolved.conf.d/{name}` | `name` must end with `.conf`; restart on apply/destroy |
 | `systemd_resolve_link` | n/a (`resolvectl`) | Runtime-only per-link DNS; destroy → `resolvectl revert` |

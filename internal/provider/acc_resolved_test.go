@@ -47,6 +47,38 @@ func TestAccResolvedDropin(t *testing.T) {
 	}
 }
 
+func TestAccResolvedConf(t *testing.T) {
+	c := accClient(t)
+	ctx := t.Context()
+
+	if err := c.ApplyUnitLifecycle(ctx, "systemd-resolved.service", accBool(true), accBool(true)); err != nil {
+		t.Fatalf("start systemd-resolved: %v", err)
+	}
+
+	const content = "[Resolve]\n" +
+		"FallbackDNS=8.8.8.8\n"
+
+	prev, _ := c.GetResolvedConf(ctx)
+	t.Cleanup(func() {
+		if prev != "" {
+			_ = c.PutResolvedConf(ctx, prev)
+		} else {
+			_ = c.DeleteResolvedConf(ctx)
+		}
+	})
+
+	if err := c.PutResolvedConf(ctx, content); err != nil {
+		t.Fatalf("PutResolvedConf: %v", err)
+	}
+	got, err := c.GetResolvedConf(ctx)
+	if err != nil {
+		t.Fatalf("GetResolvedConf: %v", err)
+	}
+	if !strings.Contains(got, "FallbackDNS=8.8.8.8") {
+		t.Fatalf("unexpected resolved.conf: %q", got)
+	}
+}
+
 func TestAccResolveLink(t *testing.T) {
 	c := accClient(t)
 	ctx := t.Context()

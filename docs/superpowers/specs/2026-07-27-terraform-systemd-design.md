@@ -26,18 +26,23 @@ Manage systemd units and systemd-networkd configuration on a remote Linux fleet 
 
 - Custom remote agent / Unix socket / HTTP API
 - sudo / non-root (root SSH assumed)
-- Dedicated resolved resources
 - Public Terraform Registry (phase 2)
 - Bulk import of existing hosts
 - D-Bus via `systemd-stdio-bridge` in-process (CLI is enough)
-- systemd containers / nspawn / portable services (**later** — tracked in [#4](https://github.com/dlarochette/terraform-provider-systemd/issues/4))
+- Managing `/etc/resolv.conf` symlink / `.dnssd` files
+
+**Shipped after MVP** (see dedicated specs):
+
+- Credentials / templates / typed units — [2026-07-27-systemd-creds-templates-design.md](2026-07-27-systemd-creds-templates-design.md)
+- Containers (nspawn + portable) — [2026-07-28-systemd-containers-design.md](2026-07-28-systemd-containers-design.md) ([#4](https://github.com/dlarochette/terraform-provider-systemd/issues/4) closed)
+- systemd-resolved — [2026-07-29-systemd-resolved-design.md](2026-07-29-systemd-resolved-design.md)
 
 ## Architecture
 
 ```text
 Terraform  →  provider  →  SSH
-                            ├─ SFTP  →  /etc/systemd/{system,network}
-                            └─ exec  →  systemctl / networkctl
+                            ├─ SFTP  →  /etc/systemd/{system,network,resolved.conf(.d),nspawn}
+                            └─ exec  →  systemctl / networkctl / resolvectl / machinectl / portablectl
 ```
 
 No bootstrap of an extra daemon. The provider dials SSH, writes files with SFTP (atomic temp+rename), then runs the same tools an admin would.
@@ -101,6 +106,12 @@ These modes are mutually exclusive. Validation fails if both or neither are set.
 | `systemd_link` | `/etc/systemd/network/{filename}` | ID = `filename` |
 | data `systemd_unit` | `systemctl show` | load/active/sub/unit-file state |
 | data `systemd_link` | `networkctl status` | operational/setup state |
+| `systemd_machine` | machinectl + `.nspawn` | see containers design |
+| `systemd_portable` | portablectl | see containers design |
+| `systemd_resolved` | `/etc/systemd/resolved.conf` | restart resolved; see resolved design |
+| `systemd_resolved_dropin` | `resolved.conf.d/{name}` | restart resolved |
+| `systemd_resolve_link` | `resolvectl` | runtime-only; see resolved design |
+| data `systemd_resolve_status` | `resolvectl status` | raw status text |
 
 Destroy: stop/disable (best effort) → remove file → `daemon-reload` / `networkctl reload`. Start failure fails the apply.
 
