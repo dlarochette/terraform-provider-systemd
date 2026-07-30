@@ -396,11 +396,22 @@ func (c *Client) StopUnit(name string) error {
 }
 
 func (c *Client) UnitStatus(name string) (UnitStatus, error) {
-	out, err := c.run("systemctl show --property=LoadState,ActiveState,SubState,UnitFileState -- " + shellQuote(name))
-	if err != nil {
-		return UnitStatus{}, fmt.Errorf("systemctl show: %w (%s)", err, strings.TrimSpace(out))
+	cmd := "systemctl show --property=LoadState,ActiveState,SubState,UnitFileState -- " + shellQuote(name)
+	var lastOut string
+	for attempt := 0; attempt < 5; attempt++ {
+		out, err := c.run(cmd)
+		lastOut = out
+		if err != nil {
+			return UnitStatus{}, fmt.Errorf("systemctl show: %w (%s)", err, strings.TrimSpace(out))
+		}
+		st := parseUnitStatus(out)
+		if st.LoadState != "" {
+			return st, nil
+		}
+		// SSH ACC can race briefly after daemon-reload before properties appear.
+		time.Sleep(100 * time.Millisecond)
 	}
-	return parseUnitStatus(out), nil
+	return UnitStatus{}, fmt.Errorf("systemctl show returned no LoadState for %s (%q)", name, strings.TrimSpace(lastOut))
 }
 
 func (c *Client) NetworkReload() error {
