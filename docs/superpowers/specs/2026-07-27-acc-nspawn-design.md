@@ -14,9 +14,9 @@ Run acceptance tests against a **real systemd** inside a **systemd-nspawn** mach
 |-------|--------|
 | Where | Local (`make testacc`) **and** GitHub Actions |
 | Runtime | **systemd-nspawn** only (no Docker, no QEMU for ACC v1) |
-| Access from tests | **machinectl / systemd-run -M** (not SSH) |
-| SSH in ACC | **Out of scope** for v1 (still covered by Fake unit tests + manual use) |
-| Approach | Third `remote.Host` implementation (`Nspawn`) + harness script + `TestAcc*` |
+| Access from tests | **machinectl / systemd-run -M** (default) **or SSH** (`make testacc-ssh`) |
+| SSH in ACC | **In scope** — see [2026-07-30-acc-ssh-design.md](2026-07-30-acc-ssh-design.md) |
+| Approach | Third `remote.Host` implementation (`Nspawn`) + harness script + `TestAcc*`; SSH ACC reuses the same suite via `remote.Dial` |
 
 ## Architecture
 

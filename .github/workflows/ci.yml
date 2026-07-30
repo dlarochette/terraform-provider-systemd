@@ -32,9 +32,24 @@ jobs:
       - name: Acceptance tests (nspawn)
         run: make testacc
 
+  testacc-ssh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Install nspawn + openssh tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y systemd-container debootstrap dbus openssh-client
+      - name: Acceptance tests (SSH into nspawn guest)
+        run: make testacc-ssh
+
   release:
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [test, testacc]
+    needs: [test, testacc, testacc-ssh]
     runs-on: ubuntu-latest
     permissions:
       contents: write

@@ -51,6 +51,10 @@ func NewFake() *Fake {
 
 func (f *Fake) Close() error { return nil }
 
+func (f *Fake) Exec(args ...string) error {
+	return f.note("exec " + strings.Join(args, " "))
+}
+
 func (f *Fake) write(p, content string) error {
 	f.mu.Lock()
 	defer f.mu.Unlock()

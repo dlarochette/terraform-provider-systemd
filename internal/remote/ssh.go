@@ -686,6 +686,13 @@ func (c *Client) ShowPortable(name string) (PortableStatus, error) {
 	return st, nil
 }
 
+func (c *Client) Exec(args ...string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("exec: empty command")
+	}
+	return c.mustOK(shellJoin(args))
+}
+
 func (c *Client) WriteResolvedConf(content string) error {
 	return c.atomicWrite(DefaultResolvedConf, content)
 }

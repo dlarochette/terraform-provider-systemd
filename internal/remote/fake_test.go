@@ -82,6 +82,9 @@ func TestPathHelpersReject(t *testing.T) {
 
 func TestFakeResolved(t *testing.T) {
 	h := NewFake()
+	if err := h.Exec("true"); err != nil {
+		t.Fatal(err)
+	}
 	body := "[Resolve]\nDNS=9.9.9.9\n"
 	if err := h.WriteResolvedConf(body); err != nil {
 		t.Fatal(err)

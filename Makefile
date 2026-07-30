@@ -1,4 +1,4 @@
-.PHONY: build test testacc fmt vet schema
+.PHONY: build test testacc testacc-ssh fmt vet schema
 
 VERSION ?= 0.1.0
 LDFLAGS = -X main.Version=$(VERSION)
@@ -19,6 +19,14 @@ testacc:
 		./scripts/acc-nspawn.sh; \
 	else \
 		sudo ./scripts/acc-nspawn.sh; \
+	fi
+
+# Same guest, but TestAcc* over SSH/SFTP (remote.Dial) — see scripts/acc-nspawn-ssh.sh.
+testacc-ssh:
+	@if [ "$$(id -u)" -eq 0 ]; then \
+		./scripts/acc-nspawn-ssh.sh; \
+	else \
+		sudo ./scripts/acc-nspawn-ssh.sh; \
 	fi
 
 fmt:

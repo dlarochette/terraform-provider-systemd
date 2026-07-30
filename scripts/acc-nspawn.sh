@@ -19,6 +19,8 @@
 #   ACC_REBUILD=1         force a rootfs rebuild even if one already looks bootable
 #   ACC_WIPE=1            remove the machine image after the run (success or failure)
 #   ACC_READY_RETRIES     readiness poll attempts, 2s apart (default: 90 => ~3min)
+#   ACC_TRANSPORT=ssh     run TestAcc via remote.Dial (see acc-nspawn-ssh.sh)
+#   SYSTEMD_ACC_SSH_PORT  guest sshd port when ACC_TRANSPORT=ssh (default: 2222)
 #
 # Exit status is `go test`'s exit status (0 on pass, non-zero otherwise), or
 # 1 if the machine never becomes ready or a prerequisite is missing.
@@ -32,6 +34,11 @@ READY_RETRIES="${ACC_READY_RETRIES:-90}"
 
 log() { echo "acc-nspawn: $*" >&2; }
 die() { log "$*"; exit 1; }
+
+ACC_TRANSPORT="${ACC_TRANSPORT:-nspawn}"
+SSH_PORT="${SYSTEMD_ACC_SSH_PORT:-2222}"
+SSH_KEY=""
+SSH_KEY_PUB=""
 
 # MACHINE feeds ROOT (an rm -rf target) and machinectl/systemd-run -M below —
 # reject anything that isn't a plain identifier before it's used anywhere,
@@ -75,7 +82,7 @@ rootfs_looks_bootable() {
 
 build_rootfs() {
   log "debootstrapping ${SUITE} into ${ROOT} (mirror: ${MIRROR})"
-  debootstrap --include=systemd,dbus,systemd-sysv,libpam-systemd,systemd-resolved,systemd-container \
+  debootstrap --include=systemd,dbus,systemd-sysv,libpam-systemd,systemd-resolved,systemd-container,openssh-server \
     "${SUITE}" "${ROOT}" "${MIRROR}"
 
   systemd-machine-id-setup --root="${ROOT}"
@@ -98,10 +105,15 @@ write_nspawn_conf() {
 # Capability=all + PrivateUsers=no so nested systemd_machine ACC can start
 # an inner nspawn (sysfs mount / UID map) inside this guest.
 # Do not BindReadOnly=/etc/resolv.conf (host stub breaks guest systemd-resolved).
+# VirtualEthernet=no: share host network so SSH ACC can Dial 127.0.0.1:2222
+# (machinectl defaults to --network-veth; nspawn Port= excludes loopback).
 [Exec]
 Boot=yes
 PrivateUsers=no
 Capability=all
+
+[Network]
+VirtualEthernet=no
 EOF
 }
 
@@ -128,6 +140,7 @@ cleanup() {
   [[ "${CLEANUP_DONE}" -eq 1 ]] && return
   CLEANUP_DONE=1
   [[ -n "${OUT:-}" ]] && rm -f "${OUT}"
+  [[ -n "${SSH_KEY}" ]] && rm -f "${SSH_KEY}" "${SSH_KEY}.pub" "${SSH_KEY_PUB:-}"
   stop_machine
   if [[ "${ACC_WIPE:-}" == "1" ]]; then
     if machine_is_active; then
@@ -152,10 +165,16 @@ if ! machine_is_active; then
   write_nspawn_conf
   machinectl start "${MACHINE}"
 else
-  # Machine already up: still refresh .nspawn for next boot, and warn if the
-  # old BindReadOnly resolv bind may still be poisoning /run/systemd/resolve.
+  # Machine already up: refresh .nspawn. Network changes (VirtualEthernet=)
+  # require a restart to take effect — do that when ACC_TRANSPORT=ssh so Dial
+  # to 127.0.0.1:2222 sees a shared network namespace.
   write_nspawn_conf
   ensure_guest_resolv_conf
+  if [[ "${ACC_TRANSPORT}" == "ssh" ]]; then
+    log "restarting ${MACHINE} to apply .nspawn network settings for SSH ACC"
+    stop_machine
+    machinectl start "${MACHINE}"
+  fi
 fi
 
 log "waiting for ${MACHINE} to become ready (up to $((READY_RETRIES * 2))s)"
@@ -191,6 +210,85 @@ ensure_guest_machinectl() {
 
 ensure_guest_machinectl
 
+ensure_guest_sshd() {
+  local port="$1"
+  local key="$2"
+  log "configuring guest sshd on port ${port}"
+
+  if ! systemd-run -M "${MACHINE}" -q -P --wait -- test -x /usr/sbin/sshd; then
+    log "installing openssh-server in guest (prefer: sudo ACC_REBUILD=1 make testacc)"
+    systemd-run -M "${MACHINE}" -P --wait -- \
+      apt-get update -qq \
+      || die "apt-get update failed in guest (no network?)"
+    systemd-run -M "${MACHINE}" -P --wait -- \
+      apt-get install -y -qq openssh-server \
+      || die "apt-get install openssh-server failed (rebuild with openssh-server in debootstrap)"
+  fi
+
+  systemd-run -M "${MACHINE}" -P --wait -- bash -c "
+    set -euo pipefail
+    mkdir -p /etc/ssh/sshd_config.d /root/.ssh
+    chmod 700 /root/.ssh
+    cat > /etc/ssh/sshd_config.d/99-tf-acc.conf <<EOF
+Port ${port}
+PermitRootLogin prohibit-password
+PasswordAuthentication no
+PubkeyAuthentication yes
+EOF
+  " || die "failed to write guest sshd drop-in"
+
+  ssh-keygen -t ed25519 -N '' -f "${key}" -q
+  SSH_KEY_PUB="${key}.pub"
+  if [[ -n "${SUDO_USER:-}" && "${SUDO_USER}" != "root" ]]; then
+    chown "${SUDO_USER}:${SUDO_USER}" "${key}" "${SSH_KEY_PUB}"
+  fi
+  chmod 600 "${key}"
+
+  # Avoid machinectl copy-to SELinux denials: write authorized_keys via systemd-run.
+  PUB_CONTENT="$(tr -d '\r' < "${SSH_KEY_PUB}")"
+  systemd-run -M "${MACHINE}" -P --wait -- bash -c "
+    set -euo pipefail
+    mkdir -p /root/.ssh
+    chmod 700 /root/.ssh
+    printf '%s\\n' $(printf '%q' "${PUB_CONTENT}") > /root/.ssh/authorized_keys
+    chmod 600 /root/.ssh/authorized_keys
+    chown root:root /root/.ssh /root/.ssh/authorized_keys
+  " || die "failed to install authorized_keys in guest"
+
+  # Debian: ssh.service; some images use sshd.service.
+  systemd-run -M "${MACHINE}" -P --wait -- bash -c '
+    set -euo pipefail
+    systemctl reset-failed ssh.service 2>/dev/null || true
+    systemctl reset-failed sshd.service 2>/dev/null || true
+    if systemctl cat ssh.service >/dev/null 2>&1; then
+      systemctl enable ssh.service
+      systemctl restart ssh.service
+    else
+      systemctl enable sshd.service
+      systemctl restart sshd.service
+    fi
+  ' || die "failed to start guest sshd"
+
+  local i
+  for ((i = 1; i <= 30; i++)); do
+    if ssh -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+      -o ConnectTimeout=2 -i "${key}" -p "${port}" root@127.0.0.1 true 2>/dev/null; then
+      log "guest sshd ready on 127.0.0.1:${port}"
+      return 0
+    fi
+    sleep 1
+  done
+  die "guest sshd did not become ready on 127.0.0.1:${port}"
+}
+
+if [[ "${ACC_TRANSPORT}" == "ssh" ]]; then
+  command -v ssh-keygen >/dev/null 2>&1 || die "missing ssh-keygen (install openssh-client)"
+  command -v ssh >/dev/null 2>&1 || die "missing ssh (install openssh-client)"
+  SSH_KEY="$(mktemp /tmp/tf-acc-ssh-XXXXXX)"
+  rm -f "${SSH_KEY}"
+  ensure_guest_sshd "${SSH_PORT}" "${SSH_KEY}"
+fi
+
 # Mini Boot=no rootfs tar for TestAccMachineLifecycle (local import only).
 log "staging nested machine fixture tar in ${MACHINE}"
 systemd-run -M "${MACHINE}" -P --wait -- bash -c '
@@ -202,7 +300,6 @@ systemd-run -M "${MACHINE}" -P --wait -- bash -c '
   tar -C "$FIX" -cf /var/tmp/tf-acc-mini.tar .
 ' || die "failed to stage /var/tmp/tf-acc-mini.tar in ${MACHINE}"
 
-# Portable service tree for TestAccPortableLifecycle (local tar → /var/lib/portables).
 # Portable service tree for TestAccPortableLifecycle (local tar → /var/lib/portables).
 log "staging portable fixture tar in ${MACHINE}"
 STAGE_SCRIPT_SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/acc-stage-portable.sh"
@@ -229,6 +326,16 @@ systemd-run -M "${MACHINE}" -P --wait -- bash /var/tmp/acc-stage-portable.sh \
 export TF_ACC=1
 export SYSTEMD_ACC_MACHINE="${MACHINE}"
 
+if [[ "${ACC_TRANSPORT}" == "ssh" ]]; then
+  export SYSTEMD_ACC_SSH_HOST=127.0.0.1
+  export SYSTEMD_ACC_SSH_PORT="${SSH_PORT}"
+  export SYSTEMD_ACC_SSH_USER=root
+  export SYSTEMD_ACC_SSH_KEY="${SSH_KEY}"
+  export SYSTEMD_ACC_SSH_INSECURE=1
+  # Clear machine-only path so tests cannot accidentally use Nspawn.
+  unset SYSTEMD_ACC_MACHINE || true
+fi
+
 # Staging dir for machinectl copy-to/from (SELinux-friendly). Writable by the
 # user who will run go test so we do not leave root-owned junk in GOCACHE.
 # /var/lib/machines is often mode 0700; open traverse so SUDO_USER can reach
@@ -252,6 +359,11 @@ run_go_test() {
   go test ./internal/provider/ -run 'TestAcc' -count=1 -timeout 45m -v
 }
 
+PRESERVE_ENV="TF_ACC,SYSTEMD_ACC_MACHINE,PATH"
+if [[ "${ACC_TRANSPORT}" == "ssh" ]]; then
+  PRESERVE_ENV="TF_ACC,SYSTEMD_ACC_SSH_HOST,SYSTEMD_ACC_SSH_PORT,SYSTEMD_ACC_SSH_USER,SYSTEMD_ACC_SSH_KEY,SYSTEMD_ACC_SSH_INSECURE,PATH"
+fi
+
 set +e
 if [[ -n "${SUDO_USER:-}" && "${SUDO_USER}" != "root" ]]; then
   TEST_HOME="$(getent passwd "${SUDO_USER}" | cut -d: -f6)"
@@ -260,7 +372,8 @@ if [[ -n "${SUDO_USER:-}" && "${SUDO_USER}" != "root" ]]; then
   USER_GOMODCACHE="$(sudo -u "${SUDO_USER}" go env GOMODCACHE)"
   USER_GOPATH="$(sudo -u "${SUDO_USER}" go env GOPATH)"
   (
-    sudo -u "${SUDO_USER}" --preserve-env=TF_ACC,SYSTEMD_ACC_MACHINE,PATH \
+    # shellcheck disable=SC2086
+    sudo -u "${SUDO_USER}" --preserve-env="${PRESERVE_ENV}" \
       env HOME="${TEST_HOME}" \
           GOCACHE="${USER_GOCACHE}" \
           GOMODCACHE="${USER_GOMODCACHE}" \

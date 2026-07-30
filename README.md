@@ -7,7 +7,7 @@ Manage **systemd units**, **systemd-networkd**, and **systemd-resolved** on remo
 | **Provider address** | `dlarochette/systemd` |
 | **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.9.1](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.9.1) |
+| **Latest release** | [0.10.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.10.0) |
 | **License** | MIT |
 
 ## How it works
@@ -57,7 +57,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.9.0"
+      version = ">= 0.10.0"
     }
   }
 }
@@ -458,24 +458,36 @@ make schema
 
 Unit tests: `make test` (fake host, no privileges).
 
-ACC tests exercise the provider's resources against a **real systemd** running inside a
-`systemd-nspawn` container (not SSH — see [`internal/remote/nspawn.go`](internal/remote)):
+ACC tests exercise the provider against a **real systemd** inside a `systemd-nspawn`
+machine. Two transports:
+
+| Target | Command | Host impl |
+|--------|---------|-----------|
+| nspawn (default) | `make testacc` | `remote.Nspawn` (`machinectl` / `systemd-run`) |
+| SSH | `make testacc-ssh` | `remote.Dial` → guest `sshd` on `127.0.0.1:2222` |
 
 ```bash
-sudo apt-get install -y systemd-container debootstrap dbus
-make testacc
+sudo apt-get install -y systemd-container debootstrap dbus openssh-client
+make testacc      # nspawn transport
+make testacc-ssh  # same guest over SSH/SFTP
 ```
 
 The first run debootstraps a Debian rootfs under `/var/lib/machines/`, which takes a few
-minutes; subsequent runs reuse it. Env vars (see [`scripts/acc-nspawn.sh`](scripts/acc-nspawn.sh)):
+minutes; subsequent runs reuse it. Env vars (see [`scripts/acc-nspawn.sh`](scripts/acc-nspawn.sh)
+and [`docs/superpowers/specs/2026-07-30-acc-ssh-design.md`](docs/superpowers/specs/2026-07-30-acc-ssh-design.md)):
 
 | Var | Default | Purpose |
 |-----|---------|---------|
-| `SYSTEMD_ACC_MACHINE` | `tf-systemd-acc` | nspawn machine name |
+| `SYSTEMD_ACC_MACHINE` | `tf-systemd-acc` | nspawn machine name (nspawn ACC) |
 | `ACC_REBUILD` | unset | `=1` forces a rootfs rebuild |
 | `ACC_WIPE` | unset | `=1` removes the machine image after the run |
+| `SYSTEMD_ACC_SSH_HOST` | (unset) | If set, ACC uses SSH instead of nspawn |
+| `SYSTEMD_ACC_SSH_PORT` | `2222` | Guest sshd port (SSH ACC harness) |
+| `SYSTEMD_ACC_SSH_KEY` | harness temp | Private key path (required with SSH host) |
+| `SYSTEMD_ACC_SSH_INSECURE` | `1` (harness) | Skip `known_hosts` for lab Dial |
 
-CI and releases run on GitHub Actions. Tags use Semantic Versioning **without** a `v` prefix (`0.1.1`, not `v0.1.1`). Pushing a tag builds and publishes binaries with GoReleaser. The `testacc` job must pass before a tag release publishes.
+CI runs both `testacc` and `testacc-ssh` before a tag release. Tags use Semantic Versioning
+**without** a `v` prefix (`0.1.1`, not `v0.1.1`).
 
 ## License
 

@@ -35,6 +35,9 @@ type LinkStatus struct {
 type Host interface {
 	Close() error
 
+	// Exec runs an arbitrary command on the host (ACC helpers, diagnostics).
+	Exec(args ...string) error
+
 	WriteUnit(name, content string) error
 	ReadUnit(name string) (string, error)
 	RemoveUnit(name string) error

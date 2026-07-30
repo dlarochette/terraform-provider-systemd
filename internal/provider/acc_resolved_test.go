@@ -5,8 +5,6 @@ package provider
 import (
 	"strings"
 	"testing"
-
-	"github.com/dlarochette/terraform-provider-systemd/internal/remote"
 )
 
 func TestAccResolvedDropin(t *testing.T) {
@@ -83,25 +81,20 @@ func TestAccResolveLink(t *testing.T) {
 	c := accClient(t)
 	ctx := t.Context()
 
-	n, ok := c.Host.(*remote.Nspawn)
-	if !ok {
-		t.Fatal("ACC expects *remote.Nspawn host")
-	}
-
 	if err := c.ApplyUnitLifecycle(ctx, "systemd-resolved.service", accBool(true), accBool(true)); err != nil {
 		t.Fatalf("start systemd-resolved: %v", err)
 	}
 
 	const link = "tfaccdn0"
-	_ = n.Exec("ip", "link", "del", link)
-	if err := n.Exec("ip", "link", "add", link, "type", "dummy"); err != nil {
+	_ = c.Host.Exec("ip", "link", "del", link)
+	if err := c.Host.Exec("ip", "link", "add", link, "type", "dummy"); err != nil {
 		t.Fatalf("ip link add: %v", err)
 	}
 	t.Cleanup(func() {
 		_ = c.DeleteResolveLink(ctx, link)
-		_ = n.Exec("ip", "link", "del", link)
+		_ = c.Host.Exec("ip", "link", "del", link)
 	})
-	if err := n.Exec("ip", "link", "set", link, "up"); err != nil {
+	if err := c.Host.Exec("ip", "link", "set", link, "up"); err != nil {
 		t.Fatalf("ip link set up: %v", err)
 	}
 
