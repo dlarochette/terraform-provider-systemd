@@ -7,7 +7,7 @@ Manage **systemd units**, **systemd-networkd**, and **systemd-resolved** on remo
 | **Provider address** | `dlarochette/systemd` |
 | **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.10.0](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.10.0) |
+| **Latest release** | [0.10.1](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.10.1) |
 | **License** | MIT |
 
 ## How it works
@@ -28,10 +28,23 @@ Design notes: [docs/superpowers/specs/2026-07-27-terraform-systemd-design.md](do
 
 ## Install
 
-The provider is not on the public Terraform Registry yet. Install a [GitHub Release](https://github.com/dlarochette/terraform-provider-systemd/releases) binary, or use `dev_overrides` while developing:
+From **0.10.1**, signed releases are published for the Terraform and OpenTofu registries
+(`registry.terraform.io/dlarochette/systemd`, `registry.opentofu.org/dlarochette/systemd`).
+Until both listings are live, you can still install a [GitHub Release](https://github.com/dlarochette/terraform-provider-systemd/releases) binary or use `dev_overrides` while developing:
 
 ```hcl
-# ~/.terraformrc  (or ~/.tofurc)
+terraform {
+  required_providers {
+    systemd = {
+      source  = "dlarochette/systemd"
+      version = ">= 0.10.1"
+    }
+  }
+}
+```
+
+```hcl
+# ~/.terraformrc  (or ~/.tofurc) — local development only
 provider_installation {
   dev_overrides {
     "dlarochette/systemd" = "/absolute/path/to/terraform-provider-systemd/bin"
@@ -50,6 +63,8 @@ make build   # → bin/terraform-provider-systemd
 
 Terraform expects the binary name `terraform-provider-systemd` in that directory.
 
+Publishing details: [docs/superpowers/specs/2026-07-30-registry-publish-design.md](docs/superpowers/specs/2026-07-30-registry-publish-design.md).
+
 ## Quick start
 
 ```hcl
@@ -57,7 +72,7 @@ terraform {
   required_providers {
     systemd = {
       source  = "dlarochette/systemd"
-      version = ">= 0.10.0"
+      version = ">= 0.10.1"
     }
   }
 }

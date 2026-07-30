@@ -26,7 +26,7 @@ Manage systemd units and systemd-networkd configuration on a remote Linux fleet 
 
 - Custom remote agent / Unix socket / HTTP API
 - sudo / non-root (root SSH assumed)
-- Public Terraform Registry (phase 2)
+- Public Terraform Registry (phase 2) — path: [2026-07-30-registry-publish-design.md](2026-07-30-registry-publish-design.md) (first signed release `0.10.1`)
 - Bulk import of existing hosts
 - D-Bus via `systemd-stdio-bridge` in-process (CLI is enough)
 - Managing `/etc/resolv.conf` symlink / `.dnssd` files
