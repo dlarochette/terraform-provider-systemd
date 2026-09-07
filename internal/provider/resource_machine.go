@@ -31,14 +31,14 @@ type machineImageModel struct {
 }
 
 type machineModel struct {
-	Name        types.String       `tfsdk:"name"`
-	Image       machineImageModel  `tfsdk:"image"`
-	Content     types.String       `tfsdk:"content"`
-	Sections    []sectionModel     `tfsdk:"section"`
-	Enable      types.Bool         `tfsdk:"enable"`
-	Active      types.Bool         `tfsdk:"active"`
-	DeleteImage types.Bool         `tfsdk:"delete_image"`
-	ID          types.String       `tfsdk:"id"`
+	Name        types.String      `tfsdk:"name"`
+	Image       machineImageModel `tfsdk:"image"`
+	Content     types.String      `tfsdk:"content"`
+	Sections    []sectionModel    `tfsdk:"section"`
+	Enable      types.Bool        `tfsdk:"enable"`
+	Active      types.Bool        `tfsdk:"active"`
+	DeleteImage types.Bool        `tfsdk:"delete_image"`
+	ID          types.String      `tfsdk:"id"`
 }
 
 func (r *machineResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

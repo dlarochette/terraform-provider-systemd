@@ -141,6 +141,43 @@ resource "systemd_unit" "demo" {
 }
 ```
 
+### Typed systemd properties
+
+For units, `systemd_unit` and every typed unit resource also expose **typed
+properties**: one snake_case block per systemd section (`unit`, `service`,
+`timer`, `socket`, `mount`, `install`, …) whose attributes are systemd
+directives, with the same names (in snake_case) and the same validation rules
+as the systemd parsers (enum values, booleans, time spans, byte sizes, octal
+modes, signals, resource limits, weight ranges, int ranges):
+
+```hcl
+resource "systemd_unit" "demo" {
+  name = "demo.service"
+
+  unit {
+    description = "Demo unit managed by Terraform"
+    after       = ["network.target"]
+  }
+  service {
+    type              = "oneshot"
+    exec_start        = ["/bin/true"] # repeatable directives are lists
+    timeout_start_sec = "2min"
+    cpu_quota         = "50%"
+    memory_max        = "2G"
+    protect_home      = "read-only"
+  }
+  install {
+    wanted_by = ["multi-user.target"]
+  }
+}
+```
+
+The catalog is generated from the systemd `load-fragment` gperf table
+(systemd v257): `go generate ./internal/sdprops`. Repeatable directives are
+list attributes; other values are strings / bools / ints per the systemd
+parser. `content`, `section` and typed blocks are mutually exclusive at file
+level, and a directive set via a typed block cannot also be set via `section`.
+
 The same `section` / `entry` model works on `systemd_timer`, `systemd_mount`, `systemd_automount`, `systemd_socket`, `systemd_path`, `systemd_swap`, `systemd_slice`, `systemd_target`, `systemd_dropin`, and the networkd resources.
 
 ### Machines (systemd-nspawn)

@@ -25,6 +25,39 @@ resource "systemd_target" "app" {
 }
 ```
 
+## Typed properties
+
+Beyond raw `content` and generic `section` blocks, this resource exposes **typed
+properties**: one snake_case block per systemd section, whose attributes are
+systemd directives with the same names and validation rules as the systemd
+parsers (enums, booleans, time spans, byte sizes, octal modes, signals,
+resource limits, weight ranges).
+
+Example — the equivalent of `ExecStart`, `Restart` and `WantedBy` without any
+`entry` boilerplate:
+
+```hcl
+resource "systemd_target" "demo" {
+  name = "app.target"
+
+  unit {
+    description = "Typed demo"
+    after       = ["network.target"]
+  }
+
+  install {
+    wanted_by = ["multi-user.target"]
+  }
+}
+```
+
+The `[Target]` section has no directives of its own; only the `[Unit]` and
+`[Install]` typed blocks apply to targets. The catalog covers the unit
+sections of systemd v257. Directives not in the catalog (or exotic value forms) can
+always be set through `section` blocks — but a directive must not be set both
+ways. See the provider documentation for the full class map: list-valued
+attributes correspond to repeatable directives.
+
 ## Argument Reference
 
 | Attribute | Required | Description |

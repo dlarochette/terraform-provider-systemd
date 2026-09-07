@@ -27,6 +27,42 @@ resource "systemd_socket" "demo" {
 }
 ```
 
+## Typed properties
+
+Beyond raw `content` and generic `section` blocks, this resource exposes **typed
+properties**: one snake_case block per systemd section, whose attributes are
+systemd directives with the same names and validation rules as the systemd
+parsers (enums, booleans, time spans, byte sizes, octal modes, signals,
+resource limits, weight ranges).
+
+Example — the equivalent of `ExecStart`, `Restart` and `WantedBy` without any
+`entry` boilerplate:
+
+```hcl
+resource "systemd_socket" "demo" {
+  name = "demo.socket"
+
+  unit {
+    description = "Typed demo"
+    after       = ["network.target"]
+  }
+
+  socket {
+    listen_stream = ["/run/demo.sock"]
+  }
+
+  install {
+    wanted_by = ["multi-user.target"]
+  }
+}
+```
+
+The catalog covers 291 directives from systemd v257 ([Unit], [Install], [Socket] and the
+other unit sections). Directives not in the catalog (or exotic value forms) can
+always be set through `section` blocks — but a directive must not be set both
+ways. See the provider documentation for the full class map: list-valued
+attributes correspond to repeatable directives.
+
 ## Argument Reference
 
 | Attribute | Required | Description |

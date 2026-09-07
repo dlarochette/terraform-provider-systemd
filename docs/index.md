@@ -91,3 +91,13 @@ Most resources share the same `content` XOR `section` model:
 - `section` blocks: a structured INI representation. Each `section` has a `name`
   (without brackets) and `entry` blocks with a `key` and a `value`. Duplicate
   keys (e.g. multiple `ExecStart`) are allowed.
+
+- **typed properties** (unit resources): one snake_case block per systemd
+  section (`unit { … }`, `service { … }`, `install { … }`, …). Attributes are
+  systemd directives with the same names and the same validation rules as the
+  systemd parsers, generated from the systemd `load-fragment` gperf table
+  (systemd v257): enum attributes only accept the documented systemd values,
+  time spans / sizes / modes / signals / limits are regex-validated, and
+  repeatable directives are list attributes. A directive set via a typed
+  block must not also be set via a `section` block; directives outside the
+  catalog always remain settable through `section` or `content`.

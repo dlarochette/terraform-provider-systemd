@@ -10,6 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	"github.com/dlarochette/terraform-provider-systemd/internal/sdprops"
 )
 
 // unitLikeResource manages a typed systemd unit file (.timer, .mount, .path, .swap, .slice, …)
@@ -19,6 +21,7 @@ type unitLikeResource struct {
 	typeName string
 	suffix   string
 	doc      string
+	sections []string
 }
 
 type unitLikeModel struct {
@@ -32,6 +35,7 @@ type unitLikeModel struct {
 
 func NewTimerResource() resource.Resource {
 	return &unitLikeResource{
+		sections: sdprops.SectionsForUnitType("Timer"),
 		typeName: "_timer",
 		suffix:   ".timer",
 		doc:      "Manages a systemd `.timer` unit under `/etc/systemd/system`. Pair with a matching `.service` (`systemd_unit`).",
@@ -40,6 +44,7 @@ func NewTimerResource() resource.Resource {
 
 func NewMountResource() resource.Resource {
 	return &unitLikeResource{
+		sections: sdprops.SectionsForUnitType("Mount"),
 		typeName: "_mount",
 		suffix:   ".mount",
 		doc:      "Manages a systemd `.mount` unit under `/etc/systemd/system` (e.g. `data.mount` for `/data`).",
@@ -48,6 +53,7 @@ func NewMountResource() resource.Resource {
 
 func NewAutomountResource() resource.Resource {
 	return &unitLikeResource{
+		sections: sdprops.SectionsForUnitType("Automount"),
 		typeName: "_automount",
 		suffix:   ".automount",
 		doc:      "Manages a systemd `.automount` unit under `/etc/systemd/system`. Usually paired with a `.mount` unit.",
@@ -56,6 +62,7 @@ func NewAutomountResource() resource.Resource {
 
 func NewSocketResource() resource.Resource {
 	return &unitLikeResource{
+		sections: sdprops.SectionsForUnitType("Socket"),
 		typeName: "_socket",
 		suffix:   ".socket",
 		doc:      "Manages a systemd `.socket` unit under `/etc/systemd/system`. Pair with a matching `.service`.",
@@ -64,6 +71,7 @@ func NewSocketResource() resource.Resource {
 
 func NewPathResource() resource.Resource {
 	return &unitLikeResource{
+		sections: sdprops.SectionsForUnitType("Path"),
 		typeName: "_path",
 		suffix:   ".path",
 		doc:      "Manages a systemd `.path` unit under `/etc/systemd/system`. Pair with a matching `.service` (`PathExists` / `PathChanged` / …).",
@@ -72,6 +80,7 @@ func NewPathResource() resource.Resource {
 
 func NewSwapResource() resource.Resource {
 	return &unitLikeResource{
+		sections: sdprops.SectionsForUnitType("Swap"),
 		typeName: "_swap",
 		suffix:   ".swap",
 		doc:      "Manages a systemd `.swap` unit under `/etc/systemd/system` (e.g. `swapfile.swap`).",
@@ -80,6 +89,7 @@ func NewSwapResource() resource.Resource {
 
 func NewSliceResource() resource.Resource {
 	return &unitLikeResource{
+		sections: sdprops.SectionsForUnitType("Slice"),
 		typeName: "_slice",
 		suffix:   ".slice",
 		doc:      "Manages a systemd `.slice` unit under `/etc/systemd/system` (cgroup resource hierarchy).",
@@ -88,6 +98,7 @@ func NewSliceResource() resource.Resource {
 
 func NewTargetResource() resource.Resource {
 	return &unitLikeResource{
+		sections: sdprops.SectionsForUnitType("Target"),
 		typeName: "_target",
 		suffix:   ".target",
 		doc:      "Manages a systemd `.target` unit under `/etc/systemd/system` (grouping / synchronization point for other units).",
@@ -131,15 +142,26 @@ func (r *unitLikeResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 			"section": sectionBlockSchema(),
 		},
 	}
+	for name, block := range typedBlocks(r.sections) {
+		resp.Schema.Blocks[name] = block
+	}
 }
 
 func (r *unitLikeResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var cfg unitLikeModel
-	resp.Diagnostics.Append(req.Config.Get(ctx, &cfg)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.Config.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
-	if err := validateContentOrSections(cfg.Content, cfg.Sections); err != nil {
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	if err := validateContentSectionsTyped(content, d.Sections, req.Config.Raw, r.sections); err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+	if err := validateTypedConflicts(req.Config.Raw, d.Sections, r.sections); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
@@ -157,86 +179,70 @@ func (r *unitLikeResource) Configure(_ context.Context, req resource.ConfigureRe
 }
 
 func (r *unitLikeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan unitLikeModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.sections)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	var enable, active *bool
-	if !plan.Enable.IsNull() {
-		v := plan.Enable.ValueBool()
-		enable = &v
-	}
-	if !plan.Active.IsNull() {
-		v := plan.Active.ValueBool()
-		active = &v
-	}
-	if err := r.client.PutUnit(ctx, plan.Name.ValueString(), body, enable, active); err != nil {
+	if err := r.client.PutUnit(ctx, d.Name, body, d.Enable, d.Active); err != nil {
 		resp.Diagnostics.AddError("create unit", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = plan.Name
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContent(req.Plan.Raw, body, d.Name)
 }
 
 func (r *unitLikeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state unitLikeModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.State.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read state", err.Error())
 		return
 	}
-	content, err := r.client.GetUnit(ctx, state.Name.ValueString())
+	content, err := r.client.GetUnit(ctx, d.Name)
 	if err != nil {
 		resp.State.RemoveResource(ctx)
 		return
 	}
-	state.Content = types.StringValue(content)
-	state.ID = state.Name
-	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+	resp.State.Raw = setStateContent(req.State.Raw, content, d.Name)
 }
 
 func (r *unitLikeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan unitLikeModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.sections)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	var enable, active *bool
-	if !plan.Enable.IsNull() {
-		v := plan.Enable.ValueBool()
-		enable = &v
-	}
-	if !plan.Active.IsNull() {
-		v := plan.Active.ValueBool()
-		active = &v
-	}
-	if err := r.client.PutUnit(ctx, plan.Name.ValueString(), body, enable, active); err != nil {
+	if err := r.client.PutUnit(ctx, d.Name, body, d.Enable, d.Active); err != nil {
 		resp.Diagnostics.AddError("update unit", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = plan.Name
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContent(req.Plan.Raw, body, d.Name)
 }
 
 func (r *unitLikeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state unitLikeModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.State.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read state", err.Error())
 		return
 	}
-	if err := r.client.DeleteUnit(ctx, state.Name.ValueString()); err != nil {
+	if err := r.client.DeleteUnit(ctx, d.Name); err != nil {
 		resp.Diagnostics.AddError("delete unit", err.Error())
 	}
 }

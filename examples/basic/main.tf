@@ -32,31 +32,23 @@ variable "db_password" {
   sensitive = true
 }
 
+# Typed properties: one block per systemd section, snake_case directive
+# attributes with systemd validation rules.
 resource "systemd_unit" "backup" {
   name   = "backup.service"
   enable = true
   active = false
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Nightly backup"
-    }
+  unit {
+    description = "Nightly backup"
   }
-  section {
-    name = "Service"
-    entry {
-      key   = "Type"
-      value = "oneshot"
-    }
-    entry {
-      key   = "ExecStart"
-      value = "/usr/local/bin/backup.sh"
-    }
+  service {
+    type       = "oneshot"
+    exec_start = ["/usr/local/bin/backup.sh"]
   }
 }
 
+# The same file written with generic section blocks (equivalent result).
 resource "systemd_timer" "backup" {
   name   = "backup.timer"
   enable = true

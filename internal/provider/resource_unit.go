@@ -10,6 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	"github.com/dlarochette/terraform-provider-systemd/internal/sdprops"
 )
 
 var _ resource.Resource = &unitResource{}
@@ -64,15 +66,27 @@ func (r *unitResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 			"section": sectionBlockSchema(),
 		},
 	}
+	// Typed systemd properties, one block per unit section.
+	for name, block := range typedBlocks(sdprops.UnitSections()) {
+		resp.Schema.Blocks[name] = block
+	}
 }
 
 func (r *unitResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var cfg unitModel
-	resp.Diagnostics.Append(req.Config.Get(ctx, &cfg)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.Config.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
-	if err := validateContentOrSections(cfg.Content, cfg.Sections); err != nil {
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	if err := validateContentSectionsTyped(content, d.Sections, req.Config.Raw, sdprops.UnitSections()); err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+	if err := validateTypedConflicts(req.Config.Raw, d.Sections, sdprops.UnitSections()); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
@@ -90,86 +104,70 @@ func (r *unitResource) Configure(_ context.Context, req resource.ConfigureReques
 }
 
 func (r *unitResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan unitModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, sdprops.UnitSections())
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	var enable, active *bool
-	if !plan.Enable.IsNull() {
-		v := plan.Enable.ValueBool()
-		enable = &v
-	}
-	if !plan.Active.IsNull() {
-		v := plan.Active.ValueBool()
-		active = &v
-	}
-	if err := r.client.PutUnit(ctx, plan.Name.ValueString(), body, enable, active); err != nil {
+	if err := r.client.PutUnit(ctx, d.Name, body, d.Enable, d.Active); err != nil {
 		resp.Diagnostics.AddError("create unit", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = plan.Name
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContent(req.Plan.Raw, body, d.Name)
 }
 
 func (r *unitResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state unitModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.State.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read state", err.Error())
 		return
 	}
-	content, err := r.client.GetUnit(ctx, state.Name.ValueString())
+	content, err := r.client.GetUnit(ctx, d.Name)
 	if err != nil {
 		resp.State.RemoveResource(ctx)
 		return
 	}
-	state.Content = types.StringValue(content)
-	state.ID = state.Name
-	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+	resp.State.Raw = setStateContent(req.State.Raw, content, d.Name)
 }
 
 func (r *unitResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan unitModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, sdprops.UnitSections())
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	var enable, active *bool
-	if !plan.Enable.IsNull() {
-		v := plan.Enable.ValueBool()
-		enable = &v
-	}
-	if !plan.Active.IsNull() {
-		v := plan.Active.ValueBool()
-		active = &v
-	}
-	if err := r.client.PutUnit(ctx, plan.Name.ValueString(), body, enable, active); err != nil {
+	if err := r.client.PutUnit(ctx, d.Name, body, d.Enable, d.Active); err != nil {
 		resp.Diagnostics.AddError("update unit", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = plan.Name
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContent(req.Plan.Raw, body, d.Name)
 }
 
 func (r *unitResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state unitModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.State.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read state", err.Error())
 		return
 	}
-	if err := r.client.DeleteUnit(ctx, state.Name.ValueString()); err != nil {
+	if err := r.client.DeleteUnit(ctx, d.Name); err != nil {
 		resp.Diagnostics.AddError("delete unit", err.Error())
 	}
 }
