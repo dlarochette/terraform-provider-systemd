@@ -7,7 +7,7 @@ Manage **systemd units**, **systemd-networkd**, and **systemd-resolved** on remo
 | **Provider address** | `dlarochette/systemd` |
 | **Go module** | `github.com/dlarochette/terraform-provider-systemd` |
 | **Repository** | https://github.com/dlarochette/terraform-provider-systemd |
-| **Latest release** | [0.10.1](https://github.com/dlarochette/terraform-provider-systemd/releases/tag/0.10.1) |
+| **Releases** | https://github.com/dlarochette/terraform-provider-systemd/releases |
 | **License** | MIT |
 
 ## How it works
