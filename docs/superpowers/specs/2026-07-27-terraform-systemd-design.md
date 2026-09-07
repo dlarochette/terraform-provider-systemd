@@ -63,13 +63,13 @@ One provider configuration per host, using aliases:
 
 ```hcl
 provider "systemd" {
-  alias = "ymir"
-  host  = "ymir.example"
+  alias = "main"
+  host  = "host.example.com"
   user  = "root"
 }
 
 resource "systemd_unit" "demo" {
-  provider = systemd.ymir
+  provider = systemd.main
   name     = "demo.service"
   content  = file("demo.service")
 }

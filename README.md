@@ -78,8 +78,8 @@ terraform {
 }
 
 provider "systemd" {
-  alias = "ymir"
-  host  = "ymir.example"
+  alias = "main"
+  host  = "host.example.com"
   user  = "root"
 }
 ```
@@ -88,7 +88,7 @@ provider "systemd" {
 
 ```hcl
 resource "systemd_unit" "demo" {
-  provider = systemd.ymir
+  provider = systemd.main
   name     = "demo.service"
   enable   = true
   content  = <<-EOT
@@ -109,7 +109,7 @@ resource "systemd_unit" "demo" {
 
 ```hcl
 resource "systemd_unit" "demo" {
-  provider = systemd.ymir
+  provider = systemd.main
   name     = "demo.service"
   enable   = true
 
