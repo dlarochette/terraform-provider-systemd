@@ -25,6 +25,36 @@ resource "systemd_network" "br0" {
 }
 ```
 
+## Typed properties
+
+Beyond raw `content` and generic `section` blocks, this resource exposes **typed
+properties**: one snake_case block per systemd-networkd section, whose attributes
+are networkd directives with the same names and validation rules as the networkd
+parsers.
+
+Example:
+
+```hcl
+resource "systemd_network" "br0" {
+  filename = "30-br0.network"
+
+  match {
+    name = "br0"
+  }
+
+  network {
+    dhcp    = "no"
+    dns     = "192.0.2.1"
+  }
+}
+```
+
+Repeatable sections (e.g. `[Address]`, `[Route]`, `[WireGuardPeer]`) appear as
+list blocks — one block instance per file section. The catalog is generated
+from the systemd-networkd gperf tables of systemd v249-v257; directives not in
+the catalog can always be set through `section` blocks, and a directive must
+not be set both ways.
+
 ## Argument Reference
 
 | Attribute | Required | Description |

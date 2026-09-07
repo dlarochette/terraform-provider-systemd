@@ -103,3 +103,9 @@ Most resources share the same `content` XOR `section` model:
   repeatable directives are list attributes. A directive set via a typed
   block must not also be set via a `section` block; directives outside the
   catalog always remain settable through `section` or `content`.
+
+- networkd resources (`systemd_network`, `systemd_netdev`, `systemd_link`)
+  expose the same typed blocks for systemd-networkd sections, generated from
+  the networkd gperf tables of systemd v249-v257. Repeatable sections
+  (`[Address]`, `[Route]`, `[WireGuardPeer]`, qdiscs, ...) are list blocks:
+  one instance per file section.

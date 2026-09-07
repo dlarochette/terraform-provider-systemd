@@ -21,6 +21,7 @@ type networkFileResource struct {
 	typeName string
 	doc      string
 	suffix   string
+	specs    []sectionSpec
 }
 
 type networkFileModel struct {
@@ -35,6 +36,7 @@ func NewNetworkResource() resource.Resource {
 		typeName: "_network",
 		doc:      "Manages a `.network` file under `/etc/systemd/network` over SSH.",
 		suffix:   ".network",
+		specs:    netSpecs("network"),
 	}
 }
 func NewNetdevResource() resource.Resource {
@@ -42,6 +44,7 @@ func NewNetdevResource() resource.Resource {
 		typeName: "_netdev",
 		doc:      "Manages a `.netdev` file under `/etc/systemd/network` over SSH.",
 		suffix:   ".netdev",
+		specs:    netSpecs("netdev"),
 	}
 }
 func NewLinkResource() resource.Resource {
@@ -49,6 +52,7 @@ func NewLinkResource() resource.Resource {
 		typeName: "_link",
 		doc:      "Manages a `.link` file under `/etc/systemd/network` over SSH.",
 		suffix:   ".link",
+		specs:    netSpecs("link"),
 	}
 }
 
@@ -77,15 +81,26 @@ func (r *networkFileResource) Schema(_ context.Context, _ resource.SchemaRequest
 			"section": sectionBlockSchema(),
 		},
 	}
+	for name, block := range typedBlocks(r.specs) {
+		resp.Schema.Blocks[name] = block
+	}
 }
 
 func (r *networkFileResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var cfg networkFileModel
-	resp.Diagnostics.Append(req.Config.Get(ctx, &cfg)...)
-	if resp.Diagnostics.HasError() {
+	d, err := networkFileFromRaw(req.Config.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
-	if err := validateContentOrSections(cfg.Content, cfg.Sections); err != nil {
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	if err := validateContentSectionsTyped(content, d.Sections, req.Config.Raw, r.specs); err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+	if err := validateTypedConflicts(req.Config.Raw, d.Sections, r.specs); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
@@ -103,68 +118,70 @@ func (r *networkFileResource) Configure(_ context.Context, req resource.Configur
 }
 
 func (r *networkFileResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan networkFileModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := networkFileFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	if err := r.client.PutNetwork(ctx, plan.Filename.ValueString(), body); err != nil {
+	if err := r.client.PutNetwork(ctx, d.Filename, body); err != nil {
 		resp.Diagnostics.AddError("create network file", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = plan.Filename
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContentFilename(req.Plan.Raw, body, d.Filename)
 }
 
 func (r *networkFileResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state networkFileModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
+	d, err := networkFileFromRaw(req.State.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read state", err.Error())
 		return
 	}
-	content, err := r.client.GetNetwork(ctx, state.Filename.ValueString())
+	content, err := r.client.GetNetwork(ctx, d.Filename)
 	if err != nil {
 		resp.State.RemoveResource(ctx)
 		return
 	}
-	state.Content = types.StringValue(content)
-	state.ID = state.Filename
-	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+	resp.State.Raw = setStateContentFilename(req.State.Raw, content, d.Filename)
 }
 
 func (r *networkFileResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan networkFileModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := networkFileFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	if err := r.client.PutNetwork(ctx, plan.Filename.ValueString(), body); err != nil {
+	if err := r.client.PutNetwork(ctx, d.Filename, body); err != nil {
 		resp.Diagnostics.AddError("update network file", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = plan.Filename
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContentFilename(req.Plan.Raw, body, d.Filename)
 }
 
 func (r *networkFileResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state networkFileModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
+	d, err := networkFileFromRaw(req.State.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read state", err.Error())
 		return
 	}
-	if err := r.client.DeleteNetwork(ctx, state.Filename.ValueString()); err != nil {
+	if err := r.client.DeleteNetwork(ctx, d.Filename); err != nil {
 		resp.Diagnostics.AddError("delete network file", err.Error())
 	}
 }

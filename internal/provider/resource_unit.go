@@ -18,10 +18,13 @@ var _ resource.Resource = &unitResource{}
 var _ resource.ResourceWithImportState = &unitResource{}
 var _ resource.ResourceWithValidateConfig = &unitResource{}
 
-func NewUnitResource() resource.Resource { return &unitResource{} }
+func NewUnitResource() resource.Resource {
+	return &unitResource{specs: unitSpecs(sdprops.UnitSections())}
+}
 
 type unitResource struct {
 	client *Client
+	specs  []sectionSpec
 }
 
 type unitModel struct {
@@ -67,7 +70,7 @@ func (r *unitResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 		},
 	}
 	// Typed systemd properties, one block per unit section.
-	for name, block := range typedBlocks(sdprops.UnitSections()) {
+	for name, block := range typedBlocks(unitSpecs(sdprops.UnitSections())) {
 		resp.Schema.Blocks[name] = block
 	}
 }
@@ -82,11 +85,11 @@ func (r *unitResource) ValidateConfig(ctx context.Context, req resource.Validate
 	if d.HasContent {
 		content = types.StringValue(d.Content)
 	}
-	if err := validateContentSectionsTyped(content, d.Sections, req.Config.Raw, sdprops.UnitSections()); err != nil {
+	if err := validateContentSectionsTyped(content, d.Sections, req.Config.Raw, r.specs); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
-	if err := validateTypedConflicts(req.Config.Raw, d.Sections, sdprops.UnitSections()); err != nil {
+	if err := validateTypedConflicts(req.Config.Raw, d.Sections, r.specs); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
@@ -113,7 +116,7 @@ func (r *unitResource) Create(ctx context.Context, req resource.CreateRequest, r
 	if d.HasContent {
 		content = types.StringValue(d.Content)
 	}
-	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, sdprops.UnitSections())
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
@@ -121,7 +124,7 @@ func (r *unitResource) Create(ctx context.Context, req resource.CreateRequest, r
 	v, verr := r.client.hostSystemdVersion()
 	if verr != nil {
 		resp.Diagnostics.AddWarning("systemd version", "cannot determine the remote systemd release ("+verr.Error()+"); directive availability was not checked")
-	} else if err := validateTypedForVersion(req.Plan.Raw, sdprops.UnitSections(), v); err != nil {
+	} else if err := validateTypedForVersion(req.Plan.Raw, r.specs, v); err != nil {
 		resp.Diagnostics.AddError("Incompatible with the target systemd version", err.Error())
 		return
 	}
@@ -160,7 +163,7 @@ func (r *unitResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	if d.HasContent {
 		content = types.StringValue(d.Content)
 	}
-	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, sdprops.UnitSections())
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
@@ -168,7 +171,7 @@ func (r *unitResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	v, verr := r.client.hostSystemdVersion()
 	if verr != nil {
 		resp.Diagnostics.AddWarning("systemd version", "cannot determine the remote systemd release ("+verr.Error()+"); directive availability was not checked")
-	} else if err := validateTypedForVersion(req.Plan.Raw, sdprops.UnitSections(), v); err != nil {
+	} else if err := validateTypedForVersion(req.Plan.Raw, r.specs, v); err != nil {
 		resp.Diagnostics.AddError("Incompatible with the target systemd version", err.Error())
 		return
 	}

@@ -15,33 +15,93 @@ import (
 	"github.com/dlarochette/terraform-provider-systemd/internal/unitfile"
 )
 
+// ---------------------------------------------------------------- specs
+
+// blockName maps a systemd section name to an HCL block name (lowercase,
+// only alphanumerics and underscores).
+func blockName(section string) string {
+	out := strings.ToLower(section)
+	out = strings.ReplaceAll(out, "-", "_")
+	out = strings.ReplaceAll(out, ".", "_")
+	return out
+}
+
+// sectionSpec describes one typed section block: which catalog kind it
+// comes from and whether the section may repeat in the file.
+type sectionSpec struct {
+	Kind       string // "unit", "network", "netdev" or "link"
+	Section    string
+	Repeatable bool
+}
+
+func unitSpecs(sections []string) []sectionSpec {
+	out := make([]sectionSpec, 0, len(sections))
+	for _, sec := range sections {
+		out = append(out, sectionSpec{Kind: "unit", Section: sec})
+	}
+	return out
+}
+
+func netSpecs(kind string) []sectionSpec {
+	rep := sdprops.RepeatableSections(kind)
+	out := make([]sectionSpec, 0)
+	for _, sec := range sdprops.NetSectionNames(kind) {
+		out = append(out, sectionSpec{Kind: kind, Section: sec, Repeatable: rep[sec]})
+	}
+	return out
+}
+
+func (s sectionSpec) directives() []sdprops.Directive {
+	if s.Kind == "unit" || s.Kind == "" {
+		return sdprops.Directives(s.Section)
+	}
+	return sdprops.NetDirectives(s.Kind, s.Section)
+}
+
+func (s sectionSpec) sinceVersion(name string) int {
+	if s.Kind == "unit" || s.Kind == "" {
+		return sdprops.SinceVersion(s.Section, name)
+	}
+	return sdprops.NetSinceVersion(s.Kind, s.Section, name)
+}
+
 // ---------------------------------------------------------------- schema
 
 // typedBlocks builds one single-nested block per systemd section. Each
 // block attribute is a systemd directive, named snake_case, typed and
 // validated according to the systemd parser.
-func typedBlocks(sections []string) map[string]schema.Block {
+func typedBlocks(specs []sectionSpec) map[string]schema.Block {
 	blocks := map[string]schema.Block{}
-	for _, sec := range sections {
-		dirs := sdprops.Directives(sec)
+	for _, spec := range specs {
+		dirs := spec.directives()
 		if len(dirs) == 0 {
 			continue
 		}
 		attrs := map[string]schema.Attribute{}
 		for _, d := range dirs {
-			attrs[d.Attr] = typedAttr(sec, d)
+			attrs[d.Attr] = typedAttr(spec.Kind, spec.Section, d)
 		}
-		blocks[strings.ToLower(sec)] = schema.SingleNestedBlock{
-			MarkdownDescription: fmt.Sprintf(
-				"Directives of the systemd `[%s]` section, typed as properties with systemd validation rules. Mutually exclusive with `section` blocks for the directives declared here.",
-				sec),
-			Attributes: attrs,
+		desc := fmt.Sprintf(
+			"Directives of the systemd `[%s]` section, typed as properties with systemd validation rules. Mutually exclusive with `section` blocks for the directives declared here.",
+			spec.Section)
+		if spec.Repeatable {
+			blocks[blockName(spec.Section)] = schema.ListNestedBlock{
+				MarkdownDescription: desc + " This section may appear several times in the file; repeat this block for each instance.",
+				NestedObject: schema.NestedBlockObject{
+					Attributes: attrs,
+				},
+			}
+			continue
+		}
+		blocks[blockName(spec.Section)] = schema.SingleNestedBlock{
+			MarkdownDescription: desc,
+			Attributes:          attrs,
 		}
 	}
 	return blocks
 }
 
-func typedAttr(section string, d sdprops.Directive) schema.Attribute {
+func typedAttr(kind, section string, d sdprops.Directive) schema.Attribute {
 	base := fmt.Sprintf("systemd directive `%s=` in the `[%s]` section (systemd v%d).", d.Name, section, sdprops.LatestVersion)
 	switch d.Class {
 	case sdprops.ClassBool:
@@ -159,37 +219,50 @@ func rawList(v tftypes.Value) ([]tftypes.Value, bool) {
 
 // typedToFile renders the typed section blocks of a raw config/plan value
 // into a unit file. Values must be known at this point.
-func typedToFile(raw tftypes.Value, sections []string) (unitfile.File, error) {
+func typedToFile(raw tftypes.Value, specs []sectionSpec) (unitfile.File, error) {
 	obj, ok := rawObject(raw)
 	if !ok {
 		return unitfile.File{}, nil
 	}
 	var f unitfile.File
-	for _, sec := range sections {
-		blockVal, present := obj[strings.ToLower(sec)]
+	for _, spec := range specs {
+		blockVal, present := obj[blockName(spec.Section)]
 		if !present {
 			continue
 		}
-		blockAttrs, ok := rawObject(blockVal)
-		if !ok {
-			continue
-		}
-		uSec := unitfile.Section{Name: sec}
-		for _, d := range sdprops.Directives(sec) {
-			val, present := blockAttrs[d.Attr]
-			if !present {
+		instances := []map[string]tftypes.Value{}
+		if spec.Repeatable {
+			elems, ok := rawList(blockVal)
+			if !ok {
 				continue
 			}
-			svals, err := directiveValues(d, val)
-			if err != nil {
-				return f, err
+			for _, el := range elems {
+				if attrs, ok := rawObject(el); ok {
+					instances = append(instances, attrs)
+				}
 			}
-			for _, sv := range svals {
-				uSec.Entries = append(uSec.Entries, unitfile.Entry{Key: d.Name, Value: sv})
-			}
+		} else if attrs, ok := rawObject(blockVal); ok {
+			instances = append(instances, attrs)
 		}
-		if len(uSec.Entries) > 0 {
-			f.Sections = append(f.Sections, uSec)
+		dirs := spec.directives()
+		for _, blockAttrs := range instances {
+			uSec := unitfile.Section{Name: spec.Section}
+			for _, d := range dirs {
+				val, present := blockAttrs[d.Attr]
+				if !present {
+					continue
+				}
+				svals, err := directiveValues(d, val)
+				if err != nil {
+					return f, err
+				}
+				for _, sv := range svals {
+					uSec.Entries = append(uSec.Entries, unitfile.Entry{Key: d.Name, Value: sv})
+				}
+			}
+			if len(uSec.Entries) > 0 {
+				f.Sections = append(f.Sections, uSec)
+			}
 		}
 	}
 	return f, nil
@@ -248,9 +321,9 @@ func directiveValues(d sdprops.Directive, val tftypes.Value) ([]string, error) {
 // resolveFileContentTyped renders the final unit body: typed sections first
 // (catalog order), then generic `section` blocks, falling back to raw
 // `content`.
-func resolveFileContentTyped(content types.String, sections []sectionModel, raw tftypes.Value, allowed []string) (string, error) {
+func resolveFileContentTyped(content types.String, sections []sectionModel, raw tftypes.Value, specs []sectionSpec) (string, error) {
 	var structured unitfile.File
-	typed, err := typedToFile(raw, allowed)
+	typed, err := typedToFile(raw, specs)
 	if err != nil {
 		return "", err
 	}
@@ -266,24 +339,37 @@ func resolveFileContentTyped(content types.String, sections []sectionModel, raw 
 // ---------------------------------------------------------------- validation
 
 // hasTypedSections reports whether any typed block carries a value.
-func hasTypedSections(raw tftypes.Value, sections []string) bool {
+func hasTypedSections(raw tftypes.Value, specs []sectionSpec) bool {
 	obj, ok := rawObject(raw)
 	if !ok {
 		return false
 	}
-	for _, sec := range sections {
-		blockVal, present := obj[strings.ToLower(sec)]
+	for _, spec := range specs {
+		blockVal, present := obj[blockName(spec.Section)]
 		if !present {
 			continue
 		}
-		blockAttrs, ok := rawObject(blockVal)
-		if !ok {
+		dirs := spec.directives()
+		check := func(attrs map[string]tftypes.Value) bool {
+			for _, d := range dirs {
+				if val, present := attrs[d.Attr]; present && val.IsKnown() && !val.IsNull() {
+					return true
+				}
+			}
+			return false
+		}
+		if spec.Repeatable {
+			if elems, ok := rawList(blockVal); ok {
+				for _, el := range elems {
+					if attrs, ok := rawObject(el); ok && check(attrs) {
+						return true
+					}
+				}
+			}
 			continue
 		}
-		for _, d := range sdprops.Directives(sec) {
-			if val, present := blockAttrs[d.Attr]; present && val.IsKnown() && !val.IsNull() {
-				return true
-			}
+		if attrs, ok := rawObject(blockVal); ok && check(attrs) {
+			return true
 		}
 	}
 	return false
@@ -291,10 +377,10 @@ func hasTypedSections(raw tftypes.Value, sections []string) bool {
 
 // validateContentSectionsTyped enforces the content / section / typed-block
 // exclusivity.
-func validateContentSectionsTyped(content types.String, sections []sectionModel, raw tftypes.Value, allowed []string) error {
+func validateContentSectionsTyped(content types.String, sections []sectionModel, raw tftypes.Value, specs []sectionSpec) error {
 	hasC := !content.IsNull() && !content.IsUnknown() && content.ValueString() != ""
 	hasS := len(sections) > 0
-	hasT := hasTypedSections(raw, allowed)
+	hasT := hasTypedSections(raw, specs)
 	switch {
 	case hasC && (hasS || hasT):
 		return fmt.Errorf("content is mutually exclusive with section blocks and typed properties; set only one representation")
@@ -307,7 +393,7 @@ func validateContentSectionsTyped(content types.String, sections []sectionModel,
 
 // validateTypedConflicts rejects a generic `section` block that sets a
 // directive also provided by a typed block of the same section.
-func validateTypedConflicts(raw tftypes.Value, sections []sectionModel, allowed []string) error {
+func validateTypedConflicts(raw tftypes.Value, sections []sectionModel, specs []sectionSpec) error {
 	obj, ok := rawObject(raw)
 	if !ok {
 		return nil
@@ -317,27 +403,37 @@ func validateTypedConflicts(raw tftypes.Value, sections []sectionModel, allowed 
 			continue
 		}
 		secName := s.Name.ValueString()
-		for _, sec := range allowed {
-			if !strings.EqualFold(sec, secName) {
+		for _, spec := range specs {
+			if !strings.EqualFold(spec.Section, secName) {
 				continue
 			}
-			blockVal, present := obj[strings.ToLower(sec)]
+			blockVal, present := obj[blockName(spec.Section)]
 			if !present {
 				continue
 			}
-			blockAttrs, ok := rawObject(blockVal)
-			if !ok {
-				continue
-			}
+			dirs := spec.directives()
 			used := map[string]bool{}
-			for _, d := range sdprops.Directives(sec) {
-				if val, present := blockAttrs[d.Attr]; present && val.IsKnown() && !val.IsNull() {
-					used[d.Name] = true
+			collect := func(attrs map[string]tftypes.Value) {
+				for _, d := range dirs {
+					if val, present := attrs[d.Attr]; present && val.IsKnown() && !val.IsNull() {
+						used[d.Name] = true
+					}
 				}
+			}
+			if spec.Repeatable {
+				if elems, ok := rawList(blockVal); ok {
+					for _, el := range elems {
+						if attrs, ok := rawObject(el); ok {
+							collect(attrs)
+						}
+					}
+				}
+			} else if attrs, ok := rawObject(blockVal); ok {
+				collect(attrs)
 			}
 			for _, e := range s.Entries {
 				if used[e.Key.ValueString()] {
-					return fmt.Errorf("directive `%s=` is set twice: by the typed property `%s` and by a `section` block; remove one", e.Key.ValueString(), strings.ToLower(sec)+"."+snakeOf(sdprops.Directives(sec), e.Key.ValueString()))
+					return fmt.Errorf("directive `%s=` is set twice: by the typed property `%s` and by a `section` block; remove one", e.Key.ValueString(), blockName(spec.Section)+"."+snakeOf(dirs, e.Key.ValueString()))
 				}
 			}
 		}
@@ -468,33 +564,81 @@ func rawOptBool(v tftypes.Value) (*bool, bool) {
 
 // validateTypedForVersion checks that every directive set in a typed block
 // exists in the given systemd release of the host.
-func validateTypedForVersion(raw tftypes.Value, sections []string, version int) error {
+func validateTypedForVersion(raw tftypes.Value, specs []sectionSpec, version int) error {
 	obj, ok := rawObject(raw)
 	if !ok {
 		return nil
 	}
 	var missing []string
-	for _, sec := range sections {
-		blockVal, present := obj[strings.ToLower(sec)]
+	for _, spec := range specs {
+		blockVal, present := obj[blockName(spec.Section)]
 		if !present {
 			continue
 		}
-		blockAttrs, ok := rawObject(blockVal)
-		if !ok {
-			continue
-		}
-		for _, d := range sdprops.Directives(sec) {
-			val, present := blockAttrs[d.Attr]
-			if !present || !val.IsKnown() || val.IsNull() {
-				continue
+		dirs := spec.directives()
+		if spec.Repeatable {
+			if elems, ok := rawList(blockVal); ok {
+				for _, el := range elems {
+					if attrs, ok := rawObject(el); ok {
+						missing = appendInstanceMissing(spec, dirs, attrs, version, missing)
+					}
+				}
 			}
-			if since := sdprops.SinceVersion(sec, d.Name); since > version {
-				missing = append(missing, fmt.Sprintf("`[%s]` `%s=` requires systemd >= v%d (host: v%d)", sec, d.Name, since, version))
-			}
+		} else if attrs, ok := rawObject(blockVal); ok {
+			missing = appendInstanceMissing(spec, dirs, attrs, version, missing)
 		}
 	}
 	if len(missing) > 0 {
 		return fmt.Errorf("directives not available in systemd v%d of the host:\n%s", version, strings.Join(missing, "\n"))
 	}
 	return nil
+}
+
+func appendInstanceMissing(spec sectionSpec, dirs []sdprops.Directive, attrs map[string]tftypes.Value, version int, missing []string) []string {
+	for _, d := range dirs {
+		val, present := attrs[d.Attr]
+		if !present || !val.IsKnown() || val.IsNull() {
+			continue
+		}
+		if since := spec.sinceVersion(d.Name); since > version {
+			missing = append(missing, fmt.Sprintf("`[%s]` `%s=` requires systemd >= v%d (host: v%d)", spec.Section, d.Name, since, version))
+		}
+	}
+	return missing
+}
+
+// networkFileRaw is the model data of a network file resource read from a
+// raw tftypes value.
+type networkFileRaw struct {
+	Filename    string
+	HasFilename bool
+	Content     string
+	HasContent  bool
+	Sections    []sectionModel
+}
+
+func networkFileFromRaw(raw tftypes.Value) (networkFileRaw, error) {
+	var d networkFileRaw
+	obj, ok := rawObject(raw)
+	if !ok {
+		return d, fmt.Errorf("config is not an object")
+	}
+	if s, ok := rawString(obj["filename"]); ok {
+		d.Filename = s
+		d.HasFilename = true
+	}
+	if s, ok := rawString(obj["content"]); ok {
+		d.Content = s
+		d.HasContent = true
+	}
+	if secs, ok := rawSectionBlocks(obj["section"]); ok {
+		d.Sections = secs
+	}
+	return d, nil
+}
+
+// setStateContentFilename transforms a raw value setting content and id for
+// network file resources (id = filename).
+func setStateContentFilename(raw tftypes.Value, content, filename string) tftypes.Value {
+	return setStateContent(raw, content, filename)
 }

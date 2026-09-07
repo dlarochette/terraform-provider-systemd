@@ -159,7 +159,7 @@ func TestSinceVersion(t *testing.T) {
 		}
 	}
 	// ExecStart exists in every bundled version
-	for _, cat := range Catalogs {
+	for _, cat := range UnitCatalogs {
 		found := false
 		for _, d := range DirectivesIn(&cat, "Service") {
 			if d.Name == "ExecStart" {

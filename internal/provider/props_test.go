@@ -112,7 +112,7 @@ func listStrVal(items ...string) tftypes.Value {
 
 func TestTypedToFileRender(t *testing.T) {
 	raw := renderRawValue()
-	f, err := typedToFile(raw, []string{"Unit", "Install", "Service"})
+	f, err := typedToFile(raw, unitSpecs([]string{"Unit", "Install", "Service"}))
 	if err != nil {
 		t.Fatalf("typedToFile: %v", err)
 	}
@@ -138,10 +138,10 @@ func TestTypedToFileRender(t *testing.T) {
 func TestResolveFileContentTyped(t *testing.T) {
 	raw := renderRawValue()
 	sections := []string{"Unit", "Install", "Service"}
-	if _, err := resolveFileContentTyped(types.StringValue("[Unit]\nDescription=x\n"), nil, raw, sections); err == nil {
+	if _, err := resolveFileContentTyped(types.StringValue("[Unit]\nDescription=x\n"), nil, raw, unitSpecs(sections)); err == nil {
 		t.Fatal("expected exclusivity error with content + typed")
 	}
-	body, err := resolveFileContentTyped(types.StringNull(), nil, raw, sections)
+	body, err := resolveFileContentTyped(types.StringNull(), nil, raw, unitSpecs(sections))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -152,16 +152,16 @@ func TestResolveFileContentTyped(t *testing.T) {
 
 func TestValidateContentSectionsTyped(t *testing.T) {
 	sections := []string{"Unit", "Install", "Service"}
-	if err := validateContentSectionsTyped(types.StringNull(), nil, renderRawValue(), sections); err != nil {
+	if err := validateContentSectionsTyped(types.StringNull(), nil, renderRawValue(), unitSpecs(sections)); err != nil {
 		t.Errorf("typed only should pass: %v", err)
 	}
-	if err := validateContentSectionsTyped(types.StringValue("x"), nil, renderRawValue(), sections); err == nil {
+	if err := validateContentSectionsTyped(types.StringValue("x"), nil, renderRawValue(), unitSpecs(sections)); err == nil {
 		t.Error("content + typed must fail")
 	}
-	if err := validateContentSectionsTyped(types.StringNull(), nil, tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{}}, map[string]tftypes.Value{}), sections); err == nil {
+	if err := validateContentSectionsTyped(types.StringNull(), nil, tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{}}, map[string]tftypes.Value{}), unitSpecs(sections)); err == nil {
 		t.Error("nothing set must fail")
 	}
-	if err := validateContentSectionsTyped(types.StringValue("x"), nil, tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{}}, map[string]tftypes.Value{}), sections); err != nil {
+	if err := validateContentSectionsTyped(types.StringValue("x"), nil, tftypes.NewValue(tftypes.Object{AttributeTypes: map[string]tftypes.Type{}}, map[string]tftypes.Value{}), unitSpecs(sections)); err != nil {
 		t.Errorf("content alone must pass: %v", err)
 	}
 }
@@ -175,7 +175,7 @@ func TestValidateTypedConflicts(t *testing.T) {
 			{Key: types.StringValue("ExecStart"), Value: types.StringValue("/bin/false")},
 		},
 	}}
-	err := validateTypedConflicts(raw, sections, []string{"Unit", "Install", "Service"})
+	err := validateTypedConflicts(raw, sections, unitSpecs([]string{"Unit", "Install", "Service"}))
 	if err == nil || !strings.Contains(err.Error(), "ExecStart") {
 		t.Fatalf("expected conflict error, got %v", err)
 	}
@@ -225,12 +225,12 @@ func TestSetStateContent(t *testing.T) {
 }
 
 func TestTypedAttrValidators(t *testing.T) {
-	attr := typedAttr("Service", sdprops.Directive{Name: "Restart", Attr: "restart", Class: "enum:service_restart"})
+	attr := typedAttr("unit", "Service", sdprops.Directive{Name: "Restart", Attr: "restart", Class: "enum:service_restart"})
 	sa := attr.(schema.StringAttribute)
 	if len(sa.Validators) != 1 {
 		t.Error("enum attr must carry a one-of validator")
 	}
-	attr = typedAttr("Service", sdprops.Directive{Name: "TimeoutStartSec", Attr: "timeout_start_sec", Class: sdprops.ClassTimespan})
+	attr = typedAttr("unit", "Service", sdprops.Directive{Name: "TimeoutStartSec", Attr: "timeout_start_sec", Class: sdprops.ClassTimespan})
 	sa = attr.(schema.StringAttribute)
 	if len(sa.Validators) != 1 {
 		t.Error("timespan attr must carry a validator")
@@ -351,11 +351,134 @@ outer:
 	raw = tftypes.NewValue(raw.Type(), obj)
 
 	// host version below the directive's introduction: rejected
-	if err := validateTypedForVersion(raw, []string{"Unit", "Install", "Service"}, 249); err == nil {
+	if err := validateTypedForVersion(raw, unitSpecs([]string{"Unit", "Install", "Service"}), 249); err == nil {
 		t.Fatalf("%s.%s (since v%d) must be rejected for v249", sec, name, since)
 	}
 	// latest version: accepted
-	if err := validateTypedForVersion(raw, []string{"Unit", "Install", "Service"}, sdprops.LatestVersion); err != nil {
+	if err := validateTypedForVersion(raw, unitSpecs([]string{"Unit", "Install", "Service"}), sdprops.LatestVersion); err != nil {
 		t.Fatalf("latest must accept: %v", err)
 	}
+}
+
+func TestNetTypedToFileRender(t *testing.T) {
+	specs := netSpecs("network")
+	// find the Match, Network and Address sections
+	objTypes := map[string]tftypes.Type{"filename": strType, "content": strType, "id": strType, "section": tftypes.List{ElementType: tftypes.Object{AttributeTypes: map[string]tftypes.Type{"name": strType, "entry": tftypes.List{ElementType: tftypes.Object{AttributeTypes: map[string]tftypes.Type{"key": strType, "value": strType}}}}}}}
+	for _, spec := range specs {
+		objTypes[blockName(spec.Section)] = netSectionValueType(spec)
+	}
+	// [Network] block with a couple of typed directives
+	networkVals := map[string]tftypes.Value{}
+	for _, d := range sdprops.NetDirectives("network", "Network") {
+		networkVals[d.Attr] = nullOf(objAttrType2(d.Class))
+	}
+	if _, ok := networkVals["dns"]; !ok {
+		t.Fatal("Network.DNS directive missing from catalog")
+	}
+	networkVals["dns"] = strVal("9.9.9.9")
+	if _, ok := networkVals["dhcp"]; ok {
+		networkVals["dhcp"] = strVal("ipv4")
+	}
+	// [Address] repeatable: two instances
+	addrVals := map[string]tftypes.Value{}
+	for _, d := range sdprops.NetDirectives("network", "Address") {
+		addrVals[d.Attr] = nullOf(objAttrType2(d.Class))
+	}
+	if _, ok := addrVals["address"]; !ok {
+		t.Fatal("Address.Address directive missing")
+	}
+	inst1 := fillNetBlock("Address", map[string]tftypes.Value{"address": strVal("192.0.2.10/24")})
+	inst2 := fillNetBlock("Address", map[string]tftypes.Value{"address": strVal("2001:db8::10/64")})
+	rawVals := map[string]tftypes.Value{
+		"section":  nullVal(objTypes["section"]),
+		"filename": strVal("30-br0.network"),
+		"content":  nullVal(strType),
+		"id":       nullVal(strType),
+		"network":  fillNetBlock("Network", networkVals),
+		"address":  tftypes.NewValue(netSectionListType("Address"), []tftypes.Value{inst1, inst2}),
+	}
+	for _, spec := range specs {
+		name := blockName(spec.Section)
+		if _, ok := rawVals[name]; !ok {
+			rawVals[name] = nullVal(objTypes[name])
+		}
+	}
+	raw := tftypes.NewValue(tftypes.Object{AttributeTypes: objTypes}, rawVals)
+	f, err := typedToFile(raw, specs)
+	if err != nil {
+		t.Fatalf("typedToFile: %v", err)
+	}
+	rendered := f.Render()
+	if !strings.Contains(rendered, "DNS=9.9.9.9\n") {
+		t.Errorf("missing Network DNS in:\n%s", rendered)
+	}
+	if strings.Count(rendered, "[Address]") != 2 {
+		t.Errorf("expected 2 [Address] sections in:\n%s", rendered)
+	}
+	if !strings.Contains(rendered, "Address=192.0.2.10/24") || !strings.Contains(rendered, "Address=2001:db8::10/64") {
+		t.Errorf("address content wrong:\n%s", rendered)
+	}
+}
+
+// net helpers
+
+func netSectionValueType(spec sectionSpec) tftypes.Type {
+	attrs := map[string]tftypes.Type{}
+	for _, d := range spec.directives() {
+		attrs[d.Attr] = objAttrType2(d.Class)
+	}
+	if spec.Repeatable {
+		return tftypes.List{ElementType: tftypes.Object{AttributeTypes: attrs}}
+	}
+	return tftypes.Object{AttributeTypes: attrs}
+}
+
+func netSectionListType(sec string) tftypes.Type {
+	attrs := map[string]tftypes.Type{}
+	for _, d := range sdprops.NetDirectives("network", sec) {
+		attrs[d.Attr] = objAttrType2(d.Class)
+	}
+	return tftypes.List{ElementType: tftypes.Object{AttributeTypes: attrs}}
+}
+
+func nullOf(t tftypes.Type) tftypes.Value {
+	return tftypes.NewValue(t, nil)
+}
+
+func fillNetBlock(sec string, vals map[string]tftypes.Value) tftypes.Value {
+	return fillNetBlockKind("network", sec, vals)
+}
+
+func fillNetBlockKind(kind, sec string, vals map[string]tftypes.Value) tftypes.Value {
+	attrs := map[string]tftypes.Value{}
+	typ := tftypes.Object{AttributeTypes: map[string]tftypes.Type{}}
+	typ = netSectionSingleType(kind, sec)
+	for name := range typ.AttributeTypes {
+		if v, ok := vals[name]; ok {
+			attrs[name] = v
+		} else {
+			attrs[name] = nullVal(typ.AttributeTypes[name])
+		}
+	}
+	return tftypes.NewValue(typ, attrs)
+}
+
+func netSectionSingleType(kind, sec string) tftypes.Object {
+	attrs := map[string]tftypes.Type{}
+	for _, d := range sdprops.NetDirectives(kind, sec) {
+		attrs[d.Attr] = objAttrType2(d.Class)
+	}
+	return tftypes.Object{AttributeTypes: attrs}
+}
+
+func objAttrType2(class string) tftypes.Type {
+	switch class {
+	case sdprops.ClassBool:
+		return boolType
+	case sdprops.ClassInt:
+		return intType
+	case sdprops.ClassList:
+		return listStr
+	}
+	return strType
 }

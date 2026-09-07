@@ -21,7 +21,7 @@ type unitLikeResource struct {
 	typeName string
 	suffix   string
 	doc      string
-	sections []string
+	specs    []sectionSpec
 }
 
 type unitLikeModel struct {
@@ -35,7 +35,7 @@ type unitLikeModel struct {
 
 func NewTimerResource() resource.Resource {
 	return &unitLikeResource{
-		sections: sdprops.SectionsForUnitType("Timer"),
+		specs:    unitSpecs(sdprops.SectionsForUnitType("Timer")),
 		typeName: "_timer",
 		suffix:   ".timer",
 		doc:      "Manages a systemd `.timer` unit under `/etc/systemd/system`. Pair with a matching `.service` (`systemd_unit`).",
@@ -44,7 +44,7 @@ func NewTimerResource() resource.Resource {
 
 func NewMountResource() resource.Resource {
 	return &unitLikeResource{
-		sections: sdprops.SectionsForUnitType("Mount"),
+		specs:    unitSpecs(sdprops.SectionsForUnitType("Mount")),
 		typeName: "_mount",
 		suffix:   ".mount",
 		doc:      "Manages a systemd `.mount` unit under `/etc/systemd/system` (e.g. `data.mount` for `/data`).",
@@ -53,7 +53,7 @@ func NewMountResource() resource.Resource {
 
 func NewAutomountResource() resource.Resource {
 	return &unitLikeResource{
-		sections: sdprops.SectionsForUnitType("Automount"),
+		specs:    unitSpecs(sdprops.SectionsForUnitType("Automount")),
 		typeName: "_automount",
 		suffix:   ".automount",
 		doc:      "Manages a systemd `.automount` unit under `/etc/systemd/system`. Usually paired with a `.mount` unit.",
@@ -62,7 +62,7 @@ func NewAutomountResource() resource.Resource {
 
 func NewSocketResource() resource.Resource {
 	return &unitLikeResource{
-		sections: sdprops.SectionsForUnitType("Socket"),
+		specs:    unitSpecs(sdprops.SectionsForUnitType("Socket")),
 		typeName: "_socket",
 		suffix:   ".socket",
 		doc:      "Manages a systemd `.socket` unit under `/etc/systemd/system`. Pair with a matching `.service`.",
@@ -71,7 +71,7 @@ func NewSocketResource() resource.Resource {
 
 func NewPathResource() resource.Resource {
 	return &unitLikeResource{
-		sections: sdprops.SectionsForUnitType("Path"),
+		specs:    unitSpecs(sdprops.SectionsForUnitType("Path")),
 		typeName: "_path",
 		suffix:   ".path",
 		doc:      "Manages a systemd `.path` unit under `/etc/systemd/system`. Pair with a matching `.service` (`PathExists` / `PathChanged` / …).",
@@ -80,7 +80,7 @@ func NewPathResource() resource.Resource {
 
 func NewSwapResource() resource.Resource {
 	return &unitLikeResource{
-		sections: sdprops.SectionsForUnitType("Swap"),
+		specs:    unitSpecs(sdprops.SectionsForUnitType("Swap")),
 		typeName: "_swap",
 		suffix:   ".swap",
 		doc:      "Manages a systemd `.swap` unit under `/etc/systemd/system` (e.g. `swapfile.swap`).",
@@ -89,7 +89,7 @@ func NewSwapResource() resource.Resource {
 
 func NewSliceResource() resource.Resource {
 	return &unitLikeResource{
-		sections: sdprops.SectionsForUnitType("Slice"),
+		specs:    unitSpecs(sdprops.SectionsForUnitType("Slice")),
 		typeName: "_slice",
 		suffix:   ".slice",
 		doc:      "Manages a systemd `.slice` unit under `/etc/systemd/system` (cgroup resource hierarchy).",
@@ -98,7 +98,7 @@ func NewSliceResource() resource.Resource {
 
 func NewTargetResource() resource.Resource {
 	return &unitLikeResource{
-		sections: sdprops.SectionsForUnitType("Target"),
+		specs:    unitSpecs(sdprops.SectionsForUnitType("Target")),
 		typeName: "_target",
 		suffix:   ".target",
 		doc:      "Manages a systemd `.target` unit under `/etc/systemd/system` (grouping / synchronization point for other units).",
@@ -142,7 +142,7 @@ func (r *unitLikeResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 			"section": sectionBlockSchema(),
 		},
 	}
-	for name, block := range typedBlocks(r.sections) {
+	for name, block := range typedBlocks(r.specs) {
 		resp.Schema.Blocks[name] = block
 	}
 }
@@ -157,11 +157,11 @@ func (r *unitLikeResource) ValidateConfig(ctx context.Context, req resource.Vali
 	if d.HasContent {
 		content = types.StringValue(d.Content)
 	}
-	if err := validateContentSectionsTyped(content, d.Sections, req.Config.Raw, r.sections); err != nil {
+	if err := validateContentSectionsTyped(content, d.Sections, req.Config.Raw, r.specs); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
-	if err := validateTypedConflicts(req.Config.Raw, d.Sections, r.sections); err != nil {
+	if err := validateTypedConflicts(req.Config.Raw, d.Sections, r.specs); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
@@ -188,7 +188,7 @@ func (r *unitLikeResource) Create(ctx context.Context, req resource.CreateReques
 	if d.HasContent {
 		content = types.StringValue(d.Content)
 	}
-	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.sections)
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
@@ -196,7 +196,7 @@ func (r *unitLikeResource) Create(ctx context.Context, req resource.CreateReques
 	v, verr := r.client.hostSystemdVersion()
 	if verr != nil {
 		resp.Diagnostics.AddWarning("systemd version", "cannot determine the remote systemd release ("+verr.Error()+"); directive availability was not checked")
-	} else if err := validateTypedForVersion(req.Plan.Raw, r.sections, v); err != nil {
+	} else if err := validateTypedForVersion(req.Plan.Raw, r.specs, v); err != nil {
 		resp.Diagnostics.AddError("Incompatible with the target systemd version", err.Error())
 		return
 	}
@@ -235,7 +235,7 @@ func (r *unitLikeResource) Update(ctx context.Context, req resource.UpdateReques
 	if d.HasContent {
 		content = types.StringValue(d.Content)
 	}
-	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.sections)
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
@@ -243,7 +243,7 @@ func (r *unitLikeResource) Update(ctx context.Context, req resource.UpdateReques
 	v, verr := r.client.hostSystemdVersion()
 	if verr != nil {
 		resp.Diagnostics.AddWarning("systemd version", "cannot determine the remote systemd release ("+verr.Error()+"); directive availability was not checked")
-	} else if err := validateTypedForVersion(req.Plan.Raw, r.sections, v); err != nil {
+	} else if err := validateTypedForVersion(req.Plan.Raw, r.specs, v); err != nil {
 		resp.Diagnostics.AddError("Incompatible with the target systemd version", err.Error())
 		return
 	}

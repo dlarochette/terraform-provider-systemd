@@ -173,7 +173,10 @@ resource "systemd_unit" "demo" {
 ```
 
 The catalog is generated from the systemd `load-fragment` gperf table
-(systemd v257): `go generate ./internal/sdprops`. Repeatable directives are
+(systemd v257): `go generate ./internal/sdprops`. The networkd resources
+(`systemd_network`, `systemd_netdev`, `systemd_link`) follow the same model
+with the networkd catalogs; repeatable sections (`[Address]`, `[Route]`, ...)
+are list blocks. Repeatable directives are
 list attributes; other values are strings / bools / ints per the systemd
 parser. `content`, `section` and typed blocks are mutually exclusive at file
 level, and a directive set via a typed block cannot also be set via `section`.
