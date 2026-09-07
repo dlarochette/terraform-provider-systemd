@@ -68,3 +68,54 @@ func TestAccUnitLifecycle(t *testing.T) {
 		t.Fatal("expected GetUnit to fail after DeleteUnit (unit file should be gone)")
 	}
 }
+
+// TestAccVerifyUnit exercises the provider-side systemd-analyze verify flow
+// against the real systemd of the guest: a valid unit passes in every mode,
+// a broken unit fails in error mode and is rolled back.
+func TestAccVerifyUnit(t *testing.T) {
+	c := accClient(t)
+	ctx := t.Context()
+
+	name := "tf-acc-verify.service"
+	good := "[Unit]\nDescription=tf-acc verify\n\n[Service]\nType=oneshot\nExecStart=/bin/true\n"
+	broken := "ExecStart=/bin/true no section\n"
+
+	if v, err := c.Host.SystemdVersion(); err == nil {
+		t.Logf("guest systemd: %s", v)
+	}
+
+	c2 := &Client{Host: c.Host, Verify: VerifyError}
+	// broken: must fail and roll back (file absent)
+	if _, err := c2.PutUnitVerified(ctx, name, broken, nil, nil); err == nil {
+		t.Fatal("expected verification failure for a broken unit")
+	}
+	if _, err := c.GetUnit(ctx, name); err == nil {
+		t.Fatal("broken unit must have been rolled back")
+	}
+
+	// valid: writes + warns nothing
+	if _, err := c2.PutUnitVerified(ctx, name, good, accBool(false), nil); err != nil {
+		t.Fatalf("valid unit must pass verification: %v", err)
+	}
+	t.Cleanup(func() {
+		c.DeleteUnitLifecycle(context.Background(), name)
+		_ = c.DeleteUnit(context.Background(), name)
+	})
+	got, err := c.GetUnit(ctx, name)
+	if err != nil {
+		t.Fatalf("GetUnit: %v", err)
+	}
+	if !strings.Contains(got, "ExecStart=/bin/true") {
+		t.Errorf("unexpected content: %s", got)
+	}
+
+	// warn mode: broken unit surfaces diagnostics but does not fail
+	c3 := &Client{Host: c.Host, Verify: VerifyWarn}
+	if _, err := c3.PutUnitVerified(ctx, name, broken, nil, nil); err != nil {
+		t.Fatalf("warn mode must not fail: %v", err)
+	}
+	// restore good content for cleanliness
+	if _, err := c2.PutUnitVerified(context.Background(), name, good, nil, nil); err != nil {
+		t.Logf("restore: %v", err)
+	}
+}

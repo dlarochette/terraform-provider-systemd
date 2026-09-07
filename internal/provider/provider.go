@@ -39,6 +39,7 @@ type providerModel struct {
 	BastionUser           types.String `tfsdk:"bastion_user"`
 	BastionPort           types.Int64  `tfsdk:"bastion_port"`
 	InsecureIgnoreHostKey types.Bool   `tfsdk:"insecure_ignore_host_key"`
+	Verify                types.String `tfsdk:"verify"`
 }
 
 type providerData struct {
@@ -127,6 +128,13 @@ func (p *SystemdProvider) Schema(_ context.Context, _ provider.SchemaRequest, re
 				Optional:            true,
 				MarkdownDescription: "Skip `known_hosts` verification (lab only).",
 			},
+			"verify": providerSchema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "Validate unit files with the target host's own systemd parser (`systemd-analyze verify`), so the rules match the remote systemd version. `off` skips validation, `warn` (default) reports diagnostics without failing the apply, `error` fails the apply and rolls the file back.",
+				Validators: []validator.String{
+					stringvalidator.OneOf(VerifyOff, VerifyWarn, VerifyError),
+				},
+			},
 		},
 	}
 }
@@ -166,7 +174,11 @@ func (p *SystemdProvider) Configure(ctx context.Context, req provider.ConfigureR
 		return
 	}
 
-	data := &providerData{client: &Client{Host: host}}
+	verify := VerifyWarn
+	if !cfg.Verify.IsNull() {
+		verify = cfg.Verify.ValueString()
+	}
+	data := &providerData{client: &Client{Host: host, Verify: verify}}
 	tflog.Info(ctx, "configured systemd provider over SSH", map[string]any{"host": sc.Host})
 	resp.ResourceData = data
 	resp.DataSourceData = data
@@ -202,6 +214,7 @@ func (p *SystemdProvider) DataSources(_ context.Context) []func() datasource.Dat
 		NewUnitDataSource,
 		NewLinkDataSource,
 		NewResolveStatusDataSource,
+		NewVersionDataSource,
 	}
 }
 

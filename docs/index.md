@@ -59,6 +59,7 @@ resource "systemd_unit" "demo" {
 | `bastion_user` | Optional | SSH user on the bastion (defaults to `user`). |
 | `bastion_port` | Optional | Bastion SSH port (default `22`). |
 | `insecure_ignore_host_key` | Optional | Skip `known_hosts` verification (lab only). |
+| `verify` | Optional | Validate unit files with the remote systemd parser: `off` / `warn` (default) / `error` (fails the apply and rolls the file back). |
 
 ## Fleet usage
 

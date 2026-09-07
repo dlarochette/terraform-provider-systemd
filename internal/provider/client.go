@@ -3,23 +3,130 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/dlarochette/terraform-provider-systemd/internal/remote"
 )
 
+// Verify modes for the provider `verify` attribute. The unit file is
+// validated with the target host's own systemd parser (systemd-analyze
+// verify), so the rules always match the remote systemd version.
+const (
+	VerifyOff   = "off"
+	VerifyWarn  = "warn"
+	VerifyError = "error"
+)
+
 // Client wraps a remote.Host with Terraform-oriented unit/network helpers.
 type Client struct {
-	Host remote.Host
+	Host   remote.Host
+	Verify string
+}
+
+func (c *Client) verifyMode() string {
+	switch c.Verify {
+	case VerifyOff, VerifyError:
+		return c.Verify
+	default:
+		return VerifyWarn
+	}
 }
 
 func (c *Client) PutUnit(ctx context.Context, name, content string, enable, active *bool) error {
+	_, err := c.PutUnitVerified(ctx, name, content, enable, active)
+	return err
+}
+
+// PutUnitVerified writes the unit file, validates it with the remote
+// systemd parser according to the configured verify mode, then reloads and
+// applies the lifecycle. In error mode a verification failure rolls the
+// file back (restored or removed) so the host is left untouched. Warnings
+// (mode warn, or systemd-analyze diagnostics) are returned for the caller
+// to surface.
+func (c *Client) PutUnitVerified(ctx context.Context, name, content string, enable, active *bool) (warnings []string, err error) {
+	mode := c.verifyMode()
+	if mode == VerifyOff {
+		if err := c.Host.WriteUnit(name, content); err != nil {
+			return nil, err
+		}
+		if err := c.Host.DaemonReload(); err != nil {
+			return nil, err
+		}
+		return nil, c.ApplyUnitLifecycle(ctx, name, enable, active)
+	}
+
+	var prev string
+	prevExisted := false
+	if old, err := c.Host.ReadUnit(name); err == nil {
+		prev, prevExisted = old, true
+	}
 	if err := c.Host.WriteUnit(name, content); err != nil {
-		return err
+		return nil, err
 	}
+
+	out, verr := c.Host.VerifyUnit(name)
+	if verr != nil {
+		if isMissingCommand(out, verr) {
+			// systemd-analyze unavailable on this host: degrade to a warning.
+			warnings = append(warnings, fmt.Sprintf("systemd-analyze is not available on the host; unit %s was written without verification", name))
+		} else {
+			diag := fmt.Sprintf("systemd-analyze verify %s failed (systemd %s):\n%s", name, c.versionOrUnknown(), strings.TrimSpace(out))
+			if mode == VerifyError {
+				if rbErr := c.rollbackUnit(name, prev, prevExisted); rbErr != nil {
+					diag += fmt.Sprintf("\nrollback failed: %v", rbErr)
+				}
+				return warnings, fmt.Errorf("%s", diag)
+			}
+			warnings = append(warnings, diag)
+		}
+	} else if strings.TrimSpace(out) != "" {
+		warnings = append(warnings, fmt.Sprintf("systemd-analyze verify %s: %s", name, strings.TrimSpace(out)))
+	}
+
 	if err := c.Host.DaemonReload(); err != nil {
-		return err
+		return warnings, err
 	}
-	return c.ApplyUnitLifecycle(ctx, name, enable, active)
+	return warnings, c.ApplyUnitLifecycle(ctx, name, enable, active)
+}
+
+// rollbackUnit restores the previous unit content, or removes the unit when
+// it did not exist before.
+func (c *Client) rollbackUnit(name, prev string, prevExisted bool) error {
+	if !prevExisted {
+		return c.Host.RemoveUnit(name)
+	}
+	return c.Host.WriteUnit(name, prev)
+}
+
+func isMissingCommand(out string, err error) bool {
+	s := strings.TrimSpace(out)
+	return err != nil && strings.Contains(s, "command not found")
+}
+
+func (c *Client) versionOrUnknown() string {
+	line, err := c.Host.SystemdVersion()
+	if err != nil {
+		return "unknown"
+	}
+	return line
+}
+
+// systemdVersionInfo carries the parsed systemd release.
+type systemdVersionInfo struct {
+	Version string
+	Line    string
+}
+
+func (c *Client) systemdVersion() (systemdVersionInfo, error) {
+	line, err := c.Host.SystemdVersion()
+	if err != nil {
+		return systemdVersionInfo{}, err
+	}
+	f := strings.Fields(line)
+	if len(f) < 2 {
+		return systemdVersionInfo{}, fmt.Errorf("cannot parse systemd version from %q", line)
+	}
+	return systemdVersionInfo{Version: f[1], Line: line}, nil
 }
 
 // ApplyUnitLifecycle enables/disables and starts/stops a unit according to the

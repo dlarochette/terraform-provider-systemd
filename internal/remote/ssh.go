@@ -847,3 +847,47 @@ func (c *Client) ResolvectlDomainGet(link string) ([]string, error) {
 func shellQuote(s string) string {
 	return "'" + strings.ReplaceAll(s, "'", `'\''`) + "'"
 }
+
+// SystemdVersion returns the systemd release of the remote host, parsed
+// from the first line of `systemctl --version` (e.g. "257").
+func (c *Client) SystemdVersion() (string, error) {
+	out, err := c.run("systemctl --version")
+	if err != nil {
+		return "", fmt.Errorf("systemctl --version: %w", err)
+	}
+	line := strings.TrimSpace(strings.SplitN(out, "\n", 2)[0])
+	if line == "" {
+		return "", fmt.Errorf("empty systemctl --version output")
+	}
+	return line, nil
+}
+
+// VerifyUnit runs systemd-analyze verify on the unit file. A non-nil error
+// means systemd rejected the file (non-zero exit); output carries the
+// diagnostics.
+func (c *Client) VerifyUnit(name string) (string, error) {
+	p, err := unitPath(DefaultUnitDir, name)
+	if err != nil {
+		return "", err
+	}
+	out, err := c.run("systemd-analyze verify " + shellQuote(p))
+	if err != nil {
+		return out, fmt.Errorf("systemd-analyze verify %s: %w", name, err)
+	}
+	return out, nil
+}
+
+// parseSystemdVersion extracts the release number from `systemctl --version`
+// output (first line: "systemd 257 (257.3-1)").
+func parseSystemdVersion(out string) (string, error) {
+	for _, line := range strings.Split(out, "\n") {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "systemd ") {
+			f := strings.Fields(line)
+			if len(f) >= 2 {
+				return f[1], nil
+			}
+		}
+	}
+	return "", fmt.Errorf("cannot parse systemd version from: %q", strings.TrimSpace(out))
+}

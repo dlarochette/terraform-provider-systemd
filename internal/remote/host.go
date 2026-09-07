@@ -38,6 +38,16 @@ type Host interface {
 	// Exec runs an arbitrary command on the host (ACC helpers, diagnostics).
 	Exec(args ...string) error
 
+	// SystemdVersion returns the first line of `systemctl --version`
+	// (e.g. "systemd 257 (257.3-1)"). It is the authoritative version for
+	// unit file validation.
+	SystemdVersion() (string, error)
+
+	// VerifyUnit runs systemd-analyze verify on the unit file and returns
+	// the combined output; a non-nil error means verification failed
+	// (non-zero exit).
+	VerifyUnit(name string) (string, error)
+
 	WriteUnit(name, content string) error
 	ReadUnit(name string) (string, error)
 	RemoveUnit(name string) error

@@ -445,6 +445,7 @@ See also [`examples/resolved`](examples/resolved) and [`examples/basic`](example
 | `bastion_user` | no | Jump user (defaults to `user`) |
 | `bastion_port` | no | Jump port (default `22`) |
 | `insecure_ignore_host_key` | no | Skip `known_hosts` (lab only) |
+| `verify` | no | Unit file validation with the remote systemd parser: `off` / `warn` (default) / `error` (fails the apply and rolls the file back) |
 
 Use a **provider alias per host** when managing a fleet.
 
@@ -489,6 +490,7 @@ no stop/disable and no `daemon-reload`.
 | `systemd_unit` | `systemctl show` (`load_state`, `active_state`, `sub_state`, `unit_file_state`) |
 | `systemd_link` | `networkctl status` (`operational_state`, `setup_state`) |
 | `systemd_resolve_status` | `resolvectl status [link]` (raw `status` text) |
+| `systemd_version` | `systemctl --version` (`version`, `release`) |
 
 ## Schema validation / linting
 

@@ -5,6 +5,8 @@ import (
 	"os"
 	"path"
 	"strings"
+
+	"github.com/dlarochette/terraform-provider-systemd/internal/unitfile"
 	"sync"
 )
 
@@ -629,4 +631,22 @@ func (f *Fake) ResolvectlDomainGet(link string) ([]string, error) {
 		return nil, nil
 	}
 	return append([]string{}, st.Domains...), nil
+}
+
+// SystemdVersion reports a plausible version for the fake host.
+func (f *Fake) SystemdVersion() (string, error) {
+	return "systemd 257 (257.6-fake)", nil
+}
+
+// VerifyUnit validates the unit file with the local INI parser. A
+// non-systemd-INI body fails verification, as systemd-analyze would.
+func (f *Fake) VerifyUnit(name string) (string, error) {
+	content, err := f.ReadUnit(name)
+	if err != nil {
+		return "", err
+	}
+	if _, perr := unitfile.Parse(content); perr != nil {
+		return fmt.Sprintf("fake verify: %s", perr), fmt.Errorf("systemd-analyze verify %s: %w", name, perr)
+	}
+	return "", nil
 }

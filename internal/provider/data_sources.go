@@ -241,3 +241,72 @@ func (d *resolveStatusDataSource) Read(ctx context.Context, req datasource.ReadR
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &cfg)...)
 }
+
+// ------------------------------------------------------------- version
+
+type versionDataSource struct {
+	client *Client
+}
+
+func NewVersionDataSource() datasource.DataSource {
+	return &versionDataSource{}
+}
+
+type versionModel struct {
+	Version types.String `tfsdk:"version"`
+	Release types.String `tfsdk:"release"`
+	ID      types.String `tfsdk:"id"`
+}
+
+var _ datasource.DataSource = &versionDataSource{}
+
+func (d *versionDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_version"
+}
+
+func (d *versionDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+	resp.Schema = schema.Schema{
+		MarkdownDescription: "Reads the systemd release of the target host (`systemctl --version`). Use it to gate or branch unit configurations on the remote systemd version; unit file validation always uses this same version via `systemd-analyze verify`.",
+		Attributes: map[string]schema.Attribute{
+			"version": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "Systemd release number (e.g. `257`).",
+			},
+			"release": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "Full first line of `systemctl --version` (e.g. `systemd 257 (257.3-1)`).",
+			},
+			"id": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "Same as `version`.",
+			},
+		},
+	}
+}
+
+func (d *versionDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+	if req.ProviderData == nil {
+		return
+	}
+	c, err := clientFrom(req.ProviderData)
+	if err != nil {
+		resp.Diagnostics.AddError("configure", err.Error())
+		return
+	}
+	d.client = c
+}
+
+func (d *versionDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	_ = ctx
+	out, err := d.client.systemdVersion()
+	if err != nil {
+		resp.Diagnostics.AddError("systemd version", err.Error())
+		return
+	}
+	cfg := versionModel{
+		Version: types.StringValue(out.Version),
+		Release: types.StringValue(out.Line),
+		ID:      types.StringValue(out.Version),
+	}
+	resp.Diagnostics.Append(resp.State.Set(ctx, &cfg)...)
+}

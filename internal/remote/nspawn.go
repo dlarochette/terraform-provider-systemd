@@ -714,3 +714,29 @@ func (n *Nspawn) ResolvectlDomainGet(link string) ([]string, error) {
 	}
 	return parseResolvectlList(out), nil
 }
+
+// SystemdVersion returns the systemd release inside the guest.
+func (n *Nspawn) SystemdVersion() (string, error) {
+	out, err := n.run("systemctl", "--version")
+	if err != nil {
+		return "", fmt.Errorf("systemctl --version: %w", err)
+	}
+	line := strings.TrimSpace(strings.SplitN(out, "\n", 2)[0])
+	if line == "" {
+		return "", fmt.Errorf("empty systemctl --version output")
+	}
+	return line, nil
+}
+
+// VerifyUnit runs systemd-analyze verify inside the guest.
+func (n *Nspawn) VerifyUnit(name string) (string, error) {
+	p, err := unitPath(DefaultUnitDir, name)
+	if err != nil {
+		return "", err
+	}
+	out, err := n.run("systemd-analyze", "verify", p)
+	if err != nil {
+		return out, fmt.Errorf("systemd-analyze verify %s: %w", name, err)
+	}
+	return out, nil
+}

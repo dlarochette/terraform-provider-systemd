@@ -118,7 +118,11 @@ func (r *unitResource) Create(ctx context.Context, req resource.CreateRequest, r
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	if err := r.client.PutUnit(ctx, d.Name, body, d.Enable, d.Active); err != nil {
+	warnings, err := r.client.PutUnitVerified(ctx, d.Name, body, d.Enable, d.Active)
+	for _, w := range warnings {
+		resp.Diagnostics.AddWarning("systemd verification", w)
+	}
+	if err != nil {
 		resp.Diagnostics.AddError("create unit", err.Error())
 		return
 	}
@@ -154,7 +158,11 @@ func (r *unitResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	if err := r.client.PutUnit(ctx, d.Name, body, d.Enable, d.Active); err != nil {
+	warnings, err := r.client.PutUnitVerified(ctx, d.Name, body, d.Enable, d.Active)
+	for _, w := range warnings {
+		resp.Diagnostics.AddWarning("systemd verification", w)
+	}
+	if err != nil {
 		resp.Diagnostics.AddError("update unit", err.Error())
 		return
 	}
