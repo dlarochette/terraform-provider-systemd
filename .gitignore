@@ -27,3 +27,5 @@ override.tf
 *_override.tf
 .terraformrc
 terraform.rc
+genprops
+bin/
