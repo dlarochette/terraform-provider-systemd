@@ -60,6 +60,7 @@ resource "systemd_unit" "demo" {
 | `bastion_port` | Optional | Bastion SSH port (default `22`). |
 | `insecure_ignore_host_key` | Optional | Skip `known_hosts` verification (lab only). |
 | `verify` | Optional | Validate unit files with the remote systemd parser: `off` / `warn` (default) / `error` (fails the apply and rolls the file back). |
+| `systemd_version` | Optional | Pin the target systemd release (e.g. `251`) for directive availability checks instead of detecting it on the host. |
 
 ## Fleet usage
 

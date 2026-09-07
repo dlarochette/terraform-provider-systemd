@@ -140,3 +140,53 @@ func TestEnumOf(t *testing.T) {
 		t.Error("bool must not be an enum")
 	}
 }
+
+func TestSinceVersion(t *testing.T) {
+	// sanity: a few directives and their introduction version
+	type tc struct {
+		section, name string
+		min, max      int
+	}
+	cases := []tc{
+		{"Service", "ExecStart", 249, 249},
+	}
+	// every directive must be available in the latest version
+	for _, sec := range SectionNames() {
+		for _, d := range Directives(sec) {
+			if SinceVersion(sec, d.Name) > LatestVersion {
+				t.Errorf("%s.%s: since %d > latest %d", sec, d.Name, SinceVersion(sec, d.Name), LatestVersion)
+			}
+		}
+	}
+	// ExecStart exists in every bundled version
+	for _, cat := range Catalogs {
+		found := false
+		for _, d := range DirectivesIn(&cat, "Service") {
+			if d.Name == "ExecStart" {
+				found = true
+			}
+		}
+		if !found {
+			t.Errorf("v%d: ExecStart missing", cat.Version)
+		}
+	}
+	_ = cases
+}
+
+func TestCatalogFor(t *testing.T) {
+	if CatalogFor(250).Version != 250 {
+		t.Error("250 should select v250")
+	}
+	if CatalogFor(251).Version != 251 {
+		t.Error("251 should select v251")
+	}
+	if CatalogFor(400).Version != LatestVersion {
+		t.Error("400 should clamp to latest")
+	}
+	if CatalogFor(100).Version != MinVersion() {
+		t.Error("below min should clamp to oldest")
+	}
+	if CatalogFor(256).Version != 256 {
+		t.Error("256 should select v256")
+	}
+}

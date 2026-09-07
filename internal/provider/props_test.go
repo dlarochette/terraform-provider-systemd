@@ -303,3 +303,59 @@ func TestUnitLikeFromRawSections(t *testing.T) {
 		t.Errorf("entry = %v = %v", e.Key.ValueString(), e.Value.ValueString())
 	}
 }
+
+func TestValidateTypedForVersion(t *testing.T) {
+	// find a directive introduced after v249
+	var sec, attr, name string
+	var since int
+outer:
+	for _, s := range sdprops.SectionNames() {
+		for _, d := range sdprops.Directives(s) {
+			if v := sdprops.SinceVersion(s, d.Name); v > 249 {
+				sec, attr, name, since = s, d.Attr, d.Name, v
+				break outer
+			}
+		}
+	}
+	if name == "" {
+		t.Skip("no directive newer than v249 in the catalog")
+	}
+	raw := renderRawValue()
+	obj, _ := rawObject(raw)
+	obj[strings.ToLower(sec)] = fillBlock(sec, nil)
+	// find the right type and set a plausible value
+	for _, d := range sdprops.Directives(sec) {
+		if d.Attr == attr {
+			var val tftypes.Value
+			switch d.Class {
+			case sdprops.ClassBool:
+				val = boolVal(true)
+			case sdprops.ClassInt:
+				val = tftypes.NewValue(intType, 1)
+			case sdprops.ClassList:
+				val = listStrVal("x")
+			default:
+				val = strVal("1")
+			}
+			vals := map[string]tftypes.Value{}
+			if m, _ := rawObject(obj[strings.ToLower(sec)]); m != nil {
+				for k := range m {
+					vals[k] = m[k]
+				}
+			}
+			vals[attr] = val
+			obj[strings.ToLower(sec)] = fillBlock(sec, vals)
+			break
+		}
+	}
+	raw = tftypes.NewValue(raw.Type(), obj)
+
+	// host version below the directive's introduction: rejected
+	if err := validateTypedForVersion(raw, []string{"Unit", "Install", "Service"}, 249); err == nil {
+		t.Fatalf("%s.%s (since v%d) must be rejected for v249", sec, name, since)
+	}
+	// latest version: accepted
+	if err := validateTypedForVersion(raw, []string{"Unit", "Install", "Service"}, sdprops.LatestVersion); err != nil {
+		t.Fatalf("latest must accept: %v", err)
+	}
+}

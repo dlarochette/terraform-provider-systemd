@@ -446,6 +446,7 @@ See also [`examples/resolved`](examples/resolved) and [`examples/basic`](example
 | `bastion_port` | no | Jump port (default `22`) |
 | `insecure_ignore_host_key` | no | Skip `known_hosts` (lab only) |
 | `verify` | no | Unit file validation with the remote systemd parser: `off` / `warn` (default) / `error` (fails the apply and rolls the file back) |
+| `systemd_version` | no | Pin the target systemd release (e.g. `251`) for directive availability checks instead of detecting it on the host |
 
 Use a **provider alias per host** when managing a fleet.
 

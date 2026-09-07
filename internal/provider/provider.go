@@ -2,6 +2,10 @@ package provider
 
 import (
 	"context"
+	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -15,8 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-
-	"fmt"
 
 	"github.com/dlarochette/terraform-provider-systemd/internal/remote"
 )
@@ -40,6 +42,7 @@ type providerModel struct {
 	BastionPort           types.Int64  `tfsdk:"bastion_port"`
 	InsecureIgnoreHostKey types.Bool   `tfsdk:"insecure_ignore_host_key"`
 	Verify                types.String `tfsdk:"verify"`
+	SystemdVersion        types.String `tfsdk:"systemd_version"`
 }
 
 type providerData struct {
@@ -128,6 +131,13 @@ func (p *SystemdProvider) Schema(_ context.Context, _ provider.SchemaRequest, re
 				Optional:            true,
 				MarkdownDescription: "Skip `known_hosts` verification (lab only).",
 			},
+			"systemd_version": providerSchema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "Pin the target systemd release (e.g. `251`) for directive availability checks instead of detecting it on the host.",
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9]{2,4}(\.[0-9]+)?$`), "systemd release number (e.g. 251 or 257.2)"),
+				},
+			},
 			"verify": providerSchema.StringAttribute{
 				Optional:            true,
 				MarkdownDescription: "Validate unit files with the target host's own systemd parser (`systemd-analyze verify`), so the rules match the remote systemd version. `off` skips validation, `warn` (default) reports diagnostics without failing the apply, `error` fails the apply and rolls the file back.",
@@ -178,7 +188,15 @@ func (p *SystemdProvider) Configure(ctx context.Context, req provider.ConfigureR
 	if !cfg.Verify.IsNull() {
 		verify = cfg.Verify.ValueString()
 	}
-	data := &providerData{client: &Client{Host: host, Verify: verify}}
+	pinnedVersion := 0
+	if !cfg.SystemdVersion.IsNull() && !cfg.SystemdVersion.IsUnknown() {
+		sv := cfg.SystemdVersion.ValueString()
+		f := strings.FieldsFunc(sv, func(r rune) bool { return r == '.' })
+		if n, err := strconv.Atoi(f[0]); err == nil {
+			pinnedVersion = n
+		}
+	}
+	data := &providerData{client: &Client{Host: host, Verify: verify, SystemdVersion: pinnedVersion}}
 	tflog.Info(ctx, "configured systemd provider over SSH", map[string]any{"host": sc.Host})
 	resp.ResourceData = data
 	resp.DataSourceData = data

@@ -42,7 +42,7 @@ func typedBlocks(sections []string) map[string]schema.Block {
 }
 
 func typedAttr(section string, d sdprops.Directive) schema.Attribute {
-	base := fmt.Sprintf("systemd directive `%s=` in the `[%s]` section (systemd %s).", d.Name, section, sdprops.SourceVersion)
+	base := fmt.Sprintf("systemd directive `%s=` in the `[%s]` section (systemd v%d).", d.Name, section, sdprops.LatestVersion)
 	switch d.Class {
 	case sdprops.ClassBool:
 		return schema.BoolAttribute{
@@ -464,4 +464,37 @@ func rawOptBool(v tftypes.Value) (*bool, bool) {
 		return nil, false
 	}
 	return &b, true
+}
+
+// validateTypedForVersion checks that every directive set in a typed block
+// exists in the given systemd release of the host.
+func validateTypedForVersion(raw tftypes.Value, sections []string, version int) error {
+	obj, ok := rawObject(raw)
+	if !ok {
+		return nil
+	}
+	var missing []string
+	for _, sec := range sections {
+		blockVal, present := obj[strings.ToLower(sec)]
+		if !present {
+			continue
+		}
+		blockAttrs, ok := rawObject(blockVal)
+		if !ok {
+			continue
+		}
+		for _, d := range sdprops.Directives(sec) {
+			val, present := blockAttrs[d.Attr]
+			if !present || !val.IsKnown() || val.IsNull() {
+				continue
+			}
+			if since := sdprops.SinceVersion(sec, d.Name); since > version {
+				missing = append(missing, fmt.Sprintf("`[%s]` `%s=` requires systemd >= v%d (host: v%d)", sec, d.Name, since, version))
+			}
+		}
+	}
+	if len(missing) > 0 {
+		return fmt.Errorf("directives not available in systemd v%d of the host:\n%s", version, strings.Join(missing, "\n"))
+	}
+	return nil
 }

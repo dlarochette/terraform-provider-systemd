@@ -118,6 +118,13 @@ func (r *unitResource) Create(ctx context.Context, req resource.CreateRequest, r
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
+	v, verr := r.client.hostSystemdVersion()
+	if verr != nil {
+		resp.Diagnostics.AddWarning("systemd version", "cannot determine the remote systemd release ("+verr.Error()+"); directive availability was not checked")
+	} else if err := validateTypedForVersion(req.Plan.Raw, sdprops.UnitSections(), v); err != nil {
+		resp.Diagnostics.AddError("Incompatible with the target systemd version", err.Error())
+		return
+	}
 	warnings, err := r.client.PutUnitVerified(ctx, d.Name, body, d.Enable, d.Active)
 	for _, w := range warnings {
 		resp.Diagnostics.AddWarning("systemd verification", w)
@@ -156,6 +163,13 @@ func (r *unitResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, sdprops.UnitSections())
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
+		return
+	}
+	v, verr := r.client.hostSystemdVersion()
+	if verr != nil {
+		resp.Diagnostics.AddWarning("systemd version", "cannot determine the remote systemd release ("+verr.Error()+"); directive availability was not checked")
+	} else if err := validateTypedForVersion(req.Plan.Raw, sdprops.UnitSections(), v); err != nil {
+		resp.Diagnostics.AddError("Incompatible with the target systemd version", err.Error())
 		return
 	}
 	warnings, err := r.client.PutUnitVerified(ctx, d.Name, body, d.Enable, d.Active)

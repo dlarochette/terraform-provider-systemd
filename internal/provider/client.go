@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/dlarochette/terraform-provider-systemd/internal/remote"
@@ -21,6 +22,36 @@ const (
 type Client struct {
 	Host   remote.Host
 	Verify string
+	// SystemdVersion pins the target systemd release for directive
+	// availability checks; 0 (unset) means detect on the host once.
+	SystemdVersion int
+
+	detectedVersion *int
+}
+
+// hostSystemdVersion returns the pinned release, or the host release
+// detected once (and cached) via `systemctl --version`.
+func (c *Client) hostSystemdVersion() (int, error) {
+	if c.SystemdVersion > 0 {
+		return c.SystemdVersion, nil
+	}
+	if c.detectedVersion != nil {
+		return *c.detectedVersion, nil
+	}
+	line, err := c.Host.SystemdVersion()
+	if err != nil {
+		return 0, err
+	}
+	f := strings.Fields(line)
+	if len(f) < 2 {
+		return 0, fmt.Errorf("cannot parse systemd version from %q", line)
+	}
+	v, err := strconv.Atoi(f[1])
+	if err != nil {
+		return 0, fmt.Errorf("cannot parse systemd version from %q: %w", line, err)
+	}
+	c.detectedVersion = &v
+	return v, nil
 }
 
 func (c *Client) verifyMode() string {

@@ -6,7 +6,7 @@
 //	go generate ./internal/sdprops
 package sdprops
 
-//go:generate go run ../../cmd/genprops -in data/load-fragment-v257.gperf -out catalog_gen.go -version v257
+//go:generate go run ../../cmd/genprops -out catalog_gen.go data/load-fragment-v249.gperf data/load-fragment-v250.gperf data/load-fragment-v251.gperf data/load-fragment-v252.gperf data/load-fragment-v253.gperf data/load-fragment-v254.gperf data/load-fragment-v255.gperf data/load-fragment-v256.gperf data/load-fragment-v257.gperf
 
 import "strings"
 
@@ -76,28 +76,102 @@ func EnumOf(class string) []string {
 	return EnumValues[name]
 }
 
-type group struct {
+// Directive is a single systemd unit directive.
+type Directive struct {
+	Name  string // directive name as written in unit files (e.g. ExecStart)
+	Attr  string // HCL attribute name (snake_case)
+	Class string // value class driving type and validation
+}
+
+// SectionGroup holds the directives of one unit section.
+type SectionGroup struct {
 	Section    string
 	Directives []Directive
 }
 
-// SectionNames returns the catalog sections in order.
-func SectionNames() []string {
-	out := make([]string, 0, len(SectionGroups))
-	for _, g := range SectionGroups {
-		out = append(out, g.Section)
+// latest returns the newest bundled catalog.
+func latest() *VersionCatalog {
+	if len(Catalogs) == 0 {
+		return nil
 	}
-	return out
+	return &Catalogs[len(Catalogs)-1]
 }
 
-// Directives returns the catalog directives of one section.
-func Directives(section string) []Directive {
-	for _, g := range SectionGroups {
+func sectionsOf(cat *VersionCatalog) []SectionGroup {
+	if cat == nil {
+		return nil
+	}
+	return cat.Sections
+}
+
+// MinVersion is the oldest systemd release bundled in the catalog.
+func MinVersion() int {
+	if len(Catalogs) == 0 {
+		return 0
+	}
+	return Catalogs[0].Version
+}
+
+// CatalogFor returns the newest bundled catalog whose release is <= version.
+// For a version below the oldest bundled release, the oldest catalog is
+// returned (conservative: directives absent from it are rejected).
+func CatalogFor(version int) *VersionCatalog {
+	var best *VersionCatalog
+	for i := range Catalogs {
+		if Catalogs[i].Version <= version {
+			best = &Catalogs[i]
+		}
+	}
+	if best == nil {
+		best = &Catalogs[0]
+	}
+	return best
+}
+
+// DirectivesFor returns the catalog directives of one section for a
+// specific systemd release.
+func DirectivesFor(version int, section string) []Directive {
+	return DirectivesIn(CatalogFor(version), section)
+}
+
+// DirectivesIn returns the catalog directives of one section in the given
+// catalog.
+func DirectivesIn(cat *VersionCatalog, section string) []Directive {
+	for _, g := range sectionsOf(cat) {
 		if g.Section == section {
 			return g.Directives
 		}
 	}
 	return nil
+}
+
+// SinceVersion returns the first bundled systemd release providing the
+// directive (fallback: LatestVersion).
+func SinceVersion(section, name string) int {
+	for _, cat := range Catalogs {
+		for _, d := range DirectivesIn(&cat, section) {
+			if d.Name == name {
+				return cat.Version
+			}
+		}
+	}
+	return LatestVersion
+}
+
+// SectionNames returns the catalog sections (latest bundled version) in
+// order.
+func SectionNames() []string {
+	var out []string
+	for _, g := range sectionsOf(latest()) {
+		out = append(out, g.Section)
+	}
+	return out
+}
+
+// Directives returns the catalog directives of one section (latest
+// bundled version).
+func Directives(section string) []Directive {
+	return DirectivesIn(latest(), section)
 }
 
 // DirectiveNames returns the directive names of one section.
@@ -114,7 +188,7 @@ func DirectiveNames(section string) []string {
 // order. [Scope] is excluded: scope units cannot be written as unit files.
 func UnitSections() []string {
 	var out []string
-	for _, g := range SectionGroups {
+	for _, g := range sectionsOf(latest()) {
 		if g.Section != "Scope" {
 			out = append(out, g.Section)
 		}
