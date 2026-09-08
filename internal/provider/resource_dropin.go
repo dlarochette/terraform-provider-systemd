@@ -11,15 +11,30 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
+	"github.com/dlarochette/terraform-provider-systemd/internal/sdprops"
 )
 
 var _ resource.Resource = &dropinResource{}
 var _ resource.ResourceWithImportState = &dropinResource{}
 var _ resource.ResourceWithValidateConfig = &dropinResource{}
 
-func NewDropinResource() resource.Resource { return &dropinResource{} }
+func NewDropinResource() resource.Resource {
+	specs := unitSpecs(sdprops.UnitSections())
+	for i := range specs {
+		if specs[i].Section == "Unit" {
+			// `unit` is the resource attribute holding the parent unit;
+			// rename the typed [Unit] block to avoid the collision.
+			specs[i].Block = "unit_section"
+		}
+	}
+	return &dropinResource{specs: specs}
+}
 
-type dropinResource struct{ client *Client }
+type dropinResource struct {
+	client *Client
+	specs  []sectionSpec
+}
 
 type dropinModel struct {
 	Unit     types.String   `tfsdk:"unit"`
@@ -64,15 +79,26 @@ func (r *dropinResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 			"section": sectionBlockSchema(),
 		},
 	}
+	for name, block := range typedBlocks(r.specs) {
+		resp.Schema.Blocks[name] = block
+	}
 }
 
 func (r *dropinResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var cfg dropinModel
-	resp.Diagnostics.Append(req.Config.Get(ctx, &cfg)...)
-	if resp.Diagnostics.HasError() {
+	d, err := dropinFromRaw(req.Config.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
-	if err := validateContentOrSections(cfg.Content, cfg.Sections); err != nil {
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	if err := validateContentSectionsTyped(content, d.Sections, req.Config.Raw, r.specs); err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+	if err := validateTypedConflicts(req.Config.Raw, d.Sections, r.specs); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
@@ -90,68 +116,70 @@ func (r *dropinResource) Configure(_ context.Context, req resource.ConfigureRequ
 }
 
 func (r *dropinResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan dropinModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := dropinFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	if err := r.client.PutDropin(ctx, plan.Unit.ValueString(), plan.Dropin.ValueString(), body); err != nil {
+	if err := r.client.PutDropin(ctx, d.Unit, d.Dropin, body); err != nil {
 		resp.Diagnostics.AddError("create dropin", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = types.StringValue(plan.Unit.ValueString() + "/" + plan.Dropin.ValueString())
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContent(req.Plan.Raw, body, d.Unit+"/"+d.Dropin)
 }
 
 func (r *dropinResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state dropinModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
+	d, err := dropinFromRaw(req.State.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read state", err.Error())
 		return
 	}
-	content, err := r.client.GetDropin(ctx, state.Unit.ValueString(), state.Dropin.ValueString())
+	content, err := r.client.GetDropin(ctx, d.Unit, d.Dropin)
 	if err != nil {
 		resp.State.RemoveResource(ctx)
 		return
 	}
-	state.Content = types.StringValue(content)
-	state.ID = types.StringValue(state.Unit.ValueString() + "/" + state.Dropin.ValueString())
-	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+	resp.State.Raw = setStateContent(req.State.Raw, content, d.Unit+"/"+d.Dropin)
 }
 
 func (r *dropinResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan dropinModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := dropinFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	if err := r.client.PutDropin(ctx, plan.Unit.ValueString(), plan.Dropin.ValueString(), body); err != nil {
+	if err := r.client.PutDropin(ctx, d.Unit, d.Dropin, body); err != nil {
 		resp.Diagnostics.AddError("update dropin", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = types.StringValue(plan.Unit.ValueString() + "/" + plan.Dropin.ValueString())
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContent(req.Plan.Raw, body, d.Unit+"/"+d.Dropin)
 }
 
 func (r *dropinResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state dropinModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
+	d, err := dropinFromRaw(req.State.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read state", err.Error())
 		return
 	}
-	if err := r.client.DeleteDropin(ctx, state.Unit.ValueString(), state.Dropin.ValueString()); err != nil {
+	if err := r.client.DeleteDropin(ctx, d.Unit, d.Dropin); err != nil {
 		resp.Diagnostics.AddError("delete dropin", err.Error())
 	}
 }

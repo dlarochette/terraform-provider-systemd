@@ -29,9 +29,20 @@ func blockName(section string) string {
 // sectionSpec describes one typed section block: which catalog kind it
 // comes from and whether the section may repeat in the file.
 type sectionSpec struct {
-	Kind       string // "unit", "network", "netdev" or "link"
+	Kind       string // "unit", "network", "netdev", "link" or "resolved"
 	Section    string
 	Repeatable bool
+	// Block overrides the HCL block name (used when the default block
+	// name would collide with a resource attribute, e.g. `unit`).
+	Block string
+}
+
+// block returns the HCL block name of the section.
+func (s sectionSpec) block() string {
+	if s.Block != "" {
+		return s.Block
+	}
+	return blockName(s.Section)
 }
 
 func unitSpecs(sections []string) []sectionSpec {
@@ -85,7 +96,7 @@ func typedBlocks(specs []sectionSpec) map[string]schema.Block {
 			"Directives of the systemd `[%s]` section, typed as properties with systemd validation rules. Mutually exclusive with `section` blocks for the directives declared here.",
 			spec.Section)
 		if spec.Repeatable {
-			blocks[blockName(spec.Section)] = schema.ListNestedBlock{
+			blocks[spec.block()] = schema.ListNestedBlock{
 				MarkdownDescription: desc + " This section may appear several times in the file; repeat this block for each instance.",
 				NestedObject: schema.NestedBlockObject{
 					Attributes: attrs,
@@ -93,7 +104,7 @@ func typedBlocks(specs []sectionSpec) map[string]schema.Block {
 			}
 			continue
 		}
-		blocks[blockName(spec.Section)] = schema.SingleNestedBlock{
+		blocks[spec.block()] = schema.SingleNestedBlock{
 			MarkdownDescription: desc,
 			Attributes:          attrs,
 		}
@@ -226,7 +237,7 @@ func typedToFile(raw tftypes.Value, specs []sectionSpec) (unitfile.File, error) 
 	}
 	var f unitfile.File
 	for _, spec := range specs {
-		blockVal, present := obj[blockName(spec.Section)]
+		blockVal, present := obj[spec.block()]
 		if !present {
 			continue
 		}
@@ -345,7 +356,7 @@ func hasTypedSections(raw tftypes.Value, specs []sectionSpec) bool {
 		return false
 	}
 	for _, spec := range specs {
-		blockVal, present := obj[blockName(spec.Section)]
+		blockVal, present := obj[spec.block()]
 		if !present {
 			continue
 		}
@@ -407,7 +418,7 @@ func validateTypedConflicts(raw tftypes.Value, sections []sectionModel, specs []
 			if !strings.EqualFold(spec.Section, secName) {
 				continue
 			}
-			blockVal, present := obj[blockName(spec.Section)]
+			blockVal, present := obj[spec.block()]
 			if !present {
 				continue
 			}
@@ -433,7 +444,7 @@ func validateTypedConflicts(raw tftypes.Value, sections []sectionModel, specs []
 			}
 			for _, e := range s.Entries {
 				if used[e.Key.ValueString()] {
-					return fmt.Errorf("directive `%s=` is set twice: by the typed property `%s` and by a `section` block; remove one", e.Key.ValueString(), blockName(spec.Section)+"."+snakeOf(dirs, e.Key.ValueString()))
+					return fmt.Errorf("directive `%s=` is set twice: by the typed property `%s` and by a `section` block; remove one", e.Key.ValueString(), spec.block()+"."+snakeOf(dirs, e.Key.ValueString()))
 				}
 			}
 		}
@@ -571,7 +582,7 @@ func validateTypedForVersion(raw tftypes.Value, specs []sectionSpec, version int
 	}
 	var missing []string
 	for _, spec := range specs {
-		blockVal, present := obj[blockName(spec.Section)]
+		blockVal, present := obj[spec.block()]
 		if !present {
 			continue
 		}
@@ -656,6 +667,42 @@ func resolvedConfFromRaw(raw tftypes.Value) (resolvedConfRaw, error) {
 	obj, ok := rawObject(raw)
 	if !ok {
 		return d, fmt.Errorf("config is not an object")
+	}
+	if s, ok := rawString(obj["content"]); ok {
+		d.Content = s
+		d.HasContent = true
+	}
+	if secs, ok := rawSectionBlocks(obj["section"]); ok {
+		d.Sections = secs
+	}
+	return d, nil
+}
+
+// dropinRaw is the model data of a systemd drop-in resource read from a
+// raw tftypes value.
+type dropinRaw struct {
+	Unit       string
+	Dropin     string
+	HasUnit    bool
+	HasDropin  bool
+	Content    string
+	HasContent bool
+	Sections   []sectionModel
+}
+
+func dropinFromRaw(raw tftypes.Value) (dropinRaw, error) {
+	var d dropinRaw
+	obj, ok := rawObject(raw)
+	if !ok {
+		return d, fmt.Errorf("config is not an object")
+	}
+	if s, ok := rawString(obj["unit"]); ok {
+		d.Unit = s
+		d.HasUnit = true
+	}
+	if s, ok := rawString(obj["dropin"]); ok {
+		d.Dropin = s
+		d.HasDropin = true
 	}
 	if s, ok := rawString(obj["content"]); ok {
 		d.Content = s

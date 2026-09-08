@@ -22,6 +22,30 @@ resource "systemd_dropin" "sshd_restart" {
 }
 ```
 
+## Typed properties
+
+Beyond raw `content` and generic `section` blocks, this resource exposes the
+unit typed blocks (one snake_case block per systemd section, same validation
+rules as the systemd parsers). Because `unit` is the resource attribute
+holding the parent unit name, the typed `[Unit]` section is exposed under
+`unit_section` instead; `[Install]` is meaningless inside a drop-in (systemd
+ignores it) but remains available.
+
+```hcl
+resource "systemd_dropin" "sshd" {
+  unit   = "sshd.service"
+  dropin = "10-hardening.conf"
+
+  service {
+    protect_system = "strict"
+    protect_home   = "yes"
+  }
+}
+```
+
+Same exclusivity rules as the other resources: a directive must not be set
+both via a typed block and via a `section` block.
+
 ## Argument Reference
 
 | Attribute | Required | Description |

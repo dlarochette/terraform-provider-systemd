@@ -111,3 +111,6 @@ Most resources share the same `content` XOR `section` model:
   one instance per file section.
 - resolved resources (`systemd_resolved`, `systemd_resolved_dropin`) expose
   the typed `[Resolve]` block, generated from the resolved gperf tables.
+- `systemd_dropin` exposes the unit typed blocks as well; the typed
+  `[Unit]` block is named `unit_section` to avoid clashing with the `unit`
+  parent-unit attribute.
