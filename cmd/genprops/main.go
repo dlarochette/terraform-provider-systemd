@@ -106,6 +106,15 @@ var fnClass = map[string]string{
 	"config_parse_blockio_device_weight":       "list",
 	"config_parse_io_device_weight":            "list",
 	"config_parse_io_device_latency":           "list",
+	// resolved
+	"config_parse_dns_servers":             "list",
+	"config_parse_search_domains":          "list",
+	"config_parse_dns_stub_listener_extra": "list",
+	"config_parse_resolve_support":         "enum:resolve_support",
+	"config_parse_dnssec_mode":             "enum:dnssec_mode",
+	"config_parse_dns_over_tls_mode":       "enum:dns_over_tls_mode",
+	"config_parse_dns_cache_mode":          "enum:dns_cache_mode",
+	"config_parse_dns_stub_listener_mode":  "enum:dns_stub_listener_mode",
 	// enum strings
 	"config_parse_service_type":                 "enum:service_type",
 	"config_parse_service_restart":              "enum:service_restart",
@@ -457,6 +466,8 @@ func kindPrefix(k string) string {
 		return "netdev-v"
 	case "link":
 		return "link-config-v"
+	case "resolved":
+		return "resolved-gperf-v"
 	}
 	return k + "-v"
 }
@@ -471,6 +482,8 @@ func kindTitle(k string) string {
 		return "Netdev"
 	case "link":
 		return "Link"
+	case "resolved":
+		return "Resolved"
 	}
 	return k
 }
@@ -485,6 +498,8 @@ func kindOf(base string) (string, error) {
 		return "netdev", nil
 	case strings.HasPrefix(base, "link-config-v"):
 		return "link", nil
+	case strings.HasPrefix(base, "resolved-gperf-v"):
+		return "resolved", nil
 	}
 	return "", fmt.Errorf("unknown gperf file kind: %s", base)
 }
@@ -511,7 +526,7 @@ func main() {
 
 	var b strings.Builder
 	latest := 0
-	for _, kind := range []string{"unit", "network", "netdev", "link"} {
+	for _, kind := range []string{"unit", "network", "netdev", "link", "resolved"} {
 		files := kindFiles[kind]
 		if len(files) == 0 {
 			continue

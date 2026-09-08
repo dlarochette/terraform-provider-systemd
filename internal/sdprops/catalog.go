@@ -6,7 +6,7 @@
 //	go generate ./internal/sdprops
 package sdprops
 
-//go:generate go run ../../cmd/genprops -out catalog_gen.go data/link-config-v249.gperf data/link-config-v250.gperf data/link-config-v251.gperf data/link-config-v252.gperf data/link-config-v253.gperf data/link-config-v254.gperf data/link-config-v255.gperf data/link-config-v256.gperf data/link-config-v257.gperf data/load-fragment-v249.gperf data/load-fragment-v250.gperf data/load-fragment-v251.gperf data/load-fragment-v252.gperf data/load-fragment-v253.gperf data/load-fragment-v254.gperf data/load-fragment-v255.gperf data/load-fragment-v256.gperf data/load-fragment-v257.gperf data/netdev-v249.gperf data/netdev-v250.gperf data/netdev-v251.gperf data/netdev-v252.gperf data/netdev-v253.gperf data/netdev-v254.gperf data/netdev-v255.gperf data/netdev-v256.gperf data/netdev-v257.gperf data/networkd-network-v249.gperf data/networkd-network-v250.gperf data/networkd-network-v251.gperf data/networkd-network-v252.gperf data/networkd-network-v253.gperf data/networkd-network-v254.gperf data/networkd-network-v255.gperf data/networkd-network-v256.gperf data/networkd-network-v257.gperf
+//go:generate go run ../../cmd/genprops -out catalog_gen.go data/link-config-v249.gperf data/link-config-v250.gperf data/link-config-v251.gperf data/link-config-v252.gperf data/link-config-v253.gperf data/link-config-v254.gperf data/link-config-v255.gperf data/link-config-v256.gperf data/link-config-v257.gperf data/resolved-gperf-v249.gperf data/resolved-gperf-v250.gperf data/resolved-gperf-v251.gperf data/resolved-gperf-v252.gperf data/resolved-gperf-v253.gperf data/resolved-gperf-v254.gperf data/resolved-gperf-v255.gperf data/resolved-gperf-v256.gperf data/resolved-gperf-v257.gperf data/load-fragment-v249.gperf data/load-fragment-v250.gperf data/load-fragment-v251.gperf data/load-fragment-v252.gperf data/load-fragment-v253.gperf data/load-fragment-v254.gperf data/load-fragment-v255.gperf data/load-fragment-v256.gperf data/load-fragment-v257.gperf data/netdev-v249.gperf data/netdev-v250.gperf data/netdev-v251.gperf data/netdev-v252.gperf data/netdev-v253.gperf data/netdev-v254.gperf data/netdev-v255.gperf data/netdev-v256.gperf data/netdev-v257.gperf data/networkd-network-v249.gperf data/networkd-network-v250.gperf data/networkd-network-v251.gperf data/networkd-network-v252.gperf data/networkd-network-v253.gperf data/networkd-network-v254.gperf data/networkd-network-v255.gperf data/networkd-network-v256.gperf data/networkd-network-v257.gperf
 
 import "strings"
 
@@ -53,6 +53,11 @@ var EnumValues = map[string][]string{
 	"mount_propagation_flag":       {"shared", "slave", "private", "rshared", "rslave", "rprivate", "unbindable", "runbindable", "rrunbindable"},
 	"keyring_mode":                 {"inherit", "private", "shared"},
 	"exec_utmp_mode":               {"init", "login", "user"},
+	"resolve_support":              {"yes", "no", "resolve"},
+	"dnssec_mode":                  {"yes", "no", "allow-downgrade"},
+	"dns_over_tls_mode":            {"opportunistic", "no", "yes"},
+	"dns_cache_mode":               {"no", "no-negative", "yes"},
+	"dns_stub_listener_mode":       {"no", "yes", "udp", "tcp"},
 }
 
 // enumPrefix is the class prefix for enum classes.
@@ -91,10 +96,11 @@ type SectionGroup struct {
 
 // kindCatalogs maps a catalog kind to its per-release lists.
 var kindCatalogs = map[string][]VersionCatalog{
-	"unit":    UnitCatalogs,
-	"network": NetworkCatalogs,
-	"netdev":  NetdevCatalogs,
-	"link":    LinkCatalogs,
+	"unit":     UnitCatalogs,
+	"network":  NetworkCatalogs,
+	"netdev":   NetdevCatalogs,
+	"link":     LinkCatalogs,
+	"resolved": ResolvedCatalogs,
 }
 
 // latest returns the newest bundled catalog of a kind.
@@ -291,7 +297,8 @@ var repeatableSections = map[string][]string{
 		"WireGuardPeer", "L2TPSession", "MACsecReceiveAssociation",
 		"MACsecTransmitAssociation", "MACsecReceiveChannel", "Peer", "Xfrm",
 	},
-	"link": {},
+	"link":     {},
+	"resolved": {},
 }
 
 // RepeatableSections returns the set of repeatable section names of a kind.

@@ -15,9 +15,14 @@ var _ resource.Resource = &resolvedResource{}
 var _ resource.ResourceWithImportState = &resolvedResource{}
 var _ resource.ResourceWithValidateConfig = &resolvedResource{}
 
-func NewResolvedResource() resource.Resource { return &resolvedResource{} }
+type resolvedResource struct {
+	client *Client
+	specs  []sectionSpec
+}
 
-type resolvedResource struct{ client *Client }
+func NewResolvedResource() resource.Resource {
+	return &resolvedResource{specs: netSpecs("resolved")}
+}
 
 type resolvedModel struct {
 	Content  types.String   `tfsdk:"content"`
@@ -48,15 +53,26 @@ func (r *resolvedResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 			"section": sectionBlockSchema(),
 		},
 	}
+	for name, block := range typedBlocks(r.specs) {
+		resp.Schema.Blocks[name] = block
+	}
 }
 
 func (r *resolvedResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var cfg resolvedModel
-	resp.Diagnostics.Append(req.Config.Get(ctx, &cfg)...)
-	if resp.Diagnostics.HasError() {
+	d, err := resolvedConfFromRaw(req.Config.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
-	if err := validateContentOrSections(cfg.Content, cfg.Sections); err != nil {
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	if err := validateContentSectionsTyped(content, d.Sections, req.Config.Raw, r.specs); err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+	if err := validateTypedConflicts(req.Config.Raw, d.Sections, r.specs); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
@@ -74,12 +90,16 @@ func (r *resolvedResource) Configure(_ context.Context, req resource.ConfigureRe
 }
 
 func (r *resolvedResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan resolvedModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := resolvedConfFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
@@ -88,34 +108,29 @@ func (r *resolvedResource) Create(ctx context.Context, req resource.CreateReques
 		resp.Diagnostics.AddError("create resolved.conf", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = types.StringValue("resolved.conf")
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContent(req.Plan.Raw, body, "resolved.conf")
 }
 
 func (r *resolvedResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state resolvedModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	content, err := r.client.GetResolvedConf(ctx)
 	if err != nil {
 		resp.State.RemoveResource(ctx)
 		return
 	}
-	state.Content = types.StringValue(content)
-	state.ID = types.StringValue("resolved.conf")
-	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+	resp.State.Raw = setStateContent(req.State.Raw, content, "resolved.conf")
 }
 
 func (r *resolvedResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan resolvedModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := resolvedConfFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
@@ -124,17 +139,10 @@ func (r *resolvedResource) Update(ctx context.Context, req resource.UpdateReques
 		resp.Diagnostics.AddError("update resolved.conf", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = types.StringValue("resolved.conf")
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContent(req.Plan.Raw, body, "resolved.conf")
 }
 
 func (r *resolvedResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state resolvedModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	if err := r.client.DeleteResolvedConf(ctx); err != nil {
 		resp.Diagnostics.AddError("delete resolved.conf", err.Error())
 	}

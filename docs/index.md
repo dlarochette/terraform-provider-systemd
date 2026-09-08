@@ -109,3 +109,5 @@ Most resources share the same `content` XOR `section` model:
   the networkd gperf tables of systemd v249-v257. Repeatable sections
   (`[Address]`, `[Route]`, `[WireGuardPeer]`, qdiscs, ...) are list blocks:
   one instance per file section.
+- resolved resources (`systemd_resolved`, `systemd_resolved_dropin`) expose
+  the typed `[Resolve]` block, generated from the resolved gperf tables.

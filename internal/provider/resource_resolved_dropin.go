@@ -16,9 +16,14 @@ var _ resource.Resource = &resolvedDropinResource{}
 var _ resource.ResourceWithImportState = &resolvedDropinResource{}
 var _ resource.ResourceWithValidateConfig = &resolvedDropinResource{}
 
-func NewResolvedDropinResource() resource.Resource { return &resolvedDropinResource{} }
+func NewResolvedDropinResource() resource.Resource {
+	return &resolvedDropinResource{specs: netSpecs("resolved")}
+}
 
-type resolvedDropinResource struct{ client *Client }
+type resolvedDropinResource struct {
+	client *Client
+	specs  []sectionSpec
+}
 
 type resolvedDropinModel struct {
 	Name     types.String   `tfsdk:"name"`
@@ -53,15 +58,26 @@ func (r *resolvedDropinResource) Schema(_ context.Context, _ resource.SchemaRequ
 			"section": sectionBlockSchema(),
 		},
 	}
+	for name, block := range typedBlocks(r.specs) {
+		resp.Schema.Blocks[name] = block
+	}
 }
 
 func (r *resolvedDropinResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var cfg resolvedDropinModel
-	resp.Diagnostics.Append(req.Config.Get(ctx, &cfg)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.Config.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
-	if err := validateContentOrSections(cfg.Content, cfg.Sections); err != nil {
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	if err := validateContentSectionsTyped(content, d.Sections, req.Config.Raw, r.specs); err != nil {
+		resp.Diagnostics.AddError("Invalid configuration", err.Error())
+		return
+	}
+	if err := validateTypedConflicts(req.Config.Raw, d.Sections, r.specs); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 	}
 }
@@ -79,68 +95,70 @@ func (r *resolvedDropinResource) Configure(_ context.Context, req resource.Confi
 }
 
 func (r *resolvedDropinResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan resolvedDropinModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	if err := r.client.PutResolvedDropin(ctx, plan.Name.ValueString(), body); err != nil {
+	if err := r.client.PutResolvedDropin(ctx, d.Name, body); err != nil {
 		resp.Diagnostics.AddError("create resolved drop-in", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = plan.Name
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContent(req.Plan.Raw, body, d.Name)
 }
 
 func (r *resolvedDropinResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state resolvedDropinModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.State.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read state", err.Error())
 		return
 	}
-	content, err := r.client.GetResolvedDropin(ctx, state.Name.ValueString())
+	content, err := r.client.GetResolvedDropin(ctx, d.Name)
 	if err != nil {
 		resp.State.RemoveResource(ctx)
 		return
 	}
-	state.Content = types.StringValue(content)
-	state.ID = state.Name
-	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+	resp.State.Raw = setStateContent(req.State.Raw, content, d.Name)
 }
 
 func (r *resolvedDropinResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan resolvedDropinModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.Plan.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read plan", err.Error())
 		return
 	}
-	body, err := resolveFileContent(plan.Content, plan.Sections)
+	content := types.StringNull()
+	if d.HasContent {
+		content = types.StringValue(d.Content)
+	}
+	body, err := resolveFileContentTyped(content, d.Sections, req.Plan.Raw, r.specs)
 	if err != nil {
 		resp.Diagnostics.AddError("resolve content", err.Error())
 		return
 	}
-	if err := r.client.PutResolvedDropin(ctx, plan.Name.ValueString(), body); err != nil {
+	if err := r.client.PutResolvedDropin(ctx, d.Name, body); err != nil {
 		resp.Diagnostics.AddError("update resolved drop-in", err.Error())
 		return
 	}
-	plan.Content = types.StringValue(body)
-	plan.ID = plan.Name
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.State.Raw = setStateContent(req.Plan.Raw, body, d.Name)
 }
 
 func (r *resolvedDropinResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state resolvedDropinModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
+	d, err := unitLikeFromRaw(req.State.Raw)
+	if err != nil {
+		resp.Diagnostics.AddError("read state", err.Error())
 		return
 	}
-	if err := r.client.DeleteResolvedDropin(ctx, state.Name.ValueString()); err != nil {
+	if err := r.client.DeleteResolvedDropin(ctx, d.Name); err != nil {
 		resp.Diagnostics.AddError("delete resolved drop-in", err.Error())
 	}
 }

@@ -642,3 +642,27 @@ func networkFileFromRaw(raw tftypes.Value) (networkFileRaw, error) {
 func setStateContentFilename(raw tftypes.Value, content, filename string) tftypes.Value {
 	return setStateContent(raw, content, filename)
 }
+
+// resolvedConfRaw is the model data of resolved.conf resources read from a
+// raw tftypes value (content only, no name).
+type resolvedConfRaw struct {
+	Content    string
+	HasContent bool
+	Sections   []sectionModel
+}
+
+func resolvedConfFromRaw(raw tftypes.Value) (resolvedConfRaw, error) {
+	var d resolvedConfRaw
+	obj, ok := rawObject(raw)
+	if !ok {
+		return d, fmt.Errorf("config is not an object")
+	}
+	if s, ok := rawString(obj["content"]); ok {
+		d.Content = s
+		d.HasContent = true
+	}
+	if secs, ok := rawSectionBlocks(obj["section"]); ok {
+		d.Sections = secs
+	}
+	return d, nil
+}

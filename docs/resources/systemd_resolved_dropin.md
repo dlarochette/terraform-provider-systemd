@@ -21,6 +21,33 @@ resource "systemd_resolved_dropin" "lab" {
 }
 ```
 
+## Typed properties
+
+Beyond raw `content` and generic `section` blocks, this resource exposes the
+**typed** `[Resolve]` section: the resolved.conf directives as snake_case
+attributes with systemd validation rules (enums for `LLMNR`, `MulticastDNS`,
+`DNSSEC`, `DNSOverTLS`, `Cache`, `DNSStubListener`; lists for `DNS`,
+`FallbackDNS`, `Domains`, `DNSStubListenerExtra`; booleans; a time span for
+`StaleRetentionSec`).
+
+Example:
+
+```hcl
+resource "systemd_resolved" "main" {
+  resolve {
+    dns               = ["1.1.1.1", "9.9.9.9"]
+    llmnr             = "resolve"
+    dnssec            = "allow-downgrade"
+    dns_over_tls      = "opportunistic"
+    dns_stub_listener = "yes"
+  }
+}
+```
+
+The catalog comes from the resolved gperf tables of systemd v249-v257;
+directives not in the catalog can always be set through `section` blocks, and
+a directive must not be set both ways.
+
 ## Argument Reference
 
 | Attribute | Required | Description |
