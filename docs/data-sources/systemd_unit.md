@@ -25,3 +25,8 @@ data "systemd_unit" "sshd" {
 | `active_state` | systemd `ActiveState` property (e.g. `active`). |
 | `sub_state` | systemd `SubState` property (e.g. `running`). |
 | `unit_file_state` | systemd `UnitFileState` property (enabled/disabled/…). |
+
+## See also
+
+- [systemctl](https://www.freedesktop.org/software/systemd/man/latest/systemctl.html)
+- [systemd.unit](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html)

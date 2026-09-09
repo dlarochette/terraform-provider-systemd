@@ -23,3 +23,8 @@ data "systemd_resolve_status" "eth0" {
 |-----------|-------------|
 | `id` | Link name, or `global` when unset. |
 | `status` | Raw stdout from `resolvectl status`. |
+
+## See also
+
+- [resolvectl](https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html)
+- [systemd-resolved](https://www.freedesktop.org/software/systemd/man/latest/systemd-resolved.html)

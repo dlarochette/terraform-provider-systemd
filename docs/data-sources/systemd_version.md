@@ -22,3 +22,7 @@ locals {
 | `id` | Same as `version`. |
 | `version` | Systemd release number (e.g. `257`). |
 | `release` | Full first line of `systemctl --version` (e.g. `systemd 257 (257.3-1)`). |
+
+## See also
+
+- [systemctl](https://www.freedesktop.org/software/systemd/man/latest/systemctl.html)

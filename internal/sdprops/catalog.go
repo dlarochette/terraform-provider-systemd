@@ -88,9 +88,11 @@ type Directive struct {
 	Class string // value class driving type and validation
 }
 
-// SectionGroup holds the directives of one unit section.
+// SectionGroup holds the directives of one section. Attr is the HCL block
+// name for the section (snake_case).
 type SectionGroup struct {
 	Section    string
+	Attr       string
 	Directives []Directive
 }
 

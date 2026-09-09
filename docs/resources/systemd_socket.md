@@ -89,3 +89,8 @@ are used, `content` is computed from the rendered INI file.
 |-----------|-------------|
 | `id` | Resource identifier used in Terraform state. |
 | `content` | When `section` blocks are used, the rendered INI file contents. |
+
+
+## See also
+
+- [systemd.socket](https://www.freedesktop.org/software/systemd/man/latest/systemd.socket.html)

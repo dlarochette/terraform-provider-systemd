@@ -69,3 +69,9 @@ are used, `content` is computed from the rendered INI file.
 |-----------|-------------|
 | `id` | Always `resolved.conf`. |
 | `content` | When `section` blocks are used, the rendered INI file contents. |
+
+
+## See also
+
+- [resolved.conf](https://www.freedesktop.org/software/systemd/man/latest/resolved.conf.html)
+- [systemd-resolved](https://www.freedesktop.org/software/systemd/man/latest/systemd-resolved.html)

@@ -34,3 +34,8 @@ resource "systemd_resolve_link" "eth0" {
 | Attribute | Description |
 |-----------|-------------|
 | `id` | Resource identifier used in Terraform state. |
+
+
+## See also
+
+- [resolvectl](https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html)

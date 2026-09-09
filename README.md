@@ -497,6 +497,13 @@ no stop/disable and no `daemon-reload`.
 | `systemd_resolve_status` | `resolvectl status [link]` (raw `status` text) |
 | `systemd_version` | `systemctl --version` (`version`, `release`) |
 
+## Examples
+
+Reproductions of the official systemd examples ([systemd.service(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html),
+[systemd.timer(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html),
+[systemd.network(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html), ...) in HCL and JSON syntax live in the
+[examples guide](docs/guides/examples.md). The [`examples/`](examples) directory holds complete configurations.
+
 ## Schema validation / linting
 
 Provider and resource schemas include validators (unit suffixes, network filename suffixes, path-segment safety, port ranges, key conflicts) so `terraform validate` / `tofu validate` can catch bad `.tf` configs early.

@@ -54,3 +54,9 @@ For an OCI image use `image { type = "oci", source = "docker.io/library/debian:b
 |-----------|-------------|
 | `id` | Resource identifier used in Terraform state. |
 | `content` | When `section` blocks are used, the rendered `.nspawn` file contents. |
+
+
+## See also
+
+- [systemd-nspawn](https://www.freedesktop.org/software/systemd/man/latest/systemd-nspawn.html)
+- [machinectl](https://www.freedesktop.org/software/systemd/man/latest/machinectl.html)

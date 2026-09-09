@@ -48,7 +48,14 @@ func (s sectionSpec) block() string {
 func unitSpecs(sections []string) []sectionSpec {
 	out := make([]sectionSpec, 0, len(sections))
 	for _, sec := range sections {
-		out = append(out, sectionSpec{Kind: "unit", Section: sec})
+		spec := sectionSpec{Kind: "unit", Section: sec}
+		// use the catalog block name when the section is bundled
+		for _, g := range sdprops.NetSections("unit") {
+			if g.Section == sec && g.Attr != "" {
+				spec.Block = g.Attr
+			}
+		}
+		out = append(out, spec)
 	}
 	return out
 }
@@ -56,8 +63,8 @@ func unitSpecs(sections []string) []sectionSpec {
 func netSpecs(kind string) []sectionSpec {
 	rep := sdprops.RepeatableSections(kind)
 	out := make([]sectionSpec, 0)
-	for _, sec := range sdprops.NetSectionNames(kind) {
-		out = append(out, sectionSpec{Kind: kind, Section: sec, Repeatable: rep[sec]})
+	for _, g := range sdprops.NetSections(kind) {
+		out = append(out, sectionSpec{Kind: kind, Section: g.Section, Block: g.Attr, Repeatable: rep[g.Section]})
 	}
 	return out
 }

@@ -210,9 +210,19 @@ var acronymTokens = map[string]string{
 
 // preNormalize fixes names the generic scanner cannot handle.
 var preNormalize = []struct{ from, to string }{
+	{"IPs", "Ips"},
 	{"IOScheduling", "IoScheduling"},
 	{"UMask", "Umask"},
 	{"SELinux", "Selinux"},
+	{"QDisc", "Qdisc"},
+	{"NetDev", "Netdev"},
+	{"DHCPv", "Dhcpv"},
+	{"DHCP", "Dhcp"},
+	{"IPoIB", "Ipoib"},
+	{"L2TP", "L2tp"},
+	{"MACsec", "Macsec"},
+	{"WireGuard", "Wireguard"},
+	{"GENEVE", "Geneve"},
 }
 
 func snake(name string) string {
@@ -258,7 +268,11 @@ func snake(name string) string {
 			for j < len(name) && name[j] >= '0' && name[j] <= '9' {
 				j++
 			}
-			words = append(words, name[i:j])
+			if len(words) > 0 && words[len(words)-1] != "" {
+				words[len(words)-1] += name[i:j]
+			} else {
+				words = append(words, name[i:j])
+			}
 			i = j
 		default:
 			j := i
@@ -444,7 +458,8 @@ type Directive struct {
 }
 
 type SectionGroup struct {
-	Section    string
+	Section string
+	Attr    string
 	Directives []Directive
 }
 
@@ -566,7 +581,7 @@ func main() {
 			}
 			groups := make([]SectionGroup, 0, len(bySection))
 			for _, sec := range order {
-				g := SectionGroup{Section: sec}
+				g := SectionGroup{Section: sec, Attr: snake(sec)}
 				for _, d := range bySection[sec] {
 					g.Directives = append(g.Directives, Directive{Name: d.Name, Attr: d.Attr, Class: d.Class})
 				}
@@ -588,7 +603,7 @@ func main() {
 			groups := byVersion2[kind+"_"+fmt.Sprint(v)]
 			fmt.Fprintf(&b, "\t{\n\t\tVersion: %d,\n\t\tSections: []SectionGroup{\n", v)
 			for _, g := range groups {
-				fmt.Fprintf(&b, "\t\t\t{\n\t\t\t\tSection: %q,\n\t\t\t\tDirectives: []Directive{\n", g.Section)
+				fmt.Fprintf(&b, "\t\t\t{\n\t\t\t\tSection: %q,\n\t\t\t\tAttr: %q,\n\t\t\t\tDirectives: []Directive{\n", g.Section, g.Attr)
 				for _, d := range g.Directives {
 					fmt.Fprintf(&b, "\t\t\t\t\t{Name: %q, Attr: %q, Class: %q},\n", d.Name, d.Attr, d.Class)
 				}

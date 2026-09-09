@@ -77,3 +77,9 @@ are used, `content` is computed from the rendered INI file.
 |-----------|-------------|
 | `id` | Resource identifier used in Terraform state. |
 | `content` | When `section` blocks are used, the rendered INI file contents. |
+
+
+## See also
+
+- [systemd.link](https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html)
+- [systemd-udevd](https://www.freedesktop.org/software/systemd/man/latest/systemd-udevd.html)

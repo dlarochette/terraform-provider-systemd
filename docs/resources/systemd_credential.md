@@ -69,3 +69,9 @@ e.g. `db-pass:/etc/credstore.encrypted/db-pass`.
 | Attribute | Description |
 |-----------|-------------|
 | `id` | Resource identifier used in Terraform state. |
+
+
+## See also
+
+- [systemd.exec](https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html)
+- [systemd-creds](https://www.freedesktop.org/software/systemd/man/latest/systemd-creds.html)

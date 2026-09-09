@@ -85,6 +85,12 @@ resource "systemd_unit" "demo" {
 }
 ```
 
+## Examples
+
+See the [examples guide](guides/examples.md) for reproductions of the official
+systemd examples ([systemd.service(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html),
+[systemd.network(5)](https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html), ...) in HCL and JSON syntax.
+
 ## File model
 
 Most resources share the same `content` XOR `section` model:

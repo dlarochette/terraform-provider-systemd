@@ -49,3 +49,8 @@ resource "systemd_instance" "app_bar" {
 | Attribute | Description |
 |-----------|-------------|
 | `id` | Instantiated unit name (e.g. `app@bar.service`). |
+
+
+## See also
+
+- [systemd.unit](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html)

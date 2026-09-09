@@ -40,3 +40,9 @@ resource "systemd_portable" "app" {
 | Attribute | Description |
 |-----------|-------------|
 | `id` | Resource identifier used in Terraform state. |
+
+
+## See also
+
+- [portablectl](https://www.freedesktop.org/software/systemd/man/latest/portablectl.html)
+- [systemd-portabled](https://www.freedesktop.org/software/systemd/man/latest/systemd-portabled.html)
