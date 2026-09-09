@@ -33,6 +33,27 @@ provider "systemd" {
 resource "systemd_unit" "demo" {
   name   = "demo.service"
   enable = true
+
+  unit {
+    description = "Demo unit managed by Terraform"
+  }
+  service {
+    type       = "oneshot"
+    exec_start = ["/bin/true"]
+  }
+  install {
+    wanted_by = ["multi-user.target"]
+  }
+}
+```
+
+The same file can be written verbatim with raw `content` when a directive is
+outside the typed catalog:
+
+```hcl
+resource "systemd_unit" "demo_raw" {
+  name   = "demo.service"
+  enable = true
   content = <<-EOT
     [Unit]
     Description=Demo unit managed by Terraform
