@@ -8,33 +8,22 @@ terraform {
 }
 
 provider "systemd" {
-  host = "ymir.example"
+  host = "host.example.com"
   user = "root"
 }
 
 # Global resolved.conf (singleton). Destroy removes the file and restarts the service.
 resource "systemd_resolved" "main" {
-  section {
-    name = "Resolve"
-    entry {
-      key   = "DNS"
-      value = "1.1.1.1"
-    }
-    entry {
-      key   = "FallbackDNS"
-      value = "9.9.9.9"
-    }
+  resolve {
+    dns          = ["1.1.1.1"]
+    fallback_dns = ["9.9.9.9"]
   }
 }
 
 resource "systemd_resolved_dropin" "lab" {
   name = "10-lab.conf"
-  section {
-    name = "Resolve"
-    entry {
-      key   = "Domains"
-      value = "~lab.example"
-    }
+  resolve {
+    domains = ["~lab.example"]
   }
 }
 

@@ -11,6 +11,8 @@ provider "systemd" {
   host                     = var.host
   user                     = var.user
   insecure_ignore_host_key = var.insecure
+  verify                   = "warn"
+  # systemd_version = "251" # pin the target systemd release instead of detecting it
 }
 
 variable "host" {
@@ -86,34 +88,16 @@ resource "systemd_mount" "data" {
   enable = true
   active = true
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Data volume"
-    }
+  unit {
+    description = "Data volume"
   }
-  section {
-    name = "Mount"
-    entry {
-      key   = "What"
-      value = "/dev/disk/by-label/DATA"
-    }
-    entry {
-      key   = "Where"
-      value = "/data"
-    }
-    entry {
-      key   = "Type"
-      value = "ext4"
-    }
+  mount {
+    what  = "/dev/disk/by-label/DATA"
+    where = "/data"
+    type  = "ext4"
   }
-  section {
-    name = "Install"
-    entry {
-      key   = "WantedBy"
-      value = "multi-user.target"
-    }
+  install {
+    wanted_by = ["multi-user.target"]
   }
 }
 
@@ -122,26 +106,14 @@ resource "systemd_automount" "data" {
   enable = true
   active = true
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Automount /data"
-    }
+  unit {
+    description = "Automount /data"
   }
-  section {
-    name = "Automount"
-    entry {
-      key   = "Where"
-      value = "/data"
-    }
+  automount {
+    where = "/data"
   }
-  section {
-    name = "Install"
-    entry {
-      key   = "WantedBy"
-      value = "multi-user.target"
-    }
+  install {
+    wanted_by = ["multi-user.target"]
   }
 }
 
@@ -150,26 +122,14 @@ resource "systemd_socket" "backup" {
   enable = true
   active = true
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Backup socket activation"
-    }
+  unit {
+    description = "Backup socket activation"
   }
-  section {
-    name = "Socket"
-    entry {
-      key   = "ListenStream"
-      value = "8080"
-    }
+  socket {
+    listen_stream = ["8080"]
   }
-  section {
-    name = "Install"
-    entry {
-      key   = "WantedBy"
-      value = "sockets.target"
-    }
+  install {
+    wanted_by = ["sockets.target"]
   }
 }
 
@@ -178,23 +138,12 @@ resource "systemd_unit" "watch_inbox" {
   enable = false
   active = false
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Process new inbox files"
-    }
+  unit {
+    description = "Process new inbox files"
   }
-  section {
-    name = "Service"
-    entry {
-      key   = "Type"
-      value = "oneshot"
-    }
-    entry {
-      key   = "ExecStart"
-      value = "/usr/local/bin/process-inbox.sh"
-    }
+  service {
+    type       = "oneshot"
+    exec_start = ["/usr/local/bin/process-inbox.sh"]
   }
 }
 
@@ -203,30 +152,15 @@ resource "systemd_path" "watch_inbox" {
   enable = true
   active = true
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Watch /var/inbox for new files"
-    }
+  unit {
+    description = "Watch /var/inbox for new files"
   }
-  section {
-    name = "Path"
-    entry {
-      key   = "PathExists"
-      value = "/var/inbox"
-    }
-    entry {
-      key   = "DirectoryNotEmpty"
-      value = "/var/inbox"
-    }
+  path {
+    path_exists         = "/var/inbox"
+    directory_not_empty = "/var/inbox"
   }
-  section {
-    name = "Install"
-    entry {
-      key   = "WantedBy"
-      value = "paths.target"
-    }
+  install {
+    wanted_by = ["paths.target"]
   }
 }
 
@@ -235,19 +169,11 @@ resource "systemd_slice" "app" {
   enable = true
   active = true
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Application workload slice"
-    }
+  unit {
+    description = "Application workload slice"
   }
-  section {
-    name = "Slice"
-    entry {
-      key   = "MemoryMax"
-      value = "1G"
-    }
+  slice {
+    memory_max = "1G"
   }
 }
 
@@ -256,45 +182,25 @@ resource "systemd_swap" "var_swap" {
   enable = true
   active = false
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Swap file under /var"
-    }
+  unit {
+    description = "Swap file under /var"
   }
-  section {
-    name = "Swap"
-    entry {
-      key   = "What"
-      value = "/var/swapfile"
-    }
+  swap {
+    what = "/var/swapfile"
   }
-  section {
-    name = "Install"
-    entry {
-      key   = "WantedBy"
-      value = "swap.target"
-    }
+  install {
+    wanted_by = ["swap.target"]
   }
 }
 
 resource "systemd_unit" "app_template" {
   name = "app@.service"
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "App instance %i"
-    }
+  unit {
+    description = "App instance %i"
   }
-  section {
-    name = "Service"
-    entry {
-      key   = "ExecStart"
-      value = "/usr/local/bin/app %i"
-    }
+  service {
+    exec_start = ["/usr/local/bin/app %i"]
   }
 }
 
@@ -315,23 +221,12 @@ resource "systemd_credential" "db" {
 resource "systemd_unit" "app" {
   name = "app.service"
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "App using a host credential"
-    }
+  unit {
+    description = "App using a host credential"
   }
-  section {
-    name = "Service"
-    entry {
-      key   = "LoadCredentialEncrypted"
-      value = "db-pass"
-    }
-    entry {
-      key   = "ExecStart"
-      value = "/usr/local/bin/app"
-    }
+  service {
+    exec_start                = ["/usr/local/bin/app"]
+    load_credential_encrypted = ["db-pass"]
   }
 }
 
@@ -340,23 +235,12 @@ resource "systemd_target" "app" {
   enable = true
   active = true
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Application stack"
-    }
-    entry {
-      key   = "Wants"
-      value = "backup.service"
-    }
+  unit {
+    description = "Application stack"
+    wants       = ["backup.service"]
   }
-  section {
-    name = "Install"
-    entry {
-      key   = "WantedBy"
-      value = "multi-user.target"
-    }
+  install {
+    wanted_by = ["multi-user.target"]
   }
 }
 
@@ -365,61 +249,32 @@ resource "systemd_target" "app" {
 resource "systemd_link" "eth0" {
   filename = "10-eth0.link"
 
-  section {
-    name = "Match"
-    entry {
-      key   = "MACAddress"
-      value = "aa:bb:cc:dd:ee:ff"
-    }
+  match {
+    mac_address = "aa:bb:cc:dd:ee:ff"
   }
-  section {
-    name = "Link"
-    entry {
-      key   = "Name"
-      value = "eth0"
-    }
+  link {
+    name = "eth0"
   }
 }
 
 resource "systemd_netdev" "br0" {
   filename = "20-br0.netdev"
 
-  section {
-    name = "NetDev"
-    entry {
-      key   = "Name"
-      value = "br0"
-    }
-    entry {
-      key   = "Kind"
-      value = "bridge"
-    }
+  netdev {
+    name = "br0"
+    kind = "bridge"
   }
 }
 
 resource "systemd_network" "br0" {
   filename = "30-br0.network"
 
-  section {
-    name = "Match"
-    entry {
-      key   = "Name"
-      value = "br0"
-    }
+  match {
+    name = "br0"
   }
-  section {
-    name = "Network"
-    entry {
-      key   = "Address"
-      value = "192.0.2.10/24"
-    }
-    entry {
-      key   = "Gateway"
-      value = "192.0.2.1"
-    }
-    entry {
-      key   = "DNS"
-      value = "9.9.9.9"
-    }
+  network {
+    address = "192.0.2.10/24"
+    gateway = "192.0.2.1"
+    dns     = "9.9.9.9"
   }
 }

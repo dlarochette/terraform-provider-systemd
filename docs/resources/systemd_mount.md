@@ -13,15 +13,13 @@ unit (best effort), removes the file, and runs `systemctl daemon-reload`.
 resource "systemd_mount" "data" {
   name = "data.mount"
 
-  section {
-    name = "Mount"
-    entry { key = "What", value = "/dev/vdb" }
-    entry { key = "Where", value = "/data" }
-    entry { key = "Type",  value = "ext4" }
+  mount {
+    what  = "/dev/vdb"
+    where = "/data"
+    type  = "ext4"
   }
-  section {
-    name = "Install"
-    entry { key = "WantedBy", value = "multi-user.target" }
+  install {
+    wanted_by = "multi-user.target"
   }
 }
 ```

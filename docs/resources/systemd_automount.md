@@ -15,13 +15,11 @@ resource "systemd_automount" "data" {
   enable = true
   active = true
 
-  section {
-    name = "Automount"
-    entry { key = "Where", value = "/data" }
+  automount {
+    where = "/data"
   }
-  section {
-    name = "Install"
-    entry { key = "WantedBy", value = "multi-user.target" }
+  install {
+    wanted_by = ["multi-user.target"]
   }
 }
 ```

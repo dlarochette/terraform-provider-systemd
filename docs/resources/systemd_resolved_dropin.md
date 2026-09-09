@@ -11,12 +11,8 @@ on destroy after the file is removed.
 resource "systemd_resolved_dropin" "lab" {
   name = "10-lab.conf"
 
-  section {
-    name = "Resolve"
-    entry {
-      key   = "Domains"
-      value = "~lab.example"
-    }
+  resolve {
+    domains = ["~lab.example"]
   }
 }
 ```

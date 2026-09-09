@@ -13,9 +13,8 @@ unit (best effort), removes the file, and runs `systemctl daemon-reload`.
 resource "systemd_slice" "app" {
   name = "app.slice"
 
-  section {
-    name = "Slice"
-    entry { key = "CPUQuota", value = "50%" }
+  slice {
+    cpu_quota = "50%"
   }
 }
 ```

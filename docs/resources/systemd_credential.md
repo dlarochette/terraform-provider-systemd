@@ -41,12 +41,8 @@ resource "systemd_credential" "db" {
 resource "systemd_unit" "app" {
   name = "app.service"
 
-  section {
-    name = "Service"
-    entry {
-      key   = "LoadCredentialEncrypted"
-      value = "db-pass"
-    }
+  service {
+    load_credential_encrypted = ["db-pass"]
   }
 }
 ```

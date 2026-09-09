@@ -9,12 +9,8 @@ then runs `systemctl restart systemd-resolved.service`. On destroy the file is
 
 ```hcl
 resource "systemd_resolved" "main" {
-  section {
-    name = "Resolve"
-    entry {
-      key   = "DNS"
-      value = "1.1.1.1"
-    }
+  resolve {
+    dns = ["1.1.1.1"]
   }
 }
 ```

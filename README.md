@@ -84,7 +84,34 @@ provider "systemd" {
 }
 ```
 
-### Raw `content`
+### Typed systemd properties
+
+One snake_case block per systemd section; attributes are systemd directives
+with the same names and validation rules as the systemd parsers. Repeatable
+directives (`ExecStart`, `After`, `OnCalendar`, …) are lists.
+
+```hcl
+resource "systemd_unit" "demo" {
+  provider = systemd.main
+  name     = "demo.service"
+  enable   = true
+
+  unit {
+    description = "Demo unit managed by Terraform"
+  }
+  service {
+    type       = "oneshot"
+    exec_start = ["/bin/true"]
+  }
+  install {
+    wanted_by = ["multi-user.target"]
+  }
+}
+```
+
+### Escape hatches: `content` and `section`
+
+For directives outside the catalog, or when a file must be written verbatim:
 
 ```hcl
 resource "systemd_unit" "demo" {
@@ -103,45 +130,10 @@ resource "systemd_unit" "demo" {
 }
 ```
 
-### Structured `section` blocks
-
-`content` and `section` are mutually exclusive. Duplicate keys (e.g. multiple `ExecStart`) are allowed.
-
-```hcl
-resource "systemd_unit" "demo" {
-  provider = systemd.main
-  name     = "demo.service"
-  enable   = true
-
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Demo unit managed by Terraform"
-    }
-  }
-  section {
-    name = "Service"
-    entry {
-      key   = "Type"
-      value = "oneshot"
-    }
-    entry {
-      key   = "ExecStart"
-      value = "/bin/true"
-    }
-  }
-  section {
-    name = "Install"
-    entry {
-      key   = "WantedBy"
-      value = "multi-user.target"
-    }
-  }
-}
-```
-
-### Typed systemd properties
+`content` and `section` are mutually exclusive with each other and with typed
+blocks (except: `section` may coexist with typed blocks for directives they
+do not cover, as long as no directive is set twice). Duplicate keys
+(e.g. multiple `ExecStart`) are allowed inside `section`.
 
 For units, `systemd_unit` and every typed unit resource also expose **typed
 properties**: one snake_case block per systemd section (`unit`, `service`,
@@ -249,19 +241,11 @@ without duplicating the unit file per instance:
 resource "systemd_unit" "app_template" {
   name = "app@.service"
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "App instance %i"
-    }
+  unit {
+    description = "App instance %i"
   }
-  section {
-    name = "Service"
-    entry {
-      key   = "ExecStart"
-      value = "/usr/local/bin/app %i"
-    }
+  service {
+    exec_start = ["/usr/local/bin/app %i"]
   }
 }
 
@@ -309,12 +293,8 @@ resource "systemd_credential" "db" {
 resource "systemd_unit" "app" {
   name = "app.service"
   # …
-  section {
-    name = "Service"
-    entry {
-      key   = "LoadCredentialEncrypted"
-      value = "db-pass"
-    }
+  service {
+    load_credential_encrypted = ["db-pass"]
   }
 }
 ```
@@ -325,63 +305,38 @@ Relative credential names search `/etc/credstore.encrypted/` (or `/etc/credstore
 
 ### networkd (`.network` / `.netdev` / `.link`)
 
-Same `section` / `entry` (or raw `content`) model. Apply writes under `/etc/systemd/network/`
-then runs `networkctl reload`. There is no `enable`/`active` — networkd picks files up by
+Typed blocks per systemd-networkd section (`match`, `link`, `netdev`,
+`network`, `address`, `route`, ... — repeatable sections are list blocks).
+Apply writes under `/etc/systemd/network/` then runs `networkctl reload`. There is no `enable`/`active` — networkd picks files up by
 name/Match.
 
 ```hcl
 resource "systemd_link" "eth0" {
   filename = "10-eth0.link"
-  section {
-    name = "Match"
-    entry {
-      key   = "MACAddress"
-      value = "aa:bb:cc:dd:ee:ff"
-    }
+  match {
+    mac_address = "aa:bb:cc:dd:ee:ff"
   }
-  section {
-    name = "Link"
-    entry {
-      key   = "Name"
-      value = "eth0"
-    }
+  link {
+    name = "eth0"
   }
 }
 
 resource "systemd_netdev" "br0" {
   filename = "20-br0.netdev"
-  section {
-    name = "NetDev"
-    entry {
-      key   = "Name"
-      value = "br0"
-    }
-    entry {
-      key   = "Kind"
-      value = "bridge"
-    }
+  netdev {
+    name = "br0"
+    kind = "bridge"
   }
 }
 
 resource "systemd_network" "br0" {
   filename = "30-br0.network"
-  section {
-    name = "Match"
-    entry {
-      key   = "Name"
-      value = "br0"
-    }
+  match {
+    name = "br0"
   }
-  section {
-    name = "Network"
-    entry {
-      key   = "Address"
-      value = "192.0.2.10/24"
-    }
-    entry {
-      key   = "Gateway"
-      value = "192.0.2.1"
-    }
+  network {
+    address = "192.0.2.10/24"
+    gateway = "192.0.2.1"
   }
 }
 
@@ -392,7 +347,7 @@ data "systemd_link" "br0" {
 
 ### systemd-resolved
 
-Global config and drop-ins use the same `content` XOR `section` model. Apply writes the file then
+Typed `resolve` block (or raw `content` / `section`). Apply writes the file then
 runs `systemctl restart systemd-resolved.service`. Destroying `systemd_resolved` **removes**
 `/etc/systemd/resolved.conf` (vendor defaults apply again).
 
@@ -401,23 +356,15 @@ also configured in a `.network` file. Destroy runs `resolvectl revert <link>`.
 
 ```hcl
 resource "systemd_resolved" "main" {
-  section {
-    name = "Resolve"
-    entry {
-      key   = "DNS"
-      value = "1.1.1.1"
-    }
+  resolve {
+    dns = ["1.1.1.1"]
   }
 }
 
 resource "systemd_resolved_dropin" "lab" {
   name = "10-lab.conf"
-  section {
-    name = "Resolve"
-    entry {
-      key   = "Domains"
-      value = "~lab.example"
-    }
+  resolve {
+    domains = ["~lab.example"]
   }
 }
 

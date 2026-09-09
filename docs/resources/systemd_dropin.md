@@ -12,12 +12,9 @@ resource "systemd_dropin" "sshd_restart" {
   unit   = "sshd.service"
   dropin = "10-restart.conf"
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "X-RestartIfChanged"
-      value = "true"
-    }
+  unit_section {
+    # typed [Unit] block is named unit_section on this resource
+    x_restart_if_changed = "true"
   }
 }
 ```

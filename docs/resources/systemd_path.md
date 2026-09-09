@@ -15,13 +15,11 @@ resource "systemd_path" "watch" {
   enable = true
   active = true
 
-  section {
-    name = "Path"
-    entry { key = "PathModified", value = "/etc/app" }
+  path {
+    path_modified = "/etc/app"
   }
-  section {
-    name = "Install"
-    entry { key = "WantedBy", value = "multi-user.target" }
+  install {
+    wanted_by = ["multi-user.target"]
   }
 }
 ```

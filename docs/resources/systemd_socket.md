@@ -15,14 +15,12 @@ resource "systemd_socket" "demo" {
   enable = true
   active = true
 
-  section {
-    name = "Socket"
-    entry { key = "ListenStream", value = "8080" }
-    entry { key = "Accept",       value = "no" }
+  socket {
+    listen_stream = ["8080"]
+    accept        = false
   }
-  section {
-    name = "Install"
-    entry { key = "WantedBy", value = "sockets.target" }
+  install {
+    wanted_by = ["sockets.target"]
   }
 }
 ```

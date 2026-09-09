@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "systemd" {
-  host = "ymir.example"
+  host = "host.example.com"
   user = "root"
 }
 

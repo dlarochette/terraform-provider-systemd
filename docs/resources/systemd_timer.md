@@ -15,23 +15,12 @@ resource "systemd_timer" "backup" {
   enable = true
   active = true
 
-  section {
-    name = "Timer"
-    entry {
-      key   = "OnCalendar"
-      value = "*-*-* 02:00:00"
-    }
-    entry {
-      key   = "Persistent"
-      value = "true"
-    }
+  timer {
+    on_calendar  = ["*-*-* 02:00:00"]
+    persistent   = true
   }
-  section {
-    name = "Install"
-    entry {
-      key   = "WantedBy"
-      value = "timers.target"
-    }
+  install {
+    wanted_by = ["timers.target"]
   }
 }
 ```

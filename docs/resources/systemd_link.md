@@ -13,13 +13,11 @@ removed and `networkctl reload` runs again.
 resource "systemd_link" "eth0" {
   filename = "10-eth0.link"
 
-  section {
-    name = "Match"
-    entry { key = "MACAddress", value = "aa:bb:cc:dd:ee:ff" }
+  match {
+    mac_address = "aa:bb:cc:dd:ee:ff"
   }
-  section {
-    name = "Link"
-    entry { key = "Name", value = "eth0" }
+  link {
+    name = "eth0"
   }
 }
 ```

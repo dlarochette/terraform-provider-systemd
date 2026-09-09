@@ -13,10 +13,9 @@ removed and `networkctl reload` runs again.
 resource "systemd_netdev" "br0" {
   filename = "20-br0.netdev"
 
-  section {
-    name = "NetDev"
-    entry { key = "Name", value = "br0" }
-    entry { key = "Kind", value = "bridge" }
+  netdev {
+    name = "br0"
+    kind = "bridge"
   }
 }
 ```

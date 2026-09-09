@@ -13,9 +13,8 @@ unit (best effort), removes the file, and runs `systemctl daemon-reload`.
 resource "systemd_swap" "swapfile" {
   name = "swapfile.swap"
 
-  section {
-    name = "Swap"
-    entry { key = "What", value = "/swapfile" }
+  swap {
+    what = "/swapfile"
   }
 }
 ```

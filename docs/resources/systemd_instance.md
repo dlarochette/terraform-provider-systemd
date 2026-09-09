@@ -11,19 +11,11 @@ stops and disables the instance.
 resource "systemd_unit" "app_template" {
   name = "app@.service"
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "App instance %i"
-    }
+  unit {
+    description = "App instance %i"
   }
-  section {
-    name = "Service"
-    entry {
-      key   = "ExecStart"
-      value = "/usr/local/bin/app %i"
-    }
+  service {
+    exec_start = ["/usr/local/bin/app %i"]
   }
 }
 

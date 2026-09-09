@@ -13,14 +13,12 @@ removed and `networkctl reload` runs again.
 resource "systemd_network" "br0" {
   filename = "30-br0.network"
 
-  section {
-    name = "Match"
-    entry { key = "Name", value = "br0" }
+  match {
+    name = "br0"
   }
-  section {
-    name = "Network"
-    entry { key = "Address", value = "192.0.2.10/24" }
-    entry { key = "Gateway", value = "192.0.2.1" }
+  network {
+    address = "192.0.2.10/24"
+    gateway = "192.0.2.1"
   }
 }
 ```

@@ -14,30 +14,15 @@ resource "systemd_unit" "demo" {
   name   = "demo.service"
   enable = true
 
-  section {
-    name = "Unit"
-    entry {
-      key   = "Description"
-      value = "Demo unit managed by Terraform"
-    }
+  unit {
+    description = "Demo unit managed by Terraform"
   }
-  section {
-    name = "Service"
-    entry {
-      key   = "Type"
-      value = "oneshot"
-    }
-    entry {
-      key   = "ExecStart"
-      value = "/bin/true"
-    }
+  service {
+    type       = "oneshot"
+    exec_start = ["/bin/true"]
   }
-  section {
-    name = "Install"
-    entry {
-      key   = "WantedBy"
-      value = "multi-user.target"
-    }
+  install {
+    wanted_by = ["multi-user.target"]
   }
 }
 ```

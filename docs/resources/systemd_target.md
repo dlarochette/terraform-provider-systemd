@@ -14,13 +14,11 @@ resource "systemd_target" "app" {
   name   = "app.target"
   enable = true
 
-  section {
-    name = "Unit"
-    entry { key = "Description", value = "App stack" }
+  unit {
+    description = "App stack"
   }
-  section {
-    name = "Install"
-    entry { key = "WantedBy", value = "multi-user.target" }
+  install {
+    wanted_by = ["multi-user.target"]
   }
 }
 ```
