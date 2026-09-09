@@ -458,8 +458,8 @@ type Directive struct {
 }
 
 type SectionGroup struct {
-	Section string
-	Attr    string
+	Section    string
+	Attr       string
 	Directives []Directive
 }
 

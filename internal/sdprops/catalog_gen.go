@@ -18,7 +18,7 @@ var UnitCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Unit",
-				Attr: "unit",
+				Attr:    "unit",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Documentation", Attr: "documentation", Class: "list"},
@@ -128,7 +128,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Service",
-				Attr: "service",
+				Attr:    "service",
 				Directives: []Directive{
 					{Name: "PIDFile", Attr: "pid_file", Class: "string"},
 					{Name: "ExecCondition", Attr: "exec_condition", Class: "list"},
@@ -369,7 +369,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Socket",
-				Attr: "socket",
+				Attr:    "socket",
 				Directives: []Directive{
 					{Name: "ListenStream", Attr: "listen_stream", Class: "list"},
 					{Name: "ListenDatagram", Attr: "listen_datagram", Class: "list"},
@@ -629,7 +629,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Mount",
-				Attr: "mount",
+				Attr:    "mount",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Where", Attr: "where", Class: "string"},
@@ -839,7 +839,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Automount",
-				Attr: "automount",
+				Attr:    "automount",
 				Directives: []Directive{
 					{Name: "Where", Attr: "where", Class: "string"},
 					{Name: "DirectoryMode", Attr: "directory_mode", Class: "mode"},
@@ -848,7 +848,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Swap",
-				Attr: "swap",
+				Attr:    "swap",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "int"},
@@ -1052,7 +1052,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Timer",
-				Attr: "timer",
+				Attr:    "timer",
 				Directives: []Directive{
 					{Name: "OnCalendar", Attr: "on_calendar", Class: "list"},
 					{Name: "OnActiveSec", Attr: "on_active_sec", Class: "list"},
@@ -1073,7 +1073,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Path",
-				Attr: "path",
+				Attr:    "path",
 				Directives: []Directive{
 					{Name: "PathExists", Attr: "path_exists", Class: "string"},
 					{Name: "PathExistsGlob", Attr: "path_exists_glob", Class: "string"},
@@ -1087,7 +1087,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Slice",
-				Attr: "slice",
+				Attr:    "slice",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -1146,7 +1146,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Scope",
-				Attr: "scope",
+				Attr:    "scope",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -1214,7 +1214,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Install",
-				Attr: "install",
+				Attr:    "install",
 				Directives: []Directive{
 					{Name: "Alias", Attr: "alias", Class: "list"},
 					{Name: "WantedBy", Attr: "wanted_by", Class: "list"},
@@ -1230,7 +1230,7 @@ var UnitCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Unit",
-				Attr: "unit",
+				Attr:    "unit",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Documentation", Attr: "documentation", Class: "list"},
@@ -1346,7 +1346,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Service",
-				Attr: "service",
+				Attr:    "service",
 				Directives: []Directive{
 					{Name: "PIDFile", Attr: "pid_file", Class: "string"},
 					{Name: "ExecCondition", Attr: "exec_condition", Class: "list"},
@@ -1598,7 +1598,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Socket",
-				Attr: "socket",
+				Attr:    "socket",
 				Directives: []Directive{
 					{Name: "ListenStream", Attr: "listen_stream", Class: "list"},
 					{Name: "ListenDatagram", Attr: "listen_datagram", Class: "list"},
@@ -1867,7 +1867,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Mount",
-				Attr: "mount",
+				Attr:    "mount",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Where", Attr: "where", Class: "string"},
@@ -2086,7 +2086,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Automount",
-				Attr: "automount",
+				Attr:    "automount",
 				Directives: []Directive{
 					{Name: "Where", Attr: "where", Class: "string"},
 					{Name: "ExtraOptions", Attr: "extra_options", Class: "string"},
@@ -2096,7 +2096,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Swap",
-				Attr: "swap",
+				Attr:    "swap",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "int"},
@@ -2309,7 +2309,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Timer",
-				Attr: "timer",
+				Attr:    "timer",
 				Directives: []Directive{
 					{Name: "OnCalendar", Attr: "on_calendar", Class: "list"},
 					{Name: "OnActiveSec", Attr: "on_active_sec", Class: "list"},
@@ -2330,7 +2330,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Path",
-				Attr: "path",
+				Attr:    "path",
 				Directives: []Directive{
 					{Name: "PathExists", Attr: "path_exists", Class: "string"},
 					{Name: "PathExistsGlob", Attr: "path_exists_glob", Class: "string"},
@@ -2346,7 +2346,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Slice",
-				Attr: "slice",
+				Attr:    "slice",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -2408,7 +2408,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Scope",
-				Attr: "scope",
+				Attr:    "scope",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -2480,7 +2480,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Install",
-				Attr: "install",
+				Attr:    "install",
 				Directives: []Directive{
 					{Name: "Alias", Attr: "alias", Class: "list"},
 					{Name: "WantedBy", Attr: "wanted_by", Class: "list"},
@@ -2496,7 +2496,7 @@ var UnitCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Unit",
-				Attr: "unit",
+				Attr:    "unit",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Documentation", Attr: "documentation", Class: "list"},
@@ -2614,7 +2614,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Service",
-				Attr: "service",
+				Attr:    "service",
 				Directives: []Directive{
 					{Name: "PIDFile", Attr: "pid_file", Class: "string"},
 					{Name: "ExecCondition", Attr: "exec_condition", Class: "list"},
@@ -2867,7 +2867,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Socket",
-				Attr: "socket",
+				Attr:    "socket",
 				Directives: []Directive{
 					{Name: "ListenStream", Attr: "listen_stream", Class: "list"},
 					{Name: "ListenDatagram", Attr: "listen_datagram", Class: "list"},
@@ -3137,7 +3137,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Mount",
-				Attr: "mount",
+				Attr:    "mount",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Where", Attr: "where", Class: "string"},
@@ -3357,7 +3357,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Automount",
-				Attr: "automount",
+				Attr:    "automount",
 				Directives: []Directive{
 					{Name: "Where", Attr: "where", Class: "string"},
 					{Name: "ExtraOptions", Attr: "extra_options", Class: "string"},
@@ -3367,7 +3367,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Swap",
-				Attr: "swap",
+				Attr:    "swap",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "int"},
@@ -3581,7 +3581,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Timer",
-				Attr: "timer",
+				Attr:    "timer",
 				Directives: []Directive{
 					{Name: "OnCalendar", Attr: "on_calendar", Class: "list"},
 					{Name: "OnActiveSec", Attr: "on_active_sec", Class: "list"},
@@ -3602,7 +3602,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Path",
-				Attr: "path",
+				Attr:    "path",
 				Directives: []Directive{
 					{Name: "PathExists", Attr: "path_exists", Class: "string"},
 					{Name: "PathExistsGlob", Attr: "path_exists_glob", Class: "string"},
@@ -3618,7 +3618,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Slice",
-				Attr: "slice",
+				Attr:    "slice",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -3680,7 +3680,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Scope",
-				Attr: "scope",
+				Attr:    "scope",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -3752,7 +3752,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Install",
-				Attr: "install",
+				Attr:    "install",
 				Directives: []Directive{
 					{Name: "Alias", Attr: "alias", Class: "list"},
 					{Name: "WantedBy", Attr: "wanted_by", Class: "list"},
@@ -3768,7 +3768,7 @@ var UnitCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Unit",
-				Attr: "unit",
+				Attr:    "unit",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Documentation", Attr: "documentation", Class: "list"},
@@ -3888,7 +3888,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Service",
-				Attr: "service",
+				Attr:    "service",
 				Directives: []Directive{
 					{Name: "PIDFile", Attr: "pid_file", Class: "string"},
 					{Name: "ExecCondition", Attr: "exec_condition", Class: "list"},
@@ -4141,7 +4141,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Socket",
-				Attr: "socket",
+				Attr:    "socket",
 				Directives: []Directive{
 					{Name: "ListenStream", Attr: "listen_stream", Class: "list"},
 					{Name: "ListenDatagram", Attr: "listen_datagram", Class: "list"},
@@ -4411,7 +4411,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Mount",
-				Attr: "mount",
+				Attr:    "mount",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Where", Attr: "where", Class: "string"},
@@ -4631,7 +4631,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Automount",
-				Attr: "automount",
+				Attr:    "automount",
 				Directives: []Directive{
 					{Name: "Where", Attr: "where", Class: "string"},
 					{Name: "ExtraOptions", Attr: "extra_options", Class: "string"},
@@ -4641,7 +4641,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Swap",
-				Attr: "swap",
+				Attr:    "swap",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "int"},
@@ -4855,7 +4855,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Timer",
-				Attr: "timer",
+				Attr:    "timer",
 				Directives: []Directive{
 					{Name: "OnCalendar", Attr: "on_calendar", Class: "list"},
 					{Name: "OnActiveSec", Attr: "on_active_sec", Class: "list"},
@@ -4876,7 +4876,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Path",
-				Attr: "path",
+				Attr:    "path",
 				Directives: []Directive{
 					{Name: "PathExists", Attr: "path_exists", Class: "string"},
 					{Name: "PathExistsGlob", Attr: "path_exists_glob", Class: "string"},
@@ -4892,7 +4892,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Slice",
-				Attr: "slice",
+				Attr:    "slice",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -4954,7 +4954,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Scope",
-				Attr: "scope",
+				Attr:    "scope",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -5026,7 +5026,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Install",
-				Attr: "install",
+				Attr:    "install",
 				Directives: []Directive{
 					{Name: "Alias", Attr: "alias", Class: "list"},
 					{Name: "WantedBy", Attr: "wanted_by", Class: "list"},
@@ -5042,7 +5042,7 @@ var UnitCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Unit",
-				Attr: "unit",
+				Attr:    "unit",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Documentation", Attr: "documentation", Class: "list"},
@@ -5162,7 +5162,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Service",
-				Attr: "service",
+				Attr:    "service",
 				Directives: []Directive{
 					{Name: "PIDFile", Attr: "pid_file", Class: "string"},
 					{Name: "ExecCondition", Attr: "exec_condition", Class: "list"},
@@ -5419,7 +5419,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Socket",
-				Attr: "socket",
+				Attr:    "socket",
 				Directives: []Directive{
 					{Name: "ListenStream", Attr: "listen_stream", Class: "list"},
 					{Name: "ListenDatagram", Attr: "listen_datagram", Class: "list"},
@@ -5691,7 +5691,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Mount",
-				Attr: "mount",
+				Attr:    "mount",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Where", Attr: "where", Class: "string"},
@@ -5913,7 +5913,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Automount",
-				Attr: "automount",
+				Attr:    "automount",
 				Directives: []Directive{
 					{Name: "Where", Attr: "where", Class: "string"},
 					{Name: "ExtraOptions", Attr: "extra_options", Class: "string"},
@@ -5923,7 +5923,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Swap",
-				Attr: "swap",
+				Attr:    "swap",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "int"},
@@ -6139,7 +6139,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Timer",
-				Attr: "timer",
+				Attr:    "timer",
 				Directives: []Directive{
 					{Name: "OnCalendar", Attr: "on_calendar", Class: "list"},
 					{Name: "OnActiveSec", Attr: "on_active_sec", Class: "list"},
@@ -6160,7 +6160,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Path",
-				Attr: "path",
+				Attr:    "path",
 				Directives: []Directive{
 					{Name: "PathExists", Attr: "path_exists", Class: "string"},
 					{Name: "PathExistsGlob", Attr: "path_exists_glob", Class: "string"},
@@ -6176,7 +6176,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Slice",
-				Attr: "slice",
+				Attr:    "slice",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -6239,7 +6239,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Scope",
-				Attr: "scope",
+				Attr:    "scope",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -6313,7 +6313,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Install",
-				Attr: "install",
+				Attr:    "install",
 				Directives: []Directive{
 					{Name: "Alias", Attr: "alias", Class: "list"},
 					{Name: "WantedBy", Attr: "wanted_by", Class: "list"},
@@ -6329,7 +6329,7 @@ var UnitCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Unit",
-				Attr: "unit",
+				Attr:    "unit",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Documentation", Attr: "documentation", Class: "list"},
@@ -6449,7 +6449,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Service",
-				Attr: "service",
+				Attr:    "service",
 				Directives: []Directive{
 					{Name: "PIDFile", Attr: "pid_file", Class: "string"},
 					{Name: "ExecCondition", Attr: "exec_condition", Class: "list"},
@@ -6725,7 +6725,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Socket",
-				Attr: "socket",
+				Attr:    "socket",
 				Directives: []Directive{
 					{Name: "ListenStream", Attr: "listen_stream", Class: "list"},
 					{Name: "ListenDatagram", Attr: "listen_datagram", Class: "list"},
@@ -7012,7 +7012,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Mount",
-				Attr: "mount",
+				Attr:    "mount",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Where", Attr: "where", Class: "string"},
@@ -7249,7 +7249,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Automount",
-				Attr: "automount",
+				Attr:    "automount",
 				Directives: []Directive{
 					{Name: "Where", Attr: "where", Class: "string"},
 					{Name: "ExtraOptions", Attr: "extra_options", Class: "string"},
@@ -7259,7 +7259,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Swap",
-				Attr: "swap",
+				Attr:    "swap",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "int"},
@@ -7490,7 +7490,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Timer",
-				Attr: "timer",
+				Attr:    "timer",
 				Directives: []Directive{
 					{Name: "OnCalendar", Attr: "on_calendar", Class: "list"},
 					{Name: "OnActiveSec", Attr: "on_active_sec", Class: "list"},
@@ -7511,7 +7511,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Path",
-				Attr: "path",
+				Attr:    "path",
 				Directives: []Directive{
 					{Name: "PathExists", Attr: "path_exists", Class: "string"},
 					{Name: "PathExistsGlob", Attr: "path_exists_glob", Class: "string"},
@@ -7527,7 +7527,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Slice",
-				Attr: "slice",
+				Attr:    "slice",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -7599,7 +7599,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Scope",
-				Attr: "scope",
+				Attr:    "scope",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -7682,7 +7682,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Install",
-				Attr: "install",
+				Attr:    "install",
 				Directives: []Directive{
 					{Name: "Alias", Attr: "alias", Class: "list"},
 					{Name: "WantedBy", Attr: "wanted_by", Class: "list"},
@@ -7699,7 +7699,7 @@ var UnitCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Unit",
-				Attr: "unit",
+				Attr:    "unit",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Documentation", Attr: "documentation", Class: "list"},
@@ -7820,7 +7820,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Service",
-				Attr: "service",
+				Attr:    "service",
 				Directives: []Directive{
 					{Name: "PIDFile", Attr: "pid_file", Class: "string"},
 					{Name: "ExecCondition", Attr: "exec_condition", Class: "list"},
@@ -8099,7 +8099,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Socket",
-				Attr: "socket",
+				Attr:    "socket",
 				Directives: []Directive{
 					{Name: "ListenStream", Attr: "listen_stream", Class: "list"},
 					{Name: "ListenDatagram", Attr: "listen_datagram", Class: "list"},
@@ -8391,7 +8391,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Mount",
-				Attr: "mount",
+				Attr:    "mount",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Where", Attr: "where", Class: "string"},
@@ -8631,7 +8631,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Automount",
-				Attr: "automount",
+				Attr:    "automount",
 				Directives: []Directive{
 					{Name: "Where", Attr: "where", Class: "string"},
 					{Name: "ExtraOptions", Attr: "extra_options", Class: "string"},
@@ -8641,7 +8641,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Swap",
-				Attr: "swap",
+				Attr:    "swap",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "int"},
@@ -8875,7 +8875,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Timer",
-				Attr: "timer",
+				Attr:    "timer",
 				Directives: []Directive{
 					{Name: "OnCalendar", Attr: "on_calendar", Class: "list"},
 					{Name: "OnActiveSec", Attr: "on_active_sec", Class: "list"},
@@ -8896,7 +8896,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Path",
-				Attr: "path",
+				Attr:    "path",
 				Directives: []Directive{
 					{Name: "PathExists", Attr: "path_exists", Class: "string"},
 					{Name: "PathExistsGlob", Attr: "path_exists_glob", Class: "string"},
@@ -8912,7 +8912,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Slice",
-				Attr: "slice",
+				Attr:    "slice",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -8986,7 +8986,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Scope",
-				Attr: "scope",
+				Attr:    "scope",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -9071,7 +9071,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Install",
-				Attr: "install",
+				Attr:    "install",
 				Directives: []Directive{
 					{Name: "Alias", Attr: "alias", Class: "list"},
 					{Name: "WantedBy", Attr: "wanted_by", Class: "list"},
@@ -9088,7 +9088,7 @@ var UnitCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Unit",
-				Attr: "unit",
+				Attr:    "unit",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Documentation", Attr: "documentation", Class: "list"},
@@ -9210,7 +9210,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Service",
-				Attr: "service",
+				Attr:    "service",
 				Directives: []Directive{
 					{Name: "PIDFile", Attr: "pid_file", Class: "string"},
 					{Name: "ExecCondition", Attr: "exec_condition", Class: "list"},
@@ -9490,7 +9490,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Socket",
-				Attr: "socket",
+				Attr:    "socket",
 				Directives: []Directive{
 					{Name: "ListenStream", Attr: "listen_stream", Class: "list"},
 					{Name: "ListenDatagram", Attr: "listen_datagram", Class: "list"},
@@ -9784,7 +9784,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Mount",
-				Attr: "mount",
+				Attr:    "mount",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Where", Attr: "where", Class: "string"},
@@ -10025,7 +10025,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Automount",
-				Attr: "automount",
+				Attr:    "automount",
 				Directives: []Directive{
 					{Name: "Where", Attr: "where", Class: "string"},
 					{Name: "ExtraOptions", Attr: "extra_options", Class: "string"},
@@ -10035,7 +10035,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Swap",
-				Attr: "swap",
+				Attr:    "swap",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "int"},
@@ -10270,7 +10270,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Timer",
-				Attr: "timer",
+				Attr:    "timer",
 				Directives: []Directive{
 					{Name: "OnCalendar", Attr: "on_calendar", Class: "list"},
 					{Name: "OnActiveSec", Attr: "on_active_sec", Class: "list"},
@@ -10291,7 +10291,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Path",
-				Attr: "path",
+				Attr:    "path",
 				Directives: []Directive{
 					{Name: "PathExists", Attr: "path_exists", Class: "string"},
 					{Name: "PathExistsGlob", Attr: "path_exists_glob", Class: "string"},
@@ -10307,7 +10307,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Slice",
-				Attr: "slice",
+				Attr:    "slice",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -10382,7 +10382,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Scope",
-				Attr: "scope",
+				Attr:    "scope",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -10468,7 +10468,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Install",
-				Attr: "install",
+				Attr:    "install",
 				Directives: []Directive{
 					{Name: "Alias", Attr: "alias", Class: "list"},
 					{Name: "WantedBy", Attr: "wanted_by", Class: "list"},
@@ -10485,7 +10485,7 @@ var UnitCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Unit",
-				Attr: "unit",
+				Attr:    "unit",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Documentation", Attr: "documentation", Class: "list"},
@@ -10607,7 +10607,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Service",
-				Attr: "service",
+				Attr:    "service",
 				Directives: []Directive{
 					{Name: "PIDFile", Attr: "pid_file", Class: "string"},
 					{Name: "ExecCondition", Attr: "exec_condition", Class: "list"},
@@ -10890,7 +10890,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Socket",
-				Attr: "socket",
+				Attr:    "socket",
 				Directives: []Directive{
 					{Name: "ListenStream", Attr: "listen_stream", Class: "list"},
 					{Name: "ListenDatagram", Attr: "listen_datagram", Class: "list"},
@@ -11187,7 +11187,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Mount",
-				Attr: "mount",
+				Attr:    "mount",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Where", Attr: "where", Class: "string"},
@@ -11431,7 +11431,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Automount",
-				Attr: "automount",
+				Attr:    "automount",
 				Directives: []Directive{
 					{Name: "Where", Attr: "where", Class: "string"},
 					{Name: "ExtraOptions", Attr: "extra_options", Class: "string"},
@@ -11441,7 +11441,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Swap",
-				Attr: "swap",
+				Attr:    "swap",
 				Directives: []Directive{
 					{Name: "What", Attr: "what", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "int"},
@@ -11679,7 +11679,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Timer",
-				Attr: "timer",
+				Attr:    "timer",
 				Directives: []Directive{
 					{Name: "OnCalendar", Attr: "on_calendar", Class: "list"},
 					{Name: "OnActiveSec", Attr: "on_active_sec", Class: "list"},
@@ -11701,7 +11701,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Path",
-				Attr: "path",
+				Attr:    "path",
 				Directives: []Directive{
 					{Name: "PathExists", Attr: "path_exists", Class: "string"},
 					{Name: "PathExistsGlob", Attr: "path_exists_glob", Class: "string"},
@@ -11717,7 +11717,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Slice",
-				Attr: "slice",
+				Attr:    "slice",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -11793,7 +11793,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Scope",
-				Attr: "scope",
+				Attr:    "scope",
 				Directives: []Directive{
 					{Name: "Slice", Attr: "slice", Class: "string"},
 					{Name: "AllowedCPUs", Attr: "allowed_cpus", Class: "string"},
@@ -11880,7 +11880,7 @@ var UnitCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Install",
-				Attr: "install",
+				Attr:    "install",
 				Directives: []Directive{
 					{Name: "Alias", Attr: "alias", Class: "list"},
 					{Name: "WantedBy", Attr: "wanted_by", Class: "list"},
@@ -11901,7 +11901,7 @@ var NetworkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -11923,7 +11923,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "MTUBytes", Attr: "mtu_bytes", Class: "string"},
@@ -11940,7 +11940,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -11955,7 +11955,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Network",
-				Attr: "network",
+				Attr:    "network",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "BatmanAdvanced", Attr: "batman_advanced", Class: "string"},
@@ -12021,7 +12021,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Address",
-				Attr: "address",
+				Attr:    "address",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "Peer", Attr: "peer", Class: "string"},
@@ -12040,7 +12040,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AddressLabel",
-				Attr: "ipv6_address_label",
+				Attr:    "ipv6_address_label",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "Label", Attr: "label", Class: "string"},
@@ -12048,7 +12048,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Neighbor",
-				Attr: "neighbor",
+				Attr:    "neighbor",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "LinkLayerAddress", Attr: "link_layer_address", Class: "string"},
@@ -12057,7 +12057,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "RoutingPolicyRule",
-				Attr: "routing_policy_rule",
+				Attr:    "routing_policy_rule",
 				Directives: []Directive{
 					{Name: "TypeOfService", Attr: "type_of_service", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "string"},
@@ -12079,7 +12079,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Route",
-				Attr: "route",
+				Attr:    "route",
 				Directives: []Directive{
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
 					{Name: "Destination", Attr: "destination", Class: "string"},
@@ -12106,7 +12106,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NextHop",
-				Attr: "next_hop",
+				Attr:    "next_hop",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
@@ -12118,7 +12118,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv4",
-				Attr: "dhcpv4",
+				Attr:    "dhcpv4",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -12163,7 +12163,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6",
-				Attr: "dhcpv6",
+				Attr:    "dhcpv6",
 				Directives: []Directive{
 					{Name: "UseAddress", Attr: "use_address", Class: "bool"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -12188,7 +12188,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AcceptRA",
-				Attr: "ipv6_accept_ra",
+				Attr:    "ipv6_accept_ra",
 				Directives: []Directive{
 					{Name: "UseAutonomousPrefix", Attr: "use_autonomous_prefix", Class: "bool"},
 					{Name: "UseOnLinkPrefix", Attr: "use_on_link_prefix", Class: "bool"},
@@ -12209,7 +12209,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServer",
-				Attr: "dhcp_server",
+				Attr:    "dhcp_server",
 				Directives: []Directive{
 					{Name: "ServerAddress", Attr: "server_address", Class: "string"},
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
@@ -12242,7 +12242,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServerStaticLease",
-				Attr: "dhcp_server_static_lease",
+				Attr:    "dhcp_server_static_lease",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -12250,7 +12250,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "Cost", Attr: "cost", Class: "string"},
 					{Name: "UseBPDU", Attr: "use_bpdu", Class: "bool"},
@@ -12270,7 +12270,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeFDB",
-				Attr: "bridge_fdb",
+				Attr:    "bridge_fdb",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -12282,7 +12282,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeMDB",
-				Attr: "bridge_mdb",
+				Attr:    "bridge_mdb",
 				Directives: []Directive{
 					{Name: "MulticastGroupAddress", Attr: "multicast_group_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -12290,7 +12290,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeVLAN",
-				Attr: "bridge_vlan",
+				Attr:    "bridge_vlan",
 				Directives: []Directive{
 					{Name: "PVID", Attr: "pvid", Class: "string"},
 					{Name: "VLAN", Attr: "vlan", Class: "string"},
@@ -12299,7 +12299,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6PrefixDelegation",
-				Attr: "dhcpv6_prefix_delegation",
+				Attr:    "dhcpv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
 					{Name: "Announce", Attr: "announce", Class: "bool"},
@@ -12311,7 +12311,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6SendRA",
-				Attr: "ipv6_send_ra",
+				Attr:    "ipv6_send_ra",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "timespan"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -12326,7 +12326,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6Prefix",
-				Attr: "ipv6_prefix",
+				Attr:    "ipv6_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "OnLink", Attr: "on_link", Class: "string"},
@@ -12339,7 +12339,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6RoutePrefix",
-				Attr: "ipv6_route_prefix",
+				Attr:    "ipv6_route_prefix",
 				Directives: []Directive{
 					{Name: "Route", Attr: "route", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -12347,14 +12347,14 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "LLDP",
-				Attr: "lldp",
+				Attr:    "lldp",
 				Directives: []Directive{
 					{Name: "MUDURL", Attr: "mudurl", Class: "string"},
 				},
 			},
 			{
 				Section: "CAN",
-				Attr: "can",
+				Attr:    "can",
 				Directives: []Directive{
 					{Name: "BitRate", Attr: "bit_rate", Class: "string"},
 					{Name: "SamplePoint", Attr: "sample_point", Class: "string"},
@@ -12371,7 +12371,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QDisc",
-				Attr: "qdisc",
+				Attr:    "qdisc",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12379,7 +12379,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BFIFO",
-				Attr: "bfifo",
+				Attr:    "bfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12388,7 +12388,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "CAKE",
-				Attr: "cake",
+				Attr:    "cake",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12398,7 +12398,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "ControlledDelay",
-				Attr: "controlled_delay",
+				Attr:    "controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12411,7 +12411,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinScheduler",
-				Attr: "deficit_round_robin_scheduler",
+				Attr:    "deficit_round_robin_scheduler",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12419,7 +12419,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinSchedulerClass",
-				Attr: "deficit_round_robin_scheduler_class",
+				Attr:    "deficit_round_robin_scheduler_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -12428,7 +12428,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "EnhancedTransmissionSelection",
-				Attr: "enhanced_transmission_selection",
+				Attr:    "enhanced_transmission_selection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12440,7 +12440,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFO",
-				Attr: "pfifo",
+				Attr:    "pfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12449,7 +12449,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOFast",
-				Attr: "pfifo_fast",
+				Attr:    "pfifo_fast",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12457,7 +12457,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOHeadDrop",
-				Attr: "pfifo_head_drop",
+				Attr:    "pfifo_head_drop",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12466,7 +12466,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueing",
-				Attr: "quick_fair_queueing",
+				Attr:    "quick_fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12474,7 +12474,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueingClass",
-				Attr: "quick_fair_queueing_class",
+				Attr:    "quick_fair_queueing_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -12484,7 +12484,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueing",
-				Attr: "fair_queueing",
+				Attr:    "fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12503,7 +12503,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueingControlledDelay",
-				Attr: "fair_queueing_controlled_delay",
+				Attr:    "fair_queueing_controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12521,7 +12521,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FlowQueuePIE",
-				Attr: "flow_queue_pie",
+				Attr:    "flow_queue_pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12530,7 +12530,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GenericRandomEarlyDetection",
-				Attr: "generic_random_early_detection",
+				Attr:    "generic_random_early_detection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12541,7 +12541,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HeavyHitterFilter",
-				Attr: "heavy_hitter_filter",
+				Attr:    "heavy_hitter_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12550,7 +12550,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucket",
-				Attr: "hierarchy_token_bucket",
+				Attr:    "hierarchy_token_bucket",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12560,7 +12560,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucketClass",
-				Attr: "hierarchy_token_bucket_class",
+				Attr:    "hierarchy_token_bucket_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -12576,7 +12576,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetworkEmulator",
-				Attr: "network_emulator",
+				Attr:    "network_emulator",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12589,7 +12589,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PIE",
-				Attr: "pie",
+				Attr:    "pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12598,7 +12598,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairBlue",
-				Attr: "stochastic_fair_blue",
+				Attr:    "stochastic_fair_blue",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12607,7 +12607,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairnessQueueing",
-				Attr: "stochastic_fairness_queueing",
+				Attr:    "stochastic_fairness_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12616,7 +12616,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TokenBucketFilter",
-				Attr: "token_bucket_filter",
+				Attr:    "token_bucket_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12633,7 +12633,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrivialLinkEqualizer",
-				Attr: "trivial_link_equalizer",
+				Attr:    "trivial_link_equalizer",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -12642,7 +12642,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PrefixDelegation",
-				Attr: "ipv6_prefix_delegation",
+				Attr:    "ipv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "timespan"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -12657,7 +12657,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCP",
-				Attr: "dhcp",
+				Attr:    "dhcp",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -12687,7 +12687,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrafficControlQueueingDiscipline",
-				Attr: "traffic_control_queueing_discipline",
+				Attr:    "traffic_control_queueing_discipline",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "NetworkEmulatorDelaySec", Attr: "network_emulator_delay_sec", Class: "string"},
@@ -12704,7 +12704,7 @@ var NetworkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -12726,7 +12726,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "MTUBytes", Attr: "mtu_bytes", Class: "string"},
@@ -12743,7 +12743,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -12758,7 +12758,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Network",
-				Attr: "network",
+				Attr:    "network",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "KeepMaster", Attr: "keep_master", Class: "bool"},
@@ -12827,7 +12827,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Address",
-				Attr: "address",
+				Attr:    "address",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "Peer", Attr: "peer", Class: "string"},
@@ -12846,7 +12846,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AddressLabel",
-				Attr: "ipv6_address_label",
+				Attr:    "ipv6_address_label",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "Label", Attr: "label", Class: "string"},
@@ -12854,7 +12854,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Neighbor",
-				Attr: "neighbor",
+				Attr:    "neighbor",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "LinkLayerAddress", Attr: "link_layer_address", Class: "string"},
@@ -12863,7 +12863,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "RoutingPolicyRule",
-				Attr: "routing_policy_rule",
+				Attr:    "routing_policy_rule",
 				Directives: []Directive{
 					{Name: "TypeOfService", Attr: "type_of_service", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "string"},
@@ -12886,7 +12886,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Route",
-				Attr: "route",
+				Attr:    "route",
 				Directives: []Directive{
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
 					{Name: "Destination", Attr: "destination", Class: "string"},
@@ -12913,7 +12913,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NextHop",
-				Attr: "next_hop",
+				Attr:    "next_hop",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
@@ -12925,7 +12925,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv4",
-				Attr: "dhcpv4",
+				Attr:    "dhcpv4",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -12972,7 +12972,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6",
-				Attr: "dhcpv6",
+				Attr:    "dhcpv6",
 				Directives: []Directive{
 					{Name: "UseAddress", Attr: "use_address", Class: "bool"},
 					{Name: "UseDelegatedPrefix", Attr: "use_delegated_prefix", Class: "bool"},
@@ -12998,7 +12998,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AcceptRA",
-				Attr: "ipv6_accept_ra",
+				Attr:    "ipv6_accept_ra",
 				Directives: []Directive{
 					{Name: "UseGateway", Attr: "use_gateway", Class: "bool"},
 					{Name: "UseRoutePrefix", Attr: "use_route_prefix", Class: "bool"},
@@ -13023,7 +13023,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServer",
-				Attr: "dhcp_server",
+				Attr:    "dhcp_server",
 				Directives: []Directive{
 					{Name: "ServerAddress", Attr: "server_address", Class: "string"},
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
@@ -13057,7 +13057,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServerStaticLease",
-				Attr: "dhcp_server_static_lease",
+				Attr:    "dhcp_server_static_lease",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -13065,7 +13065,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "Cost", Attr: "cost", Class: "string"},
 					{Name: "UseBPDU", Attr: "use_bpdu", Class: "bool"},
@@ -13085,7 +13085,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeFDB",
-				Attr: "bridge_fdb",
+				Attr:    "bridge_fdb",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -13097,7 +13097,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeMDB",
-				Attr: "bridge_mdb",
+				Attr:    "bridge_mdb",
 				Directives: []Directive{
 					{Name: "MulticastGroupAddress", Attr: "multicast_group_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -13105,7 +13105,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeVLAN",
-				Attr: "bridge_vlan",
+				Attr:    "bridge_vlan",
 				Directives: []Directive{
 					{Name: "PVID", Attr: "pvid", Class: "string"},
 					{Name: "VLAN", Attr: "vlan", Class: "string"},
@@ -13114,7 +13114,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPPrefixDelegation",
-				Attr: "dhcp_prefix_delegation",
+				Attr:    "dhcp_prefix_delegation",
 				Directives: []Directive{
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
@@ -13127,7 +13127,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6SendRA",
-				Attr: "ipv6_send_ra",
+				Attr:    "ipv6_send_ra",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "string"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -13143,7 +13143,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6Prefix",
-				Attr: "ipv6_prefix",
+				Attr:    "ipv6_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "OnLink", Attr: "on_link", Class: "string"},
@@ -13157,7 +13157,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6RoutePrefix",
-				Attr: "ipv6_route_prefix",
+				Attr:    "ipv6_route_prefix",
 				Directives: []Directive{
 					{Name: "Route", Attr: "route", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -13165,14 +13165,14 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "LLDP",
-				Attr: "lldp",
+				Attr:    "lldp",
 				Directives: []Directive{
 					{Name: "MUDURL", Attr: "mudurl", Class: "string"},
 				},
 			},
 			{
 				Section: "CAN",
-				Attr: "can",
+				Attr:    "can",
 				Directives: []Directive{
 					{Name: "BitRate", Attr: "bit_rate", Class: "string"},
 					{Name: "SamplePoint", Attr: "sample_point", Class: "string"},
@@ -13203,7 +13203,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "IgnoreUserspaceMulticastGroups", Attr: "ignore_userspace_multicast_groups", Class: "bool"},
@@ -13211,7 +13211,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QDisc",
-				Attr: "qdisc",
+				Attr:    "qdisc",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13219,7 +13219,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BFIFO",
-				Attr: "bfifo",
+				Attr:    "bfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13228,7 +13228,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "CAKE",
-				Attr: "cake",
+				Attr:    "cake",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13248,7 +13248,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "ControlledDelay",
-				Attr: "controlled_delay",
+				Attr:    "controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13261,7 +13261,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinScheduler",
-				Attr: "deficit_round_robin_scheduler",
+				Attr:    "deficit_round_robin_scheduler",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13269,7 +13269,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinSchedulerClass",
-				Attr: "deficit_round_robin_scheduler_class",
+				Attr:    "deficit_round_robin_scheduler_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -13278,7 +13278,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "EnhancedTransmissionSelection",
-				Attr: "enhanced_transmission_selection",
+				Attr:    "enhanced_transmission_selection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13290,7 +13290,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFO",
-				Attr: "pfifo",
+				Attr:    "pfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13299,7 +13299,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOFast",
-				Attr: "pfifo_fast",
+				Attr:    "pfifo_fast",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13307,7 +13307,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOHeadDrop",
-				Attr: "pfifo_head_drop",
+				Attr:    "pfifo_head_drop",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13316,7 +13316,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueing",
-				Attr: "quick_fair_queueing",
+				Attr:    "quick_fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13324,7 +13324,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueingClass",
-				Attr: "quick_fair_queueing_class",
+				Attr:    "quick_fair_queueing_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -13334,7 +13334,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueing",
-				Attr: "fair_queueing",
+				Attr:    "fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13353,7 +13353,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueingControlledDelay",
-				Attr: "fair_queueing_controlled_delay",
+				Attr:    "fair_queueing_controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13371,7 +13371,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FlowQueuePIE",
-				Attr: "flow_queue_pie",
+				Attr:    "flow_queue_pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13380,7 +13380,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GenericRandomEarlyDetection",
-				Attr: "generic_random_early_detection",
+				Attr:    "generic_random_early_detection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13391,7 +13391,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HeavyHitterFilter",
-				Attr: "heavy_hitter_filter",
+				Attr:    "heavy_hitter_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13400,7 +13400,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucket",
-				Attr: "hierarchy_token_bucket",
+				Attr:    "hierarchy_token_bucket",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13410,7 +13410,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucketClass",
-				Attr: "hierarchy_token_bucket_class",
+				Attr:    "hierarchy_token_bucket_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -13426,7 +13426,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetworkEmulator",
-				Attr: "network_emulator",
+				Attr:    "network_emulator",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13439,7 +13439,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PIE",
-				Attr: "pie",
+				Attr:    "pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13448,7 +13448,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairBlue",
-				Attr: "stochastic_fair_blue",
+				Attr:    "stochastic_fair_blue",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13457,7 +13457,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairnessQueueing",
-				Attr: "stochastic_fairness_queueing",
+				Attr:    "stochastic_fairness_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13466,7 +13466,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TokenBucketFilter",
-				Attr: "token_bucket_filter",
+				Attr:    "token_bucket_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13483,7 +13483,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrivialLinkEqualizer",
-				Attr: "trivial_link_equalizer",
+				Attr:    "trivial_link_equalizer",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -13492,7 +13492,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PrefixDelegation",
-				Attr: "ipv6_prefix_delegation",
+				Attr:    "ipv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "timespan"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -13507,7 +13507,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCP",
-				Attr: "dhcp",
+				Attr:    "dhcp",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -13537,7 +13537,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6PrefixDelegation",
-				Attr: "dhcpv6_prefix_delegation",
+				Attr:    "dhcpv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
 					{Name: "Announce", Attr: "announce", Class: "bool"},
@@ -13549,7 +13549,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrafficControlQueueingDiscipline",
-				Attr: "traffic_control_queueing_discipline",
+				Attr:    "traffic_control_queueing_discipline",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "NetworkEmulatorDelaySec", Attr: "network_emulator_delay_sec", Class: "string"},
@@ -13566,7 +13566,7 @@ var NetworkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -13589,7 +13589,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "MTUBytes", Attr: "mtu_bytes", Class: "string"},
@@ -13606,7 +13606,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -13621,7 +13621,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Network",
-				Attr: "network",
+				Attr:    "network",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "KeepMaster", Attr: "keep_master", Class: "bool"},
@@ -13690,7 +13690,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Address",
-				Attr: "address",
+				Attr:    "address",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "Peer", Attr: "peer", Class: "string"},
@@ -13709,7 +13709,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AddressLabel",
-				Attr: "ipv6_address_label",
+				Attr:    "ipv6_address_label",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "Label", Attr: "label", Class: "string"},
@@ -13717,7 +13717,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Neighbor",
-				Attr: "neighbor",
+				Attr:    "neighbor",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "LinkLayerAddress", Attr: "link_layer_address", Class: "string"},
@@ -13726,7 +13726,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "RoutingPolicyRule",
-				Attr: "routing_policy_rule",
+				Attr:    "routing_policy_rule",
 				Directives: []Directive{
 					{Name: "TypeOfService", Attr: "type_of_service", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "string"},
@@ -13749,7 +13749,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Route",
-				Attr: "route",
+				Attr:    "route",
 				Directives: []Directive{
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
 					{Name: "Destination", Attr: "destination", Class: "string"},
@@ -13776,7 +13776,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NextHop",
-				Attr: "next_hop",
+				Attr:    "next_hop",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
@@ -13788,7 +13788,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv4",
-				Attr: "dhcpv4",
+				Attr:    "dhcpv4",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -13835,7 +13835,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6",
-				Attr: "dhcpv6",
+				Attr:    "dhcpv6",
 				Directives: []Directive{
 					{Name: "UseAddress", Attr: "use_address", Class: "bool"},
 					{Name: "UseDelegatedPrefix", Attr: "use_delegated_prefix", Class: "bool"},
@@ -13861,7 +13861,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AcceptRA",
-				Attr: "ipv6_accept_ra",
+				Attr:    "ipv6_accept_ra",
 				Directives: []Directive{
 					{Name: "UseGateway", Attr: "use_gateway", Class: "bool"},
 					{Name: "UseRoutePrefix", Attr: "use_route_prefix", Class: "bool"},
@@ -13886,7 +13886,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServer",
-				Attr: "dhcp_server",
+				Attr:    "dhcp_server",
 				Directives: []Directive{
 					{Name: "ServerAddress", Attr: "server_address", Class: "string"},
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
@@ -13923,7 +13923,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServerStaticLease",
-				Attr: "dhcp_server_static_lease",
+				Attr:    "dhcp_server_static_lease",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -13931,7 +13931,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "Cost", Attr: "cost", Class: "string"},
 					{Name: "UseBPDU", Attr: "use_bpdu", Class: "bool"},
@@ -13952,7 +13952,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeFDB",
-				Attr: "bridge_fdb",
+				Attr:    "bridge_fdb",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -13964,7 +13964,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeMDB",
-				Attr: "bridge_mdb",
+				Attr:    "bridge_mdb",
 				Directives: []Directive{
 					{Name: "MulticastGroupAddress", Attr: "multicast_group_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -13972,7 +13972,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeVLAN",
-				Attr: "bridge_vlan",
+				Attr:    "bridge_vlan",
 				Directives: []Directive{
 					{Name: "PVID", Attr: "pvid", Class: "string"},
 					{Name: "VLAN", Attr: "vlan", Class: "string"},
@@ -13981,7 +13981,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPPrefixDelegation",
-				Attr: "dhcp_prefix_delegation",
+				Attr:    "dhcp_prefix_delegation",
 				Directives: []Directive{
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
@@ -13994,7 +13994,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6SendRA",
-				Attr: "ipv6_send_ra",
+				Attr:    "ipv6_send_ra",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "string"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -14010,7 +14010,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6Prefix",
-				Attr: "ipv6_prefix",
+				Attr:    "ipv6_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "OnLink", Attr: "on_link", Class: "string"},
@@ -14024,7 +14024,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6RoutePrefix",
-				Attr: "ipv6_route_prefix",
+				Attr:    "ipv6_route_prefix",
 				Directives: []Directive{
 					{Name: "Route", Attr: "route", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -14032,14 +14032,14 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "LLDP",
-				Attr: "lldp",
+				Attr:    "lldp",
 				Directives: []Directive{
 					{Name: "MUDURL", Attr: "mudurl", Class: "string"},
 				},
 			},
 			{
 				Section: "CAN",
-				Attr: "can",
+				Attr:    "can",
 				Directives: []Directive{
 					{Name: "BitRate", Attr: "bit_rate", Class: "string"},
 					{Name: "SamplePoint", Attr: "sample_point", Class: "string"},
@@ -14070,7 +14070,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "IgnoreUserspaceMulticastGroups", Attr: "ignore_userspace_multicast_groups", Class: "bool"},
@@ -14078,7 +14078,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QDisc",
-				Attr: "qdisc",
+				Attr:    "qdisc",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14086,7 +14086,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BFIFO",
-				Attr: "bfifo",
+				Attr:    "bfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14095,7 +14095,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "CAKE",
-				Attr: "cake",
+				Attr:    "cake",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14115,7 +14115,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "ControlledDelay",
-				Attr: "controlled_delay",
+				Attr:    "controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14128,7 +14128,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinScheduler",
-				Attr: "deficit_round_robin_scheduler",
+				Attr:    "deficit_round_robin_scheduler",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14136,7 +14136,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinSchedulerClass",
-				Attr: "deficit_round_robin_scheduler_class",
+				Attr:    "deficit_round_robin_scheduler_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -14145,7 +14145,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "EnhancedTransmissionSelection",
-				Attr: "enhanced_transmission_selection",
+				Attr:    "enhanced_transmission_selection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14157,7 +14157,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFO",
-				Attr: "pfifo",
+				Attr:    "pfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14166,7 +14166,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOFast",
-				Attr: "pfifo_fast",
+				Attr:    "pfifo_fast",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14174,7 +14174,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOHeadDrop",
-				Attr: "pfifo_head_drop",
+				Attr:    "pfifo_head_drop",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14183,7 +14183,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueing",
-				Attr: "quick_fair_queueing",
+				Attr:    "quick_fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14191,7 +14191,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueingClass",
-				Attr: "quick_fair_queueing_class",
+				Attr:    "quick_fair_queueing_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -14201,7 +14201,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueing",
-				Attr: "fair_queueing",
+				Attr:    "fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14220,7 +14220,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueingControlledDelay",
-				Attr: "fair_queueing_controlled_delay",
+				Attr:    "fair_queueing_controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14238,7 +14238,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FlowQueuePIE",
-				Attr: "flow_queue_pie",
+				Attr:    "flow_queue_pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14247,7 +14247,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GenericRandomEarlyDetection",
-				Attr: "generic_random_early_detection",
+				Attr:    "generic_random_early_detection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14258,7 +14258,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HeavyHitterFilter",
-				Attr: "heavy_hitter_filter",
+				Attr:    "heavy_hitter_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14267,7 +14267,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucket",
-				Attr: "hierarchy_token_bucket",
+				Attr:    "hierarchy_token_bucket",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14277,7 +14277,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucketClass",
-				Attr: "hierarchy_token_bucket_class",
+				Attr:    "hierarchy_token_bucket_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -14293,7 +14293,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetworkEmulator",
-				Attr: "network_emulator",
+				Attr:    "network_emulator",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14306,7 +14306,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PIE",
-				Attr: "pie",
+				Attr:    "pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14315,7 +14315,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairBlue",
-				Attr: "stochastic_fair_blue",
+				Attr:    "stochastic_fair_blue",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14324,7 +14324,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairnessQueueing",
-				Attr: "stochastic_fairness_queueing",
+				Attr:    "stochastic_fairness_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14333,7 +14333,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TokenBucketFilter",
-				Attr: "token_bucket_filter",
+				Attr:    "token_bucket_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14350,7 +14350,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrivialLinkEqualizer",
-				Attr: "trivial_link_equalizer",
+				Attr:    "trivial_link_equalizer",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14359,7 +14359,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PrefixDelegation",
-				Attr: "ipv6_prefix_delegation",
+				Attr:    "ipv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "timespan"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -14374,7 +14374,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCP",
-				Attr: "dhcp",
+				Attr:    "dhcp",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -14404,7 +14404,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6PrefixDelegation",
-				Attr: "dhcpv6_prefix_delegation",
+				Attr:    "dhcpv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
 					{Name: "Announce", Attr: "announce", Class: "bool"},
@@ -14416,7 +14416,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrafficControlQueueingDiscipline",
-				Attr: "traffic_control_queueing_discipline",
+				Attr:    "traffic_control_queueing_discipline",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "NetworkEmulatorDelaySec", Attr: "network_emulator_delay_sec", Class: "string"},
@@ -14433,7 +14433,7 @@ var NetworkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -14457,7 +14457,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "MTUBytes", Attr: "mtu_bytes", Class: "string"},
@@ -14474,7 +14474,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -14489,7 +14489,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Network",
-				Attr: "network",
+				Attr:    "network",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "KeepMaster", Attr: "keep_master", Class: "bool"},
@@ -14559,7 +14559,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Address",
-				Attr: "address",
+				Attr:    "address",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "Peer", Attr: "peer", Class: "string"},
@@ -14579,7 +14579,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AddressLabel",
-				Attr: "ipv6_address_label",
+				Attr:    "ipv6_address_label",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "Label", Attr: "label", Class: "string"},
@@ -14587,7 +14587,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Neighbor",
-				Attr: "neighbor",
+				Attr:    "neighbor",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "LinkLayerAddress", Attr: "link_layer_address", Class: "string"},
@@ -14596,7 +14596,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "RoutingPolicyRule",
-				Attr: "routing_policy_rule",
+				Attr:    "routing_policy_rule",
 				Directives: []Directive{
 					{Name: "TypeOfService", Attr: "type_of_service", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "string"},
@@ -14619,7 +14619,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Route",
-				Attr: "route",
+				Attr:    "route",
 				Directives: []Directive{
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
 					{Name: "Destination", Attr: "destination", Class: "string"},
@@ -14647,7 +14647,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NextHop",
-				Attr: "next_hop",
+				Attr:    "next_hop",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
@@ -14659,7 +14659,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv4",
-				Attr: "dhcpv4",
+				Attr:    "dhcpv4",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -14707,7 +14707,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6",
-				Attr: "dhcpv6",
+				Attr:    "dhcpv6",
 				Directives: []Directive{
 					{Name: "UseAddress", Attr: "use_address", Class: "bool"},
 					{Name: "UseDelegatedPrefix", Attr: "use_delegated_prefix", Class: "bool"},
@@ -14734,7 +14734,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AcceptRA",
-				Attr: "ipv6_accept_ra",
+				Attr:    "ipv6_accept_ra",
 				Directives: []Directive{
 					{Name: "UseGateway", Attr: "use_gateway", Class: "bool"},
 					{Name: "UseRoutePrefix", Attr: "use_route_prefix", Class: "bool"},
@@ -14760,7 +14760,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServer",
-				Attr: "dhcp_server",
+				Attr:    "dhcp_server",
 				Directives: []Directive{
 					{Name: "ServerAddress", Attr: "server_address", Class: "string"},
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
@@ -14797,7 +14797,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServerStaticLease",
-				Attr: "dhcp_server_static_lease",
+				Attr:    "dhcp_server_static_lease",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -14805,7 +14805,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "Cost", Attr: "cost", Class: "string"},
 					{Name: "UseBPDU", Attr: "use_bpdu", Class: "bool"},
@@ -14826,7 +14826,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeFDB",
-				Attr: "bridge_fdb",
+				Attr:    "bridge_fdb",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -14838,7 +14838,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeMDB",
-				Attr: "bridge_mdb",
+				Attr:    "bridge_mdb",
 				Directives: []Directive{
 					{Name: "MulticastGroupAddress", Attr: "multicast_group_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -14846,7 +14846,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeVLAN",
-				Attr: "bridge_vlan",
+				Attr:    "bridge_vlan",
 				Directives: []Directive{
 					{Name: "PVID", Attr: "pvid", Class: "string"},
 					{Name: "VLAN", Attr: "vlan", Class: "string"},
@@ -14855,7 +14855,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPPrefixDelegation",
-				Attr: "dhcp_prefix_delegation",
+				Attr:    "dhcp_prefix_delegation",
 				Directives: []Directive{
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
@@ -14869,7 +14869,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6SendRA",
-				Attr: "ipv6_send_ra",
+				Attr:    "ipv6_send_ra",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "string"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -14885,7 +14885,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6Prefix",
-				Attr: "ipv6_prefix",
+				Attr:    "ipv6_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "OnLink", Attr: "on_link", Class: "string"},
@@ -14899,7 +14899,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6RoutePrefix",
-				Attr: "ipv6_route_prefix",
+				Attr:    "ipv6_route_prefix",
 				Directives: []Directive{
 					{Name: "Route", Attr: "route", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -14907,14 +14907,14 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "LLDP",
-				Attr: "lldp",
+				Attr:    "lldp",
 				Directives: []Directive{
 					{Name: "MUDURL", Attr: "mudurl", Class: "string"},
 				},
 			},
 			{
 				Section: "CAN",
-				Attr: "can",
+				Attr:    "can",
 				Directives: []Directive{
 					{Name: "BitRate", Attr: "bit_rate", Class: "string"},
 					{Name: "SamplePoint", Attr: "sample_point", Class: "string"},
@@ -14945,7 +14945,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "IgnoreUserspaceMulticastGroups", Attr: "ignore_userspace_multicast_groups", Class: "bool"},
@@ -14953,7 +14953,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QDisc",
-				Attr: "qdisc",
+				Attr:    "qdisc",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14961,7 +14961,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BFIFO",
-				Attr: "bfifo",
+				Attr:    "bfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14970,7 +14970,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "CAKE",
-				Attr: "cake",
+				Attr:    "cake",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -14990,7 +14990,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "ControlledDelay",
-				Attr: "controlled_delay",
+				Attr:    "controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15003,7 +15003,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinScheduler",
-				Attr: "deficit_round_robin_scheduler",
+				Attr:    "deficit_round_robin_scheduler",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15011,7 +15011,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinSchedulerClass",
-				Attr: "deficit_round_robin_scheduler_class",
+				Attr:    "deficit_round_robin_scheduler_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -15020,7 +15020,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "EnhancedTransmissionSelection",
-				Attr: "enhanced_transmission_selection",
+				Attr:    "enhanced_transmission_selection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15032,7 +15032,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFO",
-				Attr: "pfifo",
+				Attr:    "pfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15041,7 +15041,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOFast",
-				Attr: "pfifo_fast",
+				Attr:    "pfifo_fast",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15049,7 +15049,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOHeadDrop",
-				Attr: "pfifo_head_drop",
+				Attr:    "pfifo_head_drop",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15058,7 +15058,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueing",
-				Attr: "quick_fair_queueing",
+				Attr:    "quick_fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15066,7 +15066,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueingClass",
-				Attr: "quick_fair_queueing_class",
+				Attr:    "quick_fair_queueing_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -15076,7 +15076,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueing",
-				Attr: "fair_queueing",
+				Attr:    "fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15095,7 +15095,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueingControlledDelay",
-				Attr: "fair_queueing_controlled_delay",
+				Attr:    "fair_queueing_controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15113,7 +15113,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FlowQueuePIE",
-				Attr: "flow_queue_pie",
+				Attr:    "flow_queue_pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15122,7 +15122,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GenericRandomEarlyDetection",
-				Attr: "generic_random_early_detection",
+				Attr:    "generic_random_early_detection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15133,7 +15133,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HeavyHitterFilter",
-				Attr: "heavy_hitter_filter",
+				Attr:    "heavy_hitter_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15142,7 +15142,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucket",
-				Attr: "hierarchy_token_bucket",
+				Attr:    "hierarchy_token_bucket",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15152,7 +15152,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucketClass",
-				Attr: "hierarchy_token_bucket_class",
+				Attr:    "hierarchy_token_bucket_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -15168,7 +15168,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetworkEmulator",
-				Attr: "network_emulator",
+				Attr:    "network_emulator",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15181,7 +15181,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PIE",
-				Attr: "pie",
+				Attr:    "pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15190,7 +15190,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairBlue",
-				Attr: "stochastic_fair_blue",
+				Attr:    "stochastic_fair_blue",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15199,7 +15199,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairnessQueueing",
-				Attr: "stochastic_fairness_queueing",
+				Attr:    "stochastic_fairness_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15208,7 +15208,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TokenBucketFilter",
-				Attr: "token_bucket_filter",
+				Attr:    "token_bucket_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15225,7 +15225,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrivialLinkEqualizer",
-				Attr: "trivial_link_equalizer",
+				Attr:    "trivial_link_equalizer",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15234,7 +15234,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PrefixDelegation",
-				Attr: "ipv6_prefix_delegation",
+				Attr:    "ipv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "timespan"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -15249,7 +15249,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCP",
-				Attr: "dhcp",
+				Attr:    "dhcp",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -15279,7 +15279,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6PrefixDelegation",
-				Attr: "dhcpv6_prefix_delegation",
+				Attr:    "dhcpv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
 					{Name: "Announce", Attr: "announce", Class: "bool"},
@@ -15291,7 +15291,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrafficControlQueueingDiscipline",
-				Attr: "traffic_control_queueing_discipline",
+				Attr:    "traffic_control_queueing_discipline",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "NetworkEmulatorDelaySec", Attr: "network_emulator_delay_sec", Class: "string"},
@@ -15308,7 +15308,7 @@ var NetworkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -15332,7 +15332,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "MTUBytes", Attr: "mtu_bytes", Class: "string"},
@@ -15349,7 +15349,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -15364,7 +15364,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Network",
-				Attr: "network",
+				Attr:    "network",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "KeepMaster", Attr: "keep_master", Class: "bool"},
@@ -15434,7 +15434,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Address",
-				Attr: "address",
+				Attr:    "address",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "Peer", Attr: "peer", Class: "string"},
@@ -15454,7 +15454,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AddressLabel",
-				Attr: "ipv6_address_label",
+				Attr:    "ipv6_address_label",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "Label", Attr: "label", Class: "string"},
@@ -15462,7 +15462,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Neighbor",
-				Attr: "neighbor",
+				Attr:    "neighbor",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "LinkLayerAddress", Attr: "link_layer_address", Class: "string"},
@@ -15471,7 +15471,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "RoutingPolicyRule",
-				Attr: "routing_policy_rule",
+				Attr:    "routing_policy_rule",
 				Directives: []Directive{
 					{Name: "TypeOfService", Attr: "type_of_service", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "string"},
@@ -15494,7 +15494,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Route",
-				Attr: "route",
+				Attr:    "route",
 				Directives: []Directive{
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
 					{Name: "Destination", Attr: "destination", Class: "string"},
@@ -15522,7 +15522,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NextHop",
-				Attr: "next_hop",
+				Attr:    "next_hop",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
@@ -15534,7 +15534,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv4",
-				Attr: "dhcpv4",
+				Attr:    "dhcpv4",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -15584,7 +15584,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6",
-				Attr: "dhcpv6",
+				Attr:    "dhcpv6",
 				Directives: []Directive{
 					{Name: "UseAddress", Attr: "use_address", Class: "bool"},
 					{Name: "UseDelegatedPrefix", Attr: "use_delegated_prefix", Class: "bool"},
@@ -15612,7 +15612,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AcceptRA",
-				Attr: "ipv6_accept_ra",
+				Attr:    "ipv6_accept_ra",
 				Directives: []Directive{
 					{Name: "UseGateway", Attr: "use_gateway", Class: "bool"},
 					{Name: "UseRoutePrefix", Attr: "use_route_prefix", Class: "bool"},
@@ -15639,7 +15639,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServer",
-				Attr: "dhcp_server",
+				Attr:    "dhcp_server",
 				Directives: []Directive{
 					{Name: "ServerAddress", Attr: "server_address", Class: "string"},
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
@@ -15676,7 +15676,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServerStaticLease",
-				Attr: "dhcp_server_static_lease",
+				Attr:    "dhcp_server_static_lease",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -15684,7 +15684,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "Cost", Attr: "cost", Class: "string"},
 					{Name: "UseBPDU", Attr: "use_bpdu", Class: "bool"},
@@ -15705,7 +15705,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeFDB",
-				Attr: "bridge_fdb",
+				Attr:    "bridge_fdb",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -15717,7 +15717,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeMDB",
-				Attr: "bridge_mdb",
+				Attr:    "bridge_mdb",
 				Directives: []Directive{
 					{Name: "MulticastGroupAddress", Attr: "multicast_group_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -15725,7 +15725,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeVLAN",
-				Attr: "bridge_vlan",
+				Attr:    "bridge_vlan",
 				Directives: []Directive{
 					{Name: "PVID", Attr: "pvid", Class: "string"},
 					{Name: "VLAN", Attr: "vlan", Class: "string"},
@@ -15734,7 +15734,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPPrefixDelegation",
-				Attr: "dhcp_prefix_delegation",
+				Attr:    "dhcp_prefix_delegation",
 				Directives: []Directive{
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
@@ -15748,7 +15748,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6SendRA",
-				Attr: "ipv6_send_ra",
+				Attr:    "ipv6_send_ra",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "string"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -15764,7 +15764,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6Prefix",
-				Attr: "ipv6_prefix",
+				Attr:    "ipv6_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "OnLink", Attr: "on_link", Class: "string"},
@@ -15778,7 +15778,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6RoutePrefix",
-				Attr: "ipv6_route_prefix",
+				Attr:    "ipv6_route_prefix",
 				Directives: []Directive{
 					{Name: "Route", Attr: "route", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -15786,14 +15786,14 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "LLDP",
-				Attr: "lldp",
+				Attr:    "lldp",
 				Directives: []Directive{
 					{Name: "MUDURL", Attr: "mudurl", Class: "string"},
 				},
 			},
 			{
 				Section: "CAN",
-				Attr: "can",
+				Attr:    "can",
 				Directives: []Directive{
 					{Name: "BitRate", Attr: "bit_rate", Class: "string"},
 					{Name: "SamplePoint", Attr: "sample_point", Class: "string"},
@@ -15824,7 +15824,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "IgnoreUserspaceMulticastGroups", Attr: "ignore_userspace_multicast_groups", Class: "bool"},
@@ -15832,7 +15832,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QDisc",
-				Attr: "qdisc",
+				Attr:    "qdisc",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15840,7 +15840,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BFIFO",
-				Attr: "bfifo",
+				Attr:    "bfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15849,7 +15849,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "CAKE",
-				Attr: "cake",
+				Attr:    "cake",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15871,7 +15871,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "ControlledDelay",
-				Attr: "controlled_delay",
+				Attr:    "controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15884,7 +15884,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinScheduler",
-				Attr: "deficit_round_robin_scheduler",
+				Attr:    "deficit_round_robin_scheduler",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15892,7 +15892,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinSchedulerClass",
-				Attr: "deficit_round_robin_scheduler_class",
+				Attr:    "deficit_round_robin_scheduler_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -15901,7 +15901,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "EnhancedTransmissionSelection",
-				Attr: "enhanced_transmission_selection",
+				Attr:    "enhanced_transmission_selection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15913,7 +15913,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFO",
-				Attr: "pfifo",
+				Attr:    "pfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15922,7 +15922,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOFast",
-				Attr: "pfifo_fast",
+				Attr:    "pfifo_fast",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15930,7 +15930,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOHeadDrop",
-				Attr: "pfifo_head_drop",
+				Attr:    "pfifo_head_drop",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15939,7 +15939,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueing",
-				Attr: "quick_fair_queueing",
+				Attr:    "quick_fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15947,7 +15947,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueingClass",
-				Attr: "quick_fair_queueing_class",
+				Attr:    "quick_fair_queueing_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -15957,7 +15957,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueing",
-				Attr: "fair_queueing",
+				Attr:    "fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15976,7 +15976,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueingControlledDelay",
-				Attr: "fair_queueing_controlled_delay",
+				Attr:    "fair_queueing_controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -15994,7 +15994,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FlowQueuePIE",
-				Attr: "flow_queue_pie",
+				Attr:    "flow_queue_pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16003,7 +16003,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GenericRandomEarlyDetection",
-				Attr: "generic_random_early_detection",
+				Attr:    "generic_random_early_detection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16014,7 +16014,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HeavyHitterFilter",
-				Attr: "heavy_hitter_filter",
+				Attr:    "heavy_hitter_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16023,7 +16023,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucket",
-				Attr: "hierarchy_token_bucket",
+				Attr:    "hierarchy_token_bucket",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16033,7 +16033,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucketClass",
-				Attr: "hierarchy_token_bucket_class",
+				Attr:    "hierarchy_token_bucket_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -16049,7 +16049,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetworkEmulator",
-				Attr: "network_emulator",
+				Attr:    "network_emulator",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16062,7 +16062,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PIE",
-				Attr: "pie",
+				Attr:    "pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16071,7 +16071,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairBlue",
-				Attr: "stochastic_fair_blue",
+				Attr:    "stochastic_fair_blue",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16080,7 +16080,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairnessQueueing",
-				Attr: "stochastic_fairness_queueing",
+				Attr:    "stochastic_fairness_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16089,7 +16089,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TokenBucketFilter",
-				Attr: "token_bucket_filter",
+				Attr:    "token_bucket_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16106,7 +16106,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrivialLinkEqualizer",
-				Attr: "trivial_link_equalizer",
+				Attr:    "trivial_link_equalizer",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16115,7 +16115,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PrefixDelegation",
-				Attr: "ipv6_prefix_delegation",
+				Attr:    "ipv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "timespan"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -16130,7 +16130,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCP",
-				Attr: "dhcp",
+				Attr:    "dhcp",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -16160,7 +16160,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6PrefixDelegation",
-				Attr: "dhcpv6_prefix_delegation",
+				Attr:    "dhcpv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
 					{Name: "Announce", Attr: "announce", Class: "bool"},
@@ -16172,7 +16172,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrafficControlQueueingDiscipline",
-				Attr: "traffic_control_queueing_discipline",
+				Attr:    "traffic_control_queueing_discipline",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "NetworkEmulatorDelaySec", Attr: "network_emulator_delay_sec", Class: "string"},
@@ -16189,7 +16189,7 @@ var NetworkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -16213,7 +16213,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "MTUBytes", Attr: "mtu_bytes", Class: "string"},
@@ -16230,7 +16230,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -16245,7 +16245,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Network",
-				Attr: "network",
+				Attr:    "network",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "KeepMaster", Attr: "keep_master", Class: "bool"},
@@ -16315,7 +16315,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Address",
-				Attr: "address",
+				Attr:    "address",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "Peer", Attr: "peer", Class: "string"},
@@ -16335,7 +16335,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AddressLabel",
-				Attr: "ipv6_address_label",
+				Attr:    "ipv6_address_label",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "Label", Attr: "label", Class: "string"},
@@ -16343,7 +16343,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Neighbor",
-				Attr: "neighbor",
+				Attr:    "neighbor",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "LinkLayerAddress", Attr: "link_layer_address", Class: "string"},
@@ -16352,7 +16352,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "RoutingPolicyRule",
-				Attr: "routing_policy_rule",
+				Attr:    "routing_policy_rule",
 				Directives: []Directive{
 					{Name: "TypeOfService", Attr: "type_of_service", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "string"},
@@ -16375,7 +16375,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Route",
-				Attr: "route",
+				Attr:    "route",
 				Directives: []Directive{
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
 					{Name: "Destination", Attr: "destination", Class: "string"},
@@ -16403,7 +16403,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NextHop",
-				Attr: "next_hop",
+				Attr:    "next_hop",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
@@ -16415,7 +16415,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv4",
-				Attr: "dhcpv4",
+				Attr:    "dhcpv4",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -16466,7 +16466,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6",
-				Attr: "dhcpv6",
+				Attr:    "dhcpv6",
 				Directives: []Directive{
 					{Name: "UseAddress", Attr: "use_address", Class: "bool"},
 					{Name: "UseDelegatedPrefix", Attr: "use_delegated_prefix", Class: "bool"},
@@ -16495,7 +16495,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AcceptRA",
-				Attr: "ipv6_accept_ra",
+				Attr:    "ipv6_accept_ra",
 				Directives: []Directive{
 					{Name: "UseGateway", Attr: "use_gateway", Class: "bool"},
 					{Name: "UseRoutePrefix", Attr: "use_route_prefix", Class: "bool"},
@@ -16523,7 +16523,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServer",
-				Attr: "dhcp_server",
+				Attr:    "dhcp_server",
 				Directives: []Directive{
 					{Name: "ServerAddress", Attr: "server_address", Class: "string"},
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
@@ -16560,7 +16560,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServerStaticLease",
-				Attr: "dhcp_server_static_lease",
+				Attr:    "dhcp_server_static_lease",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -16568,7 +16568,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "Cost", Attr: "cost", Class: "string"},
 					{Name: "UseBPDU", Attr: "use_bpdu", Class: "bool"},
@@ -16589,7 +16589,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeFDB",
-				Attr: "bridge_fdb",
+				Attr:    "bridge_fdb",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -16601,7 +16601,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeMDB",
-				Attr: "bridge_mdb",
+				Attr:    "bridge_mdb",
 				Directives: []Directive{
 					{Name: "MulticastGroupAddress", Attr: "multicast_group_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -16609,7 +16609,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeVLAN",
-				Attr: "bridge_vlan",
+				Attr:    "bridge_vlan",
 				Directives: []Directive{
 					{Name: "PVID", Attr: "pvid", Class: "string"},
 					{Name: "VLAN", Attr: "vlan", Class: "string"},
@@ -16618,7 +16618,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPPrefixDelegation",
-				Attr: "dhcp_prefix_delegation",
+				Attr:    "dhcp_prefix_delegation",
 				Directives: []Directive{
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
@@ -16632,7 +16632,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6SendRA",
-				Attr: "ipv6_send_ra",
+				Attr:    "ipv6_send_ra",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "string"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -16648,7 +16648,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6Prefix",
-				Attr: "ipv6_prefix",
+				Attr:    "ipv6_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "OnLink", Attr: "on_link", Class: "string"},
@@ -16662,7 +16662,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6RoutePrefix",
-				Attr: "ipv6_route_prefix",
+				Attr:    "ipv6_route_prefix",
 				Directives: []Directive{
 					{Name: "Route", Attr: "route", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -16670,14 +16670,14 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "LLDP",
-				Attr: "lldp",
+				Attr:    "lldp",
 				Directives: []Directive{
 					{Name: "MUDURL", Attr: "mudurl", Class: "string"},
 				},
 			},
 			{
 				Section: "CAN",
-				Attr: "can",
+				Attr:    "can",
 				Directives: []Directive{
 					{Name: "BitRate", Attr: "bit_rate", Class: "string"},
 					{Name: "SamplePoint", Attr: "sample_point", Class: "string"},
@@ -16708,7 +16708,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "IgnoreUserspaceMulticastGroups", Attr: "ignore_userspace_multicast_groups", Class: "bool"},
@@ -16716,7 +16716,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QDisc",
-				Attr: "qdisc",
+				Attr:    "qdisc",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16724,7 +16724,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BFIFO",
-				Attr: "bfifo",
+				Attr:    "bfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16733,7 +16733,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "CAKE",
-				Attr: "cake",
+				Attr:    "cake",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16755,7 +16755,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "ControlledDelay",
-				Attr: "controlled_delay",
+				Attr:    "controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16768,7 +16768,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinScheduler",
-				Attr: "deficit_round_robin_scheduler",
+				Attr:    "deficit_round_robin_scheduler",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16776,7 +16776,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinSchedulerClass",
-				Attr: "deficit_round_robin_scheduler_class",
+				Attr:    "deficit_round_robin_scheduler_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -16785,7 +16785,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "EnhancedTransmissionSelection",
-				Attr: "enhanced_transmission_selection",
+				Attr:    "enhanced_transmission_selection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16797,7 +16797,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFO",
-				Attr: "pfifo",
+				Attr:    "pfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16806,7 +16806,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOFast",
-				Attr: "pfifo_fast",
+				Attr:    "pfifo_fast",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16814,7 +16814,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOHeadDrop",
-				Attr: "pfifo_head_drop",
+				Attr:    "pfifo_head_drop",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16823,7 +16823,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueing",
-				Attr: "quick_fair_queueing",
+				Attr:    "quick_fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16831,7 +16831,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueingClass",
-				Attr: "quick_fair_queueing_class",
+				Attr:    "quick_fair_queueing_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -16841,7 +16841,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueing",
-				Attr: "fair_queueing",
+				Attr:    "fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16860,7 +16860,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueingControlledDelay",
-				Attr: "fair_queueing_controlled_delay",
+				Attr:    "fair_queueing_controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16878,7 +16878,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FlowQueuePIE",
-				Attr: "flow_queue_pie",
+				Attr:    "flow_queue_pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16887,7 +16887,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GenericRandomEarlyDetection",
-				Attr: "generic_random_early_detection",
+				Attr:    "generic_random_early_detection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16898,7 +16898,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HeavyHitterFilter",
-				Attr: "heavy_hitter_filter",
+				Attr:    "heavy_hitter_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16907,7 +16907,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucket",
-				Attr: "hierarchy_token_bucket",
+				Attr:    "hierarchy_token_bucket",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16917,7 +16917,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucketClass",
-				Attr: "hierarchy_token_bucket_class",
+				Attr:    "hierarchy_token_bucket_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -16933,7 +16933,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetworkEmulator",
-				Attr: "network_emulator",
+				Attr:    "network_emulator",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16946,7 +16946,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PIE",
-				Attr: "pie",
+				Attr:    "pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16955,7 +16955,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairBlue",
-				Attr: "stochastic_fair_blue",
+				Attr:    "stochastic_fair_blue",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16964,7 +16964,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairnessQueueing",
-				Attr: "stochastic_fairness_queueing",
+				Attr:    "stochastic_fairness_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16973,7 +16973,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TokenBucketFilter",
-				Attr: "token_bucket_filter",
+				Attr:    "token_bucket_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16990,7 +16990,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrivialLinkEqualizer",
-				Attr: "trivial_link_equalizer",
+				Attr:    "trivial_link_equalizer",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -16999,7 +16999,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PrefixDelegation",
-				Attr: "ipv6_prefix_delegation",
+				Attr:    "ipv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "timespan"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -17014,7 +17014,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCP",
-				Attr: "dhcp",
+				Attr:    "dhcp",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -17044,7 +17044,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6PrefixDelegation",
-				Attr: "dhcpv6_prefix_delegation",
+				Attr:    "dhcpv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
 					{Name: "Announce", Attr: "announce", Class: "bool"},
@@ -17056,7 +17056,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrafficControlQueueingDiscipline",
-				Attr: "traffic_control_queueing_discipline",
+				Attr:    "traffic_control_queueing_discipline",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "NetworkEmulatorDelaySec", Attr: "network_emulator_delay_sec", Class: "string"},
@@ -17073,7 +17073,7 @@ var NetworkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -17097,7 +17097,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "MTUBytes", Attr: "mtu_bytes", Class: "string"},
@@ -17114,7 +17114,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -17129,7 +17129,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Network",
-				Attr: "network",
+				Attr:    "network",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "KeepMaster", Attr: "keep_master", Class: "bool"},
@@ -17200,7 +17200,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Address",
-				Attr: "address",
+				Attr:    "address",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "Peer", Attr: "peer", Class: "string"},
@@ -17221,7 +17221,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AddressLabel",
-				Attr: "ipv6_address_label",
+				Attr:    "ipv6_address_label",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "Label", Attr: "label", Class: "string"},
@@ -17229,7 +17229,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Neighbor",
-				Attr: "neighbor",
+				Attr:    "neighbor",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "LinkLayerAddress", Attr: "link_layer_address", Class: "string"},
@@ -17238,7 +17238,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "RoutingPolicyRule",
-				Attr: "routing_policy_rule",
+				Attr:    "routing_policy_rule",
 				Directives: []Directive{
 					{Name: "TypeOfService", Attr: "type_of_service", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "string"},
@@ -17261,7 +17261,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Route",
-				Attr: "route",
+				Attr:    "route",
 				Directives: []Directive{
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
 					{Name: "Destination", Attr: "destination", Class: "string"},
@@ -17291,7 +17291,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NextHop",
-				Attr: "next_hop",
+				Attr:    "next_hop",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
@@ -17303,7 +17303,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv4",
-				Attr: "dhcpv4",
+				Attr:    "dhcpv4",
 				Directives: []Directive{
 					{Name: "RequestAddress", Attr: "request_address", Class: "string"},
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
@@ -17360,7 +17360,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6",
-				Attr: "dhcpv6",
+				Attr:    "dhcpv6",
 				Directives: []Directive{
 					{Name: "UseAddress", Attr: "use_address", Class: "bool"},
 					{Name: "UseDelegatedPrefix", Attr: "use_delegated_prefix", Class: "bool"},
@@ -17392,7 +17392,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AcceptRA",
-				Attr: "ipv6_accept_ra",
+				Attr:    "ipv6_accept_ra",
 				Directives: []Directive{
 					{Name: "UseGateway", Attr: "use_gateway", Class: "bool"},
 					{Name: "UseRoutePrefix", Attr: "use_route_prefix", Class: "bool"},
@@ -17424,7 +17424,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServer",
-				Attr: "dhcp_server",
+				Attr:    "dhcp_server",
 				Directives: []Directive{
 					{Name: "ServerAddress", Attr: "server_address", Class: "string"},
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
@@ -17463,7 +17463,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServerStaticLease",
-				Attr: "dhcp_server_static_lease",
+				Attr:    "dhcp_server_static_lease",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -17471,7 +17471,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "Cost", Attr: "cost", Class: "string"},
 					{Name: "UseBPDU", Attr: "use_bpdu", Class: "bool"},
@@ -17492,7 +17492,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeFDB",
-				Attr: "bridge_fdb",
+				Attr:    "bridge_fdb",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -17504,7 +17504,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeMDB",
-				Attr: "bridge_mdb",
+				Attr:    "bridge_mdb",
 				Directives: []Directive{
 					{Name: "MulticastGroupAddress", Attr: "multicast_group_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -17512,7 +17512,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeVLAN",
-				Attr: "bridge_vlan",
+				Attr:    "bridge_vlan",
 				Directives: []Directive{
 					{Name: "PVID", Attr: "pvid", Class: "string"},
 					{Name: "VLAN", Attr: "vlan", Class: "string"},
@@ -17521,7 +17521,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPPrefixDelegation",
-				Attr: "dhcp_prefix_delegation",
+				Attr:    "dhcp_prefix_delegation",
 				Directives: []Directive{
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
@@ -17536,7 +17536,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6SendRA",
-				Attr: "ipv6_send_ra",
+				Attr:    "ipv6_send_ra",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "string"},
 					{Name: "RetransmitSec", Attr: "retransmit_sec", Class: "string"},
@@ -17557,7 +17557,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6Prefix",
-				Attr: "ipv6_prefix",
+				Attr:    "ipv6_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "OnLink", Attr: "on_link", Class: "string"},
@@ -17571,7 +17571,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6RoutePrefix",
-				Attr: "ipv6_route_prefix",
+				Attr:    "ipv6_route_prefix",
 				Directives: []Directive{
 					{Name: "Route", Attr: "route", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -17579,7 +17579,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PREF64Prefix",
-				Attr: "ipv6_pref64_prefix",
+				Attr:    "ipv6_pref64_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -17587,14 +17587,14 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "LLDP",
-				Attr: "lldp",
+				Attr:    "lldp",
 				Directives: []Directive{
 					{Name: "MUDURL", Attr: "mudurl", Class: "string"},
 				},
 			},
 			{
 				Section: "CAN",
-				Attr: "can",
+				Attr:    "can",
 				Directives: []Directive{
 					{Name: "BitRate", Attr: "bit_rate", Class: "string"},
 					{Name: "SamplePoint", Attr: "sample_point", Class: "string"},
@@ -17625,7 +17625,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "IgnoreUserspaceMulticastGroups", Attr: "ignore_userspace_multicast_groups", Class: "bool"},
@@ -17633,7 +17633,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QDisc",
-				Attr: "qdisc",
+				Attr:    "qdisc",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17641,7 +17641,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BFIFO",
-				Attr: "bfifo",
+				Attr:    "bfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17650,7 +17650,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "CAKE",
-				Attr: "cake",
+				Attr:    "cake",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17672,7 +17672,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "ControlledDelay",
-				Attr: "controlled_delay",
+				Attr:    "controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17685,7 +17685,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinScheduler",
-				Attr: "deficit_round_robin_scheduler",
+				Attr:    "deficit_round_robin_scheduler",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17693,7 +17693,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinSchedulerClass",
-				Attr: "deficit_round_robin_scheduler_class",
+				Attr:    "deficit_round_robin_scheduler_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -17702,7 +17702,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "EnhancedTransmissionSelection",
-				Attr: "enhanced_transmission_selection",
+				Attr:    "enhanced_transmission_selection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17714,7 +17714,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFO",
-				Attr: "pfifo",
+				Attr:    "pfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17723,7 +17723,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOFast",
-				Attr: "pfifo_fast",
+				Attr:    "pfifo_fast",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17731,7 +17731,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOHeadDrop",
-				Attr: "pfifo_head_drop",
+				Attr:    "pfifo_head_drop",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17740,7 +17740,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueing",
-				Attr: "quick_fair_queueing",
+				Attr:    "quick_fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17748,7 +17748,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueingClass",
-				Attr: "quick_fair_queueing_class",
+				Attr:    "quick_fair_queueing_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -17758,7 +17758,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueing",
-				Attr: "fair_queueing",
+				Attr:    "fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17777,7 +17777,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueingControlledDelay",
-				Attr: "fair_queueing_controlled_delay",
+				Attr:    "fair_queueing_controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17795,7 +17795,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FlowQueuePIE",
-				Attr: "flow_queue_pie",
+				Attr:    "flow_queue_pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17804,7 +17804,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GenericRandomEarlyDetection",
-				Attr: "generic_random_early_detection",
+				Attr:    "generic_random_early_detection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17815,7 +17815,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HeavyHitterFilter",
-				Attr: "heavy_hitter_filter",
+				Attr:    "heavy_hitter_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17824,7 +17824,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucket",
-				Attr: "hierarchy_token_bucket",
+				Attr:    "hierarchy_token_bucket",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17834,7 +17834,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucketClass",
-				Attr: "hierarchy_token_bucket_class",
+				Attr:    "hierarchy_token_bucket_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -17850,7 +17850,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetworkEmulator",
-				Attr: "network_emulator",
+				Attr:    "network_emulator",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17863,7 +17863,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PIE",
-				Attr: "pie",
+				Attr:    "pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17872,7 +17872,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairBlue",
-				Attr: "stochastic_fair_blue",
+				Attr:    "stochastic_fair_blue",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17881,7 +17881,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairnessQueueing",
-				Attr: "stochastic_fairness_queueing",
+				Attr:    "stochastic_fairness_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17890,7 +17890,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TokenBucketFilter",
-				Attr: "token_bucket_filter",
+				Attr:    "token_bucket_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17907,7 +17907,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrivialLinkEqualizer",
-				Attr: "trivial_link_equalizer",
+				Attr:    "trivial_link_equalizer",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -17916,7 +17916,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PrefixDelegation",
-				Attr: "ipv6_prefix_delegation",
+				Attr:    "ipv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "timespan"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -17931,7 +17931,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCP",
-				Attr: "dhcp",
+				Attr:    "dhcp",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "string"},
@@ -17961,7 +17961,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6PrefixDelegation",
-				Attr: "dhcpv6_prefix_delegation",
+				Attr:    "dhcpv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
 					{Name: "Announce", Attr: "announce", Class: "bool"},
@@ -17973,7 +17973,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrafficControlQueueingDiscipline",
-				Attr: "traffic_control_queueing_discipline",
+				Attr:    "traffic_control_queueing_discipline",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "NetworkEmulatorDelaySec", Attr: "network_emulator_delay_sec", Class: "string"},
@@ -17990,7 +17990,7 @@ var NetworkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -18014,7 +18014,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "MTUBytes", Attr: "mtu_bytes", Class: "string"},
@@ -18031,7 +18031,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -18046,7 +18046,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Network",
-				Attr: "network",
+				Attr:    "network",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "KeepMaster", Attr: "keep_master", Class: "bool"},
@@ -18122,7 +18122,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Address",
-				Attr: "address",
+				Attr:    "address",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "Peer", Attr: "peer", Class: "string"},
@@ -18143,7 +18143,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AddressLabel",
-				Attr: "ipv6_address_label",
+				Attr:    "ipv6_address_label",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "Label", Attr: "label", Class: "string"},
@@ -18151,7 +18151,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Neighbor",
-				Attr: "neighbor",
+				Attr:    "neighbor",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "LinkLayerAddress", Attr: "link_layer_address", Class: "string"},
@@ -18160,7 +18160,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "RoutingPolicyRule",
-				Attr: "routing_policy_rule",
+				Attr:    "routing_policy_rule",
 				Directives: []Directive{
 					{Name: "TypeOfService", Attr: "type_of_service", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "string"},
@@ -18184,7 +18184,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Route",
-				Attr: "route",
+				Attr:    "route",
 				Directives: []Directive{
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
 					{Name: "Destination", Attr: "destination", Class: "string"},
@@ -18214,7 +18214,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NextHop",
-				Attr: "next_hop",
+				Attr:    "next_hop",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
@@ -18226,7 +18226,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv4",
-				Attr: "dhcpv4",
+				Attr:    "dhcpv4",
 				Directives: []Directive{
 					{Name: "RequestAddress", Attr: "request_address", Class: "string"},
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
@@ -18284,7 +18284,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6",
-				Attr: "dhcpv6",
+				Attr:    "dhcpv6",
 				Directives: []Directive{
 					{Name: "UseAddress", Attr: "use_address", Class: "bool"},
 					{Name: "UseDelegatedPrefix", Attr: "use_delegated_prefix", Class: "bool"},
@@ -18316,7 +18316,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AcceptRA",
-				Attr: "ipv6_accept_ra",
+				Attr:    "ipv6_accept_ra",
 				Directives: []Directive{
 					{Name: "UseRedirect", Attr: "use_redirect", Class: "bool"},
 					{Name: "UseGateway", Attr: "use_gateway", Class: "bool"},
@@ -18351,7 +18351,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServer",
-				Attr: "dhcp_server",
+				Attr:    "dhcp_server",
 				Directives: []Directive{
 					{Name: "ServerAddress", Attr: "server_address", Class: "string"},
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
@@ -18391,7 +18391,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServerStaticLease",
-				Attr: "dhcp_server_static_lease",
+				Attr:    "dhcp_server_static_lease",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -18399,7 +18399,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "Cost", Attr: "cost", Class: "string"},
 					{Name: "UseBPDU", Attr: "use_bpdu", Class: "bool"},
@@ -18420,7 +18420,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeFDB",
-				Attr: "bridge_fdb",
+				Attr:    "bridge_fdb",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -18432,7 +18432,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeMDB",
-				Attr: "bridge_mdb",
+				Attr:    "bridge_mdb",
 				Directives: []Directive{
 					{Name: "MulticastGroupAddress", Attr: "multicast_group_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -18440,7 +18440,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeVLAN",
-				Attr: "bridge_vlan",
+				Attr:    "bridge_vlan",
 				Directives: []Directive{
 					{Name: "PVID", Attr: "pvid", Class: "string"},
 					{Name: "VLAN", Attr: "vlan", Class: "string"},
@@ -18449,7 +18449,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPPrefixDelegation",
-				Attr: "dhcp_prefix_delegation",
+				Attr:    "dhcp_prefix_delegation",
 				Directives: []Directive{
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
@@ -18464,7 +18464,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6SendRA",
-				Attr: "ipv6_send_ra",
+				Attr:    "ipv6_send_ra",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "string"},
 					{Name: "ReachableTimeSec", Attr: "reachable_time_sec", Class: "string"},
@@ -18486,7 +18486,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6Prefix",
-				Attr: "ipv6_prefix",
+				Attr:    "ipv6_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "OnLink", Attr: "on_link", Class: "string"},
@@ -18500,7 +18500,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6RoutePrefix",
-				Attr: "ipv6_route_prefix",
+				Attr:    "ipv6_route_prefix",
 				Directives: []Directive{
 					{Name: "Route", Attr: "route", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -18508,7 +18508,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PREF64Prefix",
-				Attr: "ipv6_pref64_prefix",
+				Attr:    "ipv6_pref64_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -18516,14 +18516,14 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "LLDP",
-				Attr: "lldp",
+				Attr:    "lldp",
 				Directives: []Directive{
 					{Name: "MUDURL", Attr: "mudurl", Class: "string"},
 				},
 			},
 			{
 				Section: "CAN",
-				Attr: "can",
+				Attr:    "can",
 				Directives: []Directive{
 					{Name: "BitRate", Attr: "bit_rate", Class: "string"},
 					{Name: "SamplePoint", Attr: "sample_point", Class: "string"},
@@ -18554,7 +18554,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "IgnoreUserspaceMulticastGroups", Attr: "ignore_userspace_multicast_groups", Class: "bool"},
@@ -18562,7 +18562,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QDisc",
-				Attr: "qdisc",
+				Attr:    "qdisc",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18570,7 +18570,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BFIFO",
-				Attr: "bfifo",
+				Attr:    "bfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18579,7 +18579,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "CAKE",
-				Attr: "cake",
+				Attr:    "cake",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18601,7 +18601,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "ControlledDelay",
-				Attr: "controlled_delay",
+				Attr:    "controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18614,7 +18614,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinScheduler",
-				Attr: "deficit_round_robin_scheduler",
+				Attr:    "deficit_round_robin_scheduler",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18622,7 +18622,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinSchedulerClass",
-				Attr: "deficit_round_robin_scheduler_class",
+				Attr:    "deficit_round_robin_scheduler_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -18631,7 +18631,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "EnhancedTransmissionSelection",
-				Attr: "enhanced_transmission_selection",
+				Attr:    "enhanced_transmission_selection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18643,7 +18643,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFO",
-				Attr: "pfifo",
+				Attr:    "pfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18652,7 +18652,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOFast",
-				Attr: "pfifo_fast",
+				Attr:    "pfifo_fast",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18660,7 +18660,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOHeadDrop",
-				Attr: "pfifo_head_drop",
+				Attr:    "pfifo_head_drop",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18669,7 +18669,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueing",
-				Attr: "quick_fair_queueing",
+				Attr:    "quick_fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18677,7 +18677,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueingClass",
-				Attr: "quick_fair_queueing_class",
+				Attr:    "quick_fair_queueing_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -18687,7 +18687,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueing",
-				Attr: "fair_queueing",
+				Attr:    "fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18706,7 +18706,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueingControlledDelay",
-				Attr: "fair_queueing_controlled_delay",
+				Attr:    "fair_queueing_controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18724,7 +18724,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FlowQueuePIE",
-				Attr: "flow_queue_pie",
+				Attr:    "flow_queue_pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18733,7 +18733,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GenericRandomEarlyDetection",
-				Attr: "generic_random_early_detection",
+				Attr:    "generic_random_early_detection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18744,7 +18744,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HeavyHitterFilter",
-				Attr: "heavy_hitter_filter",
+				Attr:    "heavy_hitter_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18753,7 +18753,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucket",
-				Attr: "hierarchy_token_bucket",
+				Attr:    "hierarchy_token_bucket",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18763,7 +18763,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucketClass",
-				Attr: "hierarchy_token_bucket_class",
+				Attr:    "hierarchy_token_bucket_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -18779,7 +18779,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetworkEmulator",
-				Attr: "network_emulator",
+				Attr:    "network_emulator",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18792,7 +18792,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PIE",
-				Attr: "pie",
+				Attr:    "pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18801,7 +18801,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairBlue",
-				Attr: "stochastic_fair_blue",
+				Attr:    "stochastic_fair_blue",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18810,7 +18810,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairnessQueueing",
-				Attr: "stochastic_fairness_queueing",
+				Attr:    "stochastic_fairness_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18819,7 +18819,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TokenBucketFilter",
-				Attr: "token_bucket_filter",
+				Attr:    "token_bucket_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18836,7 +18836,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrivialLinkEqualizer",
-				Attr: "trivial_link_equalizer",
+				Attr:    "trivial_link_equalizer",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -18845,7 +18845,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PrefixDelegation",
-				Attr: "ipv6_prefix_delegation",
+				Attr:    "ipv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "timespan"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -18860,7 +18860,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCP",
-				Attr: "dhcp",
+				Attr:    "dhcp",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "bool"},
@@ -18890,7 +18890,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6PrefixDelegation",
-				Attr: "dhcpv6_prefix_delegation",
+				Attr:    "dhcpv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
 					{Name: "Announce", Attr: "announce", Class: "bool"},
@@ -18902,7 +18902,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrafficControlQueueingDiscipline",
-				Attr: "traffic_control_queueing_discipline",
+				Attr:    "traffic_control_queueing_discipline",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "NetworkEmulatorDelaySec", Attr: "network_emulator_delay_sec", Class: "string"},
@@ -18919,7 +18919,7 @@ var NetworkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -18943,7 +18943,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "MTUBytes", Attr: "mtu_bytes", Class: "string"},
@@ -18960,7 +18960,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -18975,7 +18975,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Network",
-				Attr: "network",
+				Attr:    "network",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "KeepMaster", Attr: "keep_master", Class: "bool"},
@@ -19052,7 +19052,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Address",
-				Attr: "address",
+				Attr:    "address",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "Peer", Attr: "peer", Class: "string"},
@@ -19073,7 +19073,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AddressLabel",
-				Attr: "ipv6_address_label",
+				Attr:    "ipv6_address_label",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "Label", Attr: "label", Class: "string"},
@@ -19081,7 +19081,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Neighbor",
-				Attr: "neighbor",
+				Attr:    "neighbor",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "LinkLayerAddress", Attr: "link_layer_address", Class: "string"},
@@ -19090,7 +19090,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "RoutingPolicyRule",
-				Attr: "routing_policy_rule",
+				Attr:    "routing_policy_rule",
 				Directives: []Directive{
 					{Name: "TypeOfService", Attr: "type_of_service", Class: "string"},
 					{Name: "Priority", Attr: "priority", Class: "string"},
@@ -19115,7 +19115,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Route",
-				Attr: "route",
+				Attr:    "route",
 				Directives: []Directive{
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
 					{Name: "Destination", Attr: "destination", Class: "string"},
@@ -19145,7 +19145,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NextHop",
-				Attr: "next_hop",
+				Attr:    "next_hop",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Gateway", Attr: "gateway", Class: "string"},
@@ -19157,7 +19157,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv4",
-				Attr: "dhcpv4",
+				Attr:    "dhcpv4",
 				Directives: []Directive{
 					{Name: "RequestAddress", Attr: "request_address", Class: "string"},
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
@@ -19217,7 +19217,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6",
-				Attr: "dhcpv6",
+				Attr:    "dhcpv6",
 				Directives: []Directive{
 					{Name: "UseAddress", Attr: "use_address", Class: "bool"},
 					{Name: "UseDelegatedPrefix", Attr: "use_delegated_prefix", Class: "bool"},
@@ -19251,7 +19251,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6AcceptRA",
-				Attr: "ipv6_accept_ra",
+				Attr:    "ipv6_accept_ra",
 				Directives: []Directive{
 					{Name: "UseRedirect", Attr: "use_redirect", Class: "bool"},
 					{Name: "UseGateway", Attr: "use_gateway", Class: "bool"},
@@ -19287,7 +19287,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServer",
-				Attr: "dhcp_server",
+				Attr:    "dhcp_server",
 				Directives: []Directive{
 					{Name: "ServerAddress", Attr: "server_address", Class: "string"},
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
@@ -19327,7 +19327,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPServerStaticLease",
-				Attr: "dhcp_server_static_lease",
+				Attr:    "dhcp_server_static_lease",
 				Directives: []Directive{
 					{Name: "Address", Attr: "address", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -19335,7 +19335,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "Cost", Attr: "cost", Class: "string"},
 					{Name: "UseBPDU", Attr: "use_bpdu", Class: "bool"},
@@ -19356,7 +19356,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeFDB",
-				Attr: "bridge_fdb",
+				Attr:    "bridge_fdb",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -19368,7 +19368,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeMDB",
-				Attr: "bridge_mdb",
+				Attr:    "bridge_mdb",
 				Directives: []Directive{
 					{Name: "MulticastGroupAddress", Attr: "multicast_group_address", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -19376,7 +19376,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BridgeVLAN",
-				Attr: "bridge_vlan",
+				Attr:    "bridge_vlan",
 				Directives: []Directive{
 					{Name: "PVID", Attr: "pvid", Class: "string"},
 					{Name: "VLAN", Attr: "vlan", Class: "string"},
@@ -19385,7 +19385,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPPrefixDelegation",
-				Attr: "dhcp_prefix_delegation",
+				Attr:    "dhcp_prefix_delegation",
 				Directives: []Directive{
 					{Name: "UplinkInterface", Attr: "uplink_interface", Class: "string"},
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
@@ -19400,7 +19400,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6SendRA",
-				Attr: "ipv6_send_ra",
+				Attr:    "ipv6_send_ra",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "string"},
 					{Name: "ReachableTimeSec", Attr: "reachable_time_sec", Class: "string"},
@@ -19422,7 +19422,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6Prefix",
-				Attr: "ipv6_prefix",
+				Attr:    "ipv6_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "OnLink", Attr: "on_link", Class: "string"},
@@ -19436,7 +19436,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6RoutePrefix",
-				Attr: "ipv6_route_prefix",
+				Attr:    "ipv6_route_prefix",
 				Directives: []Directive{
 					{Name: "Route", Attr: "route", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -19444,7 +19444,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PREF64Prefix",
-				Attr: "ipv6_pref64_prefix",
+				Attr:    "ipv6_pref64_prefix",
 				Directives: []Directive{
 					{Name: "Prefix", Attr: "prefix", Class: "string"},
 					{Name: "LifetimeSec", Attr: "lifetime_sec", Class: "string"},
@@ -19452,14 +19452,14 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "LLDP",
-				Attr: "lldp",
+				Attr:    "lldp",
 				Directives: []Directive{
 					{Name: "MUDURL", Attr: "mudurl", Class: "string"},
 				},
 			},
 			{
 				Section: "CAN",
-				Attr: "can",
+				Attr:    "can",
 				Directives: []Directive{
 					{Name: "BitRate", Attr: "bit_rate", Class: "string"},
 					{Name: "SamplePoint", Attr: "sample_point", Class: "string"},
@@ -19490,7 +19490,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "IgnoreUserspaceMulticastGroups", Attr: "ignore_userspace_multicast_groups", Class: "bool"},
@@ -19498,7 +19498,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QDisc",
-				Attr: "qdisc",
+				Attr:    "qdisc",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19506,7 +19506,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BFIFO",
-				Attr: "bfifo",
+				Attr:    "bfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19515,7 +19515,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "CAKE",
-				Attr: "cake",
+				Attr:    "cake",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19537,7 +19537,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "ControlledDelay",
-				Attr: "controlled_delay",
+				Attr:    "controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19550,7 +19550,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinScheduler",
-				Attr: "deficit_round_robin_scheduler",
+				Attr:    "deficit_round_robin_scheduler",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19558,7 +19558,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DeficitRoundRobinSchedulerClass",
-				Attr: "deficit_round_robin_scheduler_class",
+				Attr:    "deficit_round_robin_scheduler_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -19567,7 +19567,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "EnhancedTransmissionSelection",
-				Attr: "enhanced_transmission_selection",
+				Attr:    "enhanced_transmission_selection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19579,7 +19579,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFO",
-				Attr: "pfifo",
+				Attr:    "pfifo",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19588,7 +19588,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOFast",
-				Attr: "pfifo_fast",
+				Attr:    "pfifo_fast",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19596,7 +19596,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PFIFOHeadDrop",
-				Attr: "pfifo_head_drop",
+				Attr:    "pfifo_head_drop",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19605,7 +19605,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueing",
-				Attr: "quick_fair_queueing",
+				Attr:    "quick_fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19613,7 +19613,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "QuickFairQueueingClass",
-				Attr: "quick_fair_queueing_class",
+				Attr:    "quick_fair_queueing_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -19623,7 +19623,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueing",
-				Attr: "fair_queueing",
+				Attr:    "fair_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19642,7 +19642,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FairQueueingControlledDelay",
-				Attr: "fair_queueing_controlled_delay",
+				Attr:    "fair_queueing_controlled_delay",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19660,7 +19660,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FlowQueuePIE",
-				Attr: "flow_queue_pie",
+				Attr:    "flow_queue_pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19669,7 +19669,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GenericRandomEarlyDetection",
-				Attr: "generic_random_early_detection",
+				Attr:    "generic_random_early_detection",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19680,7 +19680,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HeavyHitterFilter",
-				Attr: "heavy_hitter_filter",
+				Attr:    "heavy_hitter_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19689,7 +19689,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucket",
-				Attr: "hierarchy_token_bucket",
+				Attr:    "hierarchy_token_bucket",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19699,7 +19699,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "HierarchyTokenBucketClass",
-				Attr: "hierarchy_token_bucket_class",
+				Attr:    "hierarchy_token_bucket_class",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "ClassId", Attr: "class_id", Class: "string"},
@@ -19715,7 +19715,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "ClassfulMultiQueueing",
-				Attr: "classful_multi_queueing",
+				Attr:    "classful_multi_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19723,7 +19723,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BandMultiQueueing",
-				Attr: "band_multi_queueing",
+				Attr:    "band_multi_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19731,7 +19731,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetworkEmulator",
-				Attr: "network_emulator",
+				Attr:    "network_emulator",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19744,7 +19744,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "PIE",
-				Attr: "pie",
+				Attr:    "pie",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19753,7 +19753,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairBlue",
-				Attr: "stochastic_fair_blue",
+				Attr:    "stochastic_fair_blue",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19762,7 +19762,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "StochasticFairnessQueueing",
-				Attr: "stochastic_fairness_queueing",
+				Attr:    "stochastic_fairness_queueing",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19771,7 +19771,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TokenBucketFilter",
-				Attr: "token_bucket_filter",
+				Attr:    "token_bucket_filter",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19788,7 +19788,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrivialLinkEqualizer",
-				Attr: "trivial_link_equalizer",
+				Attr:    "trivial_link_equalizer",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "Handle", Attr: "handle", Class: "string"},
@@ -19797,7 +19797,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPv6PrefixDelegation",
-				Attr: "ipv6_prefix_delegation",
+				Attr:    "ipv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "RouterLifetimeSec", Attr: "router_lifetime_sec", Class: "timespan"},
 					{Name: "Managed", Attr: "managed", Class: "bool"},
@@ -19812,7 +19812,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCP",
-				Attr: "dhcp",
+				Attr:    "dhcp",
 				Directives: []Directive{
 					{Name: "ClientIdentifier", Attr: "client_identifier", Class: "string"},
 					{Name: "UseDNS", Attr: "use_dns", Class: "bool"},
@@ -19842,7 +19842,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "DHCPv6PrefixDelegation",
-				Attr: "dhcpv6_prefix_delegation",
+				Attr:    "dhcpv6_prefix_delegation",
 				Directives: []Directive{
 					{Name: "SubnetId", Attr: "subnet_id", Class: "string"},
 					{Name: "Announce", Attr: "announce", Class: "bool"},
@@ -19854,7 +19854,7 @@ var NetworkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "TrafficControlQueueingDiscipline",
-				Attr: "traffic_control_queueing_discipline",
+				Attr:    "traffic_control_queueing_discipline",
 				Directives: []Directive{
 					{Name: "Parent", Attr: "parent", Class: "string"},
 					{Name: "NetworkEmulatorDelaySec", Attr: "network_emulator_delay_sec", Class: "string"},
@@ -19875,7 +19875,7 @@ var NetdevCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "Host", Attr: "host", Class: "string"},
 					{Name: "Virtualization", Attr: "virtualization", Class: "string"},
@@ -19887,7 +19887,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetDev",
-				Attr: "netdev",
+				Attr:    "netdev",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Name", Attr: "name", Class: "string"},
@@ -19898,7 +19898,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VLAN",
-				Attr: "vlan",
+				Attr:    "vlan",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
@@ -19912,7 +19912,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVLAN",
-				Attr: "macvlan",
+				Attr:    "macvlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -19921,7 +19921,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVTAP",
-				Attr: "macvtap",
+				Attr:    "macvtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -19929,7 +19929,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVLAN",
-				Attr: "ip_vlan",
+				Attr:    "ip_vlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -19937,7 +19937,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVTAP",
-				Attr: "ip_vtap",
+				Attr:    "ip_vtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -19945,7 +19945,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tunnel",
-				Attr: "tunnel",
+				Attr:    "tunnel",
 				Directives: []Directive{
 					{Name: "Local", Attr: "local", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -19974,7 +19974,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FooOverUDP",
-				Attr: "foo_over_udp",
+				Attr:    "foo_over_udp",
 				Directives: []Directive{
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
 					{Name: "Encapsulation", Attr: "encapsulation", Class: "string"},
@@ -19986,7 +19986,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TP",
-				Attr: "l2_tp",
+				Attr:    "l2_tp",
 				Directives: []Directive{
 					{Name: "TunnelId", Attr: "tunnel_id", Class: "string"},
 					{Name: "PeerTunnelId", Attr: "peer_tunnel_id", Class: "string"},
@@ -20002,7 +20002,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TPSession",
-				Attr: "l2_tp_session",
+				Attr:    "l2_tp_session",
 				Directives: []Directive{
 					{Name: "SessionId", Attr: "session_id", Class: "string"},
 					{Name: "PeerSessionId", Attr: "peer_session_id", Class: "string"},
@@ -20012,7 +20012,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Peer",
-				Attr: "peer",
+				Attr:    "peer",
 				Directives: []Directive{
 					{Name: "Name", Attr: "name", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -20020,14 +20020,14 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VXCAN",
-				Attr: "vxcan",
+				Attr:    "vxcan",
 				Directives: []Directive{
 					{Name: "Peer", Attr: "peer", Class: "string"},
 				},
 			},
 			{
 				Section: "VXLAN",
-				Attr: "vxlan",
+				Attr:    "vxlan",
 				Directives: []Directive{
 					{Name: "VNI", Attr: "vni", Class: "string"},
 					{Name: "Id", Attr: "id", Class: "string"},
@@ -20063,7 +20063,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GENEVE",
-				Attr: "geneve",
+				Attr:    "geneve",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -20081,7 +20081,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsec",
-				Attr: "macsec",
+				Attr:    "macsec",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "Encrypt", Attr: "encrypt", Class: "bool"},
@@ -20089,7 +20089,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveChannel",
-				Attr: "macsec_receive_channel",
+				Attr:    "macsec_receive_channel",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -20097,7 +20097,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecTransmitAssociation",
-				Attr: "macsec_transmit_association",
+				Attr:    "macsec_transmit_association",
 				Directives: []Directive{
 					{Name: "PacketNumber", Attr: "packet_number", Class: "string"},
 					{Name: "KeyId", Attr: "key_id", Class: "string"},
@@ -20109,7 +20109,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveAssociation",
-				Attr: "macsec_receive_association",
+				Attr:    "macsec_receive_association",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -20122,7 +20122,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tun",
-				Attr: "tun",
+				Attr:    "tun",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -20134,7 +20134,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tap",
-				Attr: "tap",
+				Attr:    "tap",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -20146,7 +20146,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bond",
-				Attr: "bond",
+				Attr:    "bond",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "TransmitHashPolicy", Attr: "transmit_hash_policy", Class: "string"},
@@ -20175,7 +20175,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "HelloTimeSec", Attr: "hello_time_sec", Class: "timespan"},
 					{Name: "MaxAgeSec", Attr: "max_age_sec", Class: "timespan"},
@@ -20194,7 +20194,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VRF",
-				Attr: "vrf",
+				Attr:    "vrf",
 				Directives: []Directive{
 					{Name: "TableId", Attr: "table_id", Class: "string"},
 					{Name: "Table", Attr: "table", Class: "string"},
@@ -20202,7 +20202,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BareUDP",
-				Attr: "bare_udp",
+				Attr:    "bare_udp",
 				Directives: []Directive{
 					{Name: "DestinationPort", Attr: "destination_port", Class: "string"},
 					{Name: "EtherType", Attr: "ether_type", Class: "string"},
@@ -20210,7 +20210,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuard",
-				Attr: "wireguard",
+				Attr:    "wireguard",
 				Directives: []Directive{
 					{Name: "FirewallMark", Attr: "firewall_mark", Class: "int"},
 					{Name: "FwMark", Attr: "fw_mark", Class: "int"},
@@ -20221,7 +20221,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuardPeer",
-				Attr: "wireguard_peer",
+				Attr:    "wireguard_peer",
 				Directives: []Directive{
 					{Name: "AllowedIPs", Attr: "allowed_ips", Class: "string"},
 					{Name: "Endpoint", Attr: "endpoint", Class: "string"},
@@ -20233,7 +20233,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Xfrm",
-				Attr: "xfrm",
+				Attr:    "xfrm",
 				Directives: []Directive{
 					{Name: "InterfaceId", Attr: "interface_id", Class: "string"},
 					{Name: "Independent", Attr: "independent", Class: "bool"},
@@ -20241,7 +20241,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BatmanAdvanced",
-				Attr: "batman_advanced",
+				Attr:    "batman_advanced",
 				Directives: []Directive{
 					{Name: "Aggregation", Attr: "aggregation", Class: "bool"},
 					{Name: "BridgeLoopAvoidance", Attr: "bridge_loop_avoidance", Class: "bool"},
@@ -20264,7 +20264,7 @@ var NetdevCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "Host", Attr: "host", Class: "string"},
 					{Name: "Virtualization", Attr: "virtualization", Class: "string"},
@@ -20276,7 +20276,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetDev",
-				Attr: "netdev",
+				Attr:    "netdev",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Name", Attr: "name", Class: "string"},
@@ -20287,7 +20287,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VLAN",
-				Attr: "vlan",
+				Attr:    "vlan",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
@@ -20301,7 +20301,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVLAN",
-				Attr: "macvlan",
+				Attr:    "macvlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -20310,7 +20310,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVTAP",
-				Attr: "macvtap",
+				Attr:    "macvtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -20318,7 +20318,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVLAN",
-				Attr: "ip_vlan",
+				Attr:    "ip_vlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -20326,7 +20326,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVTAP",
-				Attr: "ip_vtap",
+				Attr:    "ip_vtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -20334,7 +20334,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tunnel",
-				Attr: "tunnel",
+				Attr:    "tunnel",
 				Directives: []Directive{
 					{Name: "Local", Attr: "local", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -20363,7 +20363,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FooOverUDP",
-				Attr: "foo_over_udp",
+				Attr:    "foo_over_udp",
 				Directives: []Directive{
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
 					{Name: "Encapsulation", Attr: "encapsulation", Class: "string"},
@@ -20375,7 +20375,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TP",
-				Attr: "l2_tp",
+				Attr:    "l2_tp",
 				Directives: []Directive{
 					{Name: "TunnelId", Attr: "tunnel_id", Class: "string"},
 					{Name: "PeerTunnelId", Attr: "peer_tunnel_id", Class: "string"},
@@ -20391,7 +20391,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TPSession",
-				Attr: "l2_tp_session",
+				Attr:    "l2_tp_session",
 				Directives: []Directive{
 					{Name: "SessionId", Attr: "session_id", Class: "string"},
 					{Name: "PeerSessionId", Attr: "peer_session_id", Class: "string"},
@@ -20401,7 +20401,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Peer",
-				Attr: "peer",
+				Attr:    "peer",
 				Directives: []Directive{
 					{Name: "Name", Attr: "name", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -20409,14 +20409,14 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VXCAN",
-				Attr: "vxcan",
+				Attr:    "vxcan",
 				Directives: []Directive{
 					{Name: "Peer", Attr: "peer", Class: "string"},
 				},
 			},
 			{
 				Section: "VXLAN",
-				Attr: "vxlan",
+				Attr:    "vxlan",
 				Directives: []Directive{
 					{Name: "VNI", Attr: "vni", Class: "string"},
 					{Name: "Id", Attr: "id", Class: "string"},
@@ -20452,7 +20452,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GENEVE",
-				Attr: "geneve",
+				Attr:    "geneve",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -20470,7 +20470,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsec",
-				Attr: "macsec",
+				Attr:    "macsec",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "Encrypt", Attr: "encrypt", Class: "bool"},
@@ -20478,7 +20478,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveChannel",
-				Attr: "macsec_receive_channel",
+				Attr:    "macsec_receive_channel",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -20486,7 +20486,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecTransmitAssociation",
-				Attr: "macsec_transmit_association",
+				Attr:    "macsec_transmit_association",
 				Directives: []Directive{
 					{Name: "PacketNumber", Attr: "packet_number", Class: "string"},
 					{Name: "KeyId", Attr: "key_id", Class: "string"},
@@ -20498,7 +20498,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveAssociation",
-				Attr: "macsec_receive_association",
+				Attr:    "macsec_receive_association",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -20511,7 +20511,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tun",
-				Attr: "tun",
+				Attr:    "tun",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -20523,7 +20523,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tap",
-				Attr: "tap",
+				Attr:    "tap",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -20535,7 +20535,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bond",
-				Attr: "bond",
+				Attr:    "bond",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "TransmitHashPolicy", Attr: "transmit_hash_policy", Class: "string"},
@@ -20564,7 +20564,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "HelloTimeSec", Attr: "hello_time_sec", Class: "timespan"},
 					{Name: "MaxAgeSec", Attr: "max_age_sec", Class: "timespan"},
@@ -20583,7 +20583,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VRF",
-				Attr: "vrf",
+				Attr:    "vrf",
 				Directives: []Directive{
 					{Name: "TableId", Attr: "table_id", Class: "string"},
 					{Name: "Table", Attr: "table", Class: "string"},
@@ -20591,7 +20591,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BareUDP",
-				Attr: "bare_udp",
+				Attr:    "bare_udp",
 				Directives: []Directive{
 					{Name: "DestinationPort", Attr: "destination_port", Class: "string"},
 					{Name: "EtherType", Attr: "ether_type", Class: "string"},
@@ -20599,7 +20599,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuard",
-				Attr: "wireguard",
+				Attr:    "wireguard",
 				Directives: []Directive{
 					{Name: "FirewallMark", Attr: "firewall_mark", Class: "int"},
 					{Name: "FwMark", Attr: "fw_mark", Class: "int"},
@@ -20612,7 +20612,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuardPeer",
-				Attr: "wireguard_peer",
+				Attr:    "wireguard_peer",
 				Directives: []Directive{
 					{Name: "AllowedIPs", Attr: "allowed_ips", Class: "string"},
 					{Name: "Endpoint", Attr: "endpoint", Class: "string"},
@@ -20626,7 +20626,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Xfrm",
-				Attr: "xfrm",
+				Attr:    "xfrm",
 				Directives: []Directive{
 					{Name: "InterfaceId", Attr: "interface_id", Class: "string"},
 					{Name: "Independent", Attr: "independent", Class: "bool"},
@@ -20634,7 +20634,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BatmanAdvanced",
-				Attr: "batman_advanced",
+				Attr:    "batman_advanced",
 				Directives: []Directive{
 					{Name: "Aggregation", Attr: "aggregation", Class: "bool"},
 					{Name: "BridgeLoopAvoidance", Attr: "bridge_loop_avoidance", Class: "bool"},
@@ -20652,7 +20652,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "PartitionKey", Attr: "partition_key", Class: "string"},
 					{Name: "Mode", Attr: "mode", Class: "string"},
@@ -20666,7 +20666,7 @@ var NetdevCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "Host", Attr: "host", Class: "string"},
 					{Name: "Virtualization", Attr: "virtualization", Class: "string"},
@@ -20678,7 +20678,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetDev",
-				Attr: "netdev",
+				Attr:    "netdev",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Name", Attr: "name", Class: "string"},
@@ -20689,7 +20689,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VLAN",
-				Attr: "vlan",
+				Attr:    "vlan",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
@@ -20703,7 +20703,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVLAN",
-				Attr: "macvlan",
+				Attr:    "macvlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -20712,7 +20712,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVTAP",
-				Attr: "macvtap",
+				Attr:    "macvtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -20720,7 +20720,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVLAN",
-				Attr: "ip_vlan",
+				Attr:    "ip_vlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -20728,7 +20728,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVTAP",
-				Attr: "ip_vtap",
+				Attr:    "ip_vtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -20736,7 +20736,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tunnel",
-				Attr: "tunnel",
+				Attr:    "tunnel",
 				Directives: []Directive{
 					{Name: "Local", Attr: "local", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -20766,7 +20766,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FooOverUDP",
-				Attr: "foo_over_udp",
+				Attr:    "foo_over_udp",
 				Directives: []Directive{
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
 					{Name: "Encapsulation", Attr: "encapsulation", Class: "string"},
@@ -20778,7 +20778,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TP",
-				Attr: "l2_tp",
+				Attr:    "l2_tp",
 				Directives: []Directive{
 					{Name: "TunnelId", Attr: "tunnel_id", Class: "string"},
 					{Name: "PeerTunnelId", Attr: "peer_tunnel_id", Class: "string"},
@@ -20794,7 +20794,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TPSession",
-				Attr: "l2_tp_session",
+				Attr:    "l2_tp_session",
 				Directives: []Directive{
 					{Name: "SessionId", Attr: "session_id", Class: "string"},
 					{Name: "PeerSessionId", Attr: "peer_session_id", Class: "string"},
@@ -20804,7 +20804,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Peer",
-				Attr: "peer",
+				Attr:    "peer",
 				Directives: []Directive{
 					{Name: "Name", Attr: "name", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -20812,14 +20812,14 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VXCAN",
-				Attr: "vxcan",
+				Attr:    "vxcan",
 				Directives: []Directive{
 					{Name: "Peer", Attr: "peer", Class: "string"},
 				},
 			},
 			{
 				Section: "VXLAN",
-				Attr: "vxlan",
+				Attr:    "vxlan",
 				Directives: []Directive{
 					{Name: "VNI", Attr: "vni", Class: "string"},
 					{Name: "Id", Attr: "id", Class: "string"},
@@ -20855,7 +20855,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GENEVE",
-				Attr: "geneve",
+				Attr:    "geneve",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -20873,7 +20873,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsec",
-				Attr: "macsec",
+				Attr:    "macsec",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "Encrypt", Attr: "encrypt", Class: "bool"},
@@ -20881,7 +20881,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveChannel",
-				Attr: "macsec_receive_channel",
+				Attr:    "macsec_receive_channel",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -20889,7 +20889,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecTransmitAssociation",
-				Attr: "macsec_transmit_association",
+				Attr:    "macsec_transmit_association",
 				Directives: []Directive{
 					{Name: "PacketNumber", Attr: "packet_number", Class: "string"},
 					{Name: "KeyId", Attr: "key_id", Class: "string"},
@@ -20901,7 +20901,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveAssociation",
-				Attr: "macsec_receive_association",
+				Attr:    "macsec_receive_association",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -20914,7 +20914,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tun",
-				Attr: "tun",
+				Attr:    "tun",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -20926,7 +20926,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tap",
-				Attr: "tap",
+				Attr:    "tap",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -20938,7 +20938,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bond",
-				Attr: "bond",
+				Attr:    "bond",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "TransmitHashPolicy", Attr: "transmit_hash_policy", Class: "string"},
@@ -20967,7 +20967,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "HelloTimeSec", Attr: "hello_time_sec", Class: "timespan"},
 					{Name: "MaxAgeSec", Attr: "max_age_sec", Class: "timespan"},
@@ -20986,7 +20986,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VRF",
-				Attr: "vrf",
+				Attr:    "vrf",
 				Directives: []Directive{
 					{Name: "TableId", Attr: "table_id", Class: "string"},
 					{Name: "Table", Attr: "table", Class: "string"},
@@ -20994,7 +20994,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BareUDP",
-				Attr: "bare_udp",
+				Attr:    "bare_udp",
 				Directives: []Directive{
 					{Name: "DestinationPort", Attr: "destination_port", Class: "string"},
 					{Name: "EtherType", Attr: "ether_type", Class: "string"},
@@ -21002,7 +21002,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuard",
-				Attr: "wireguard",
+				Attr:    "wireguard",
 				Directives: []Directive{
 					{Name: "FirewallMark", Attr: "firewall_mark", Class: "int"},
 					{Name: "FwMark", Attr: "fw_mark", Class: "int"},
@@ -21015,7 +21015,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuardPeer",
-				Attr: "wireguard_peer",
+				Attr:    "wireguard_peer",
 				Directives: []Directive{
 					{Name: "AllowedIPs", Attr: "allowed_ips", Class: "string"},
 					{Name: "Endpoint", Attr: "endpoint", Class: "string"},
@@ -21029,7 +21029,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Xfrm",
-				Attr: "xfrm",
+				Attr:    "xfrm",
 				Directives: []Directive{
 					{Name: "InterfaceId", Attr: "interface_id", Class: "string"},
 					{Name: "Independent", Attr: "independent", Class: "bool"},
@@ -21037,7 +21037,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BatmanAdvanced",
-				Attr: "batman_advanced",
+				Attr:    "batman_advanced",
 				Directives: []Directive{
 					{Name: "Aggregation", Attr: "aggregation", Class: "bool"},
 					{Name: "BridgeLoopAvoidance", Attr: "bridge_loop_avoidance", Class: "bool"},
@@ -21055,7 +21055,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "PartitionKey", Attr: "partition_key", Class: "string"},
 					{Name: "Mode", Attr: "mode", Class: "string"},
@@ -21064,7 +21064,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WLAN",
-				Attr: "wlan",
+				Attr:    "wlan",
 				Directives: []Directive{
 					{Name: "PhysicalDevice", Attr: "physical_device", Class: "string"},
 					{Name: "Type", Attr: "type", Class: "string"},
@@ -21078,7 +21078,7 @@ var NetdevCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "Host", Attr: "host", Class: "string"},
 					{Name: "Virtualization", Attr: "virtualization", Class: "string"},
@@ -21091,7 +21091,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetDev",
-				Attr: "netdev",
+				Attr:    "netdev",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Name", Attr: "name", Class: "string"},
@@ -21102,7 +21102,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VLAN",
-				Attr: "vlan",
+				Attr:    "vlan",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
@@ -21116,7 +21116,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVLAN",
-				Attr: "macvlan",
+				Attr:    "macvlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -21125,7 +21125,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVTAP",
-				Attr: "macvtap",
+				Attr:    "macvtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -21133,7 +21133,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVLAN",
-				Attr: "ip_vlan",
+				Attr:    "ip_vlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -21141,7 +21141,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVTAP",
-				Attr: "ip_vtap",
+				Attr:    "ip_vtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -21149,7 +21149,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tunnel",
-				Attr: "tunnel",
+				Attr:    "tunnel",
 				Directives: []Directive{
 					{Name: "Local", Attr: "local", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -21182,7 +21182,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FooOverUDP",
-				Attr: "foo_over_udp",
+				Attr:    "foo_over_udp",
 				Directives: []Directive{
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
 					{Name: "Encapsulation", Attr: "encapsulation", Class: "string"},
@@ -21194,7 +21194,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TP",
-				Attr: "l2_tp",
+				Attr:    "l2_tp",
 				Directives: []Directive{
 					{Name: "TunnelId", Attr: "tunnel_id", Class: "string"},
 					{Name: "PeerTunnelId", Attr: "peer_tunnel_id", Class: "string"},
@@ -21210,7 +21210,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TPSession",
-				Attr: "l2_tp_session",
+				Attr:    "l2_tp_session",
 				Directives: []Directive{
 					{Name: "SessionId", Attr: "session_id", Class: "string"},
 					{Name: "PeerSessionId", Attr: "peer_session_id", Class: "string"},
@@ -21220,7 +21220,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Peer",
-				Attr: "peer",
+				Attr:    "peer",
 				Directives: []Directive{
 					{Name: "Name", Attr: "name", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -21228,14 +21228,14 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VXCAN",
-				Attr: "vxcan",
+				Attr:    "vxcan",
 				Directives: []Directive{
 					{Name: "Peer", Attr: "peer", Class: "string"},
 				},
 			},
 			{
 				Section: "VXLAN",
-				Attr: "vxlan",
+				Attr:    "vxlan",
 				Directives: []Directive{
 					{Name: "VNI", Attr: "vni", Class: "string"},
 					{Name: "Id", Attr: "id", Class: "string"},
@@ -21271,7 +21271,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GENEVE",
-				Attr: "geneve",
+				Attr:    "geneve",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -21289,7 +21289,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsec",
-				Attr: "macsec",
+				Attr:    "macsec",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "Encrypt", Attr: "encrypt", Class: "bool"},
@@ -21297,7 +21297,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveChannel",
-				Attr: "macsec_receive_channel",
+				Attr:    "macsec_receive_channel",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -21305,7 +21305,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecTransmitAssociation",
-				Attr: "macsec_transmit_association",
+				Attr:    "macsec_transmit_association",
 				Directives: []Directive{
 					{Name: "PacketNumber", Attr: "packet_number", Class: "string"},
 					{Name: "KeyId", Attr: "key_id", Class: "string"},
@@ -21317,7 +21317,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveAssociation",
-				Attr: "macsec_receive_association",
+				Attr:    "macsec_receive_association",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -21330,7 +21330,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tun",
-				Attr: "tun",
+				Attr:    "tun",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -21343,7 +21343,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tap",
-				Attr: "tap",
+				Attr:    "tap",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -21356,7 +21356,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bond",
-				Attr: "bond",
+				Attr:    "bond",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "TransmitHashPolicy", Attr: "transmit_hash_policy", Class: "string"},
@@ -21385,7 +21385,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "HelloTimeSec", Attr: "hello_time_sec", Class: "timespan"},
 					{Name: "MaxAgeSec", Attr: "max_age_sec", Class: "timespan"},
@@ -21404,7 +21404,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VRF",
-				Attr: "vrf",
+				Attr:    "vrf",
 				Directives: []Directive{
 					{Name: "TableId", Attr: "table_id", Class: "string"},
 					{Name: "Table", Attr: "table", Class: "string"},
@@ -21412,7 +21412,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BareUDP",
-				Attr: "bare_udp",
+				Attr:    "bare_udp",
 				Directives: []Directive{
 					{Name: "DestinationPort", Attr: "destination_port", Class: "string"},
 					{Name: "EtherType", Attr: "ether_type", Class: "string"},
@@ -21420,7 +21420,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuard",
-				Attr: "wireguard",
+				Attr:    "wireguard",
 				Directives: []Directive{
 					{Name: "FirewallMark", Attr: "firewall_mark", Class: "int"},
 					{Name: "FwMark", Attr: "fw_mark", Class: "int"},
@@ -21433,7 +21433,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuardPeer",
-				Attr: "wireguard_peer",
+				Attr:    "wireguard_peer",
 				Directives: []Directive{
 					{Name: "AllowedIPs", Attr: "allowed_ips", Class: "string"},
 					{Name: "Endpoint", Attr: "endpoint", Class: "string"},
@@ -21447,7 +21447,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Xfrm",
-				Attr: "xfrm",
+				Attr:    "xfrm",
 				Directives: []Directive{
 					{Name: "InterfaceId", Attr: "interface_id", Class: "string"},
 					{Name: "Independent", Attr: "independent", Class: "bool"},
@@ -21455,7 +21455,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BatmanAdvanced",
-				Attr: "batman_advanced",
+				Attr:    "batman_advanced",
 				Directives: []Directive{
 					{Name: "Aggregation", Attr: "aggregation", Class: "bool"},
 					{Name: "BridgeLoopAvoidance", Attr: "bridge_loop_avoidance", Class: "bool"},
@@ -21473,7 +21473,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "PartitionKey", Attr: "partition_key", Class: "string"},
 					{Name: "Mode", Attr: "mode", Class: "string"},
@@ -21482,7 +21482,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WLAN",
-				Attr: "wlan",
+				Attr:    "wlan",
 				Directives: []Directive{
 					{Name: "PhysicalDevice", Attr: "physical_device", Class: "string"},
 					{Name: "Type", Attr: "type", Class: "string"},
@@ -21496,7 +21496,7 @@ var NetdevCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "Host", Attr: "host", Class: "string"},
 					{Name: "Virtualization", Attr: "virtualization", Class: "string"},
@@ -21509,7 +21509,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetDev",
-				Attr: "netdev",
+				Attr:    "netdev",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Name", Attr: "name", Class: "string"},
@@ -21520,7 +21520,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VLAN",
-				Attr: "vlan",
+				Attr:    "vlan",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
@@ -21534,7 +21534,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVLAN",
-				Attr: "macvlan",
+				Attr:    "macvlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -21543,7 +21543,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVTAP",
-				Attr: "macvtap",
+				Attr:    "macvtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -21551,7 +21551,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVLAN",
-				Attr: "ip_vlan",
+				Attr:    "ip_vlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -21559,7 +21559,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVTAP",
-				Attr: "ip_vtap",
+				Attr:    "ip_vtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -21567,7 +21567,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tunnel",
-				Attr: "tunnel",
+				Attr:    "tunnel",
 				Directives: []Directive{
 					{Name: "Local", Attr: "local", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -21600,7 +21600,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FooOverUDP",
-				Attr: "foo_over_udp",
+				Attr:    "foo_over_udp",
 				Directives: []Directive{
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
 					{Name: "Encapsulation", Attr: "encapsulation", Class: "string"},
@@ -21612,7 +21612,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TP",
-				Attr: "l2_tp",
+				Attr:    "l2_tp",
 				Directives: []Directive{
 					{Name: "TunnelId", Attr: "tunnel_id", Class: "string"},
 					{Name: "PeerTunnelId", Attr: "peer_tunnel_id", Class: "string"},
@@ -21628,7 +21628,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TPSession",
-				Attr: "l2_tp_session",
+				Attr:    "l2_tp_session",
 				Directives: []Directive{
 					{Name: "SessionId", Attr: "session_id", Class: "string"},
 					{Name: "PeerSessionId", Attr: "peer_session_id", Class: "string"},
@@ -21638,7 +21638,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Peer",
-				Attr: "peer",
+				Attr:    "peer",
 				Directives: []Directive{
 					{Name: "Name", Attr: "name", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -21646,14 +21646,14 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VXCAN",
-				Attr: "vxcan",
+				Attr:    "vxcan",
 				Directives: []Directive{
 					{Name: "Peer", Attr: "peer", Class: "string"},
 				},
 			},
 			{
 				Section: "VXLAN",
-				Attr: "vxlan",
+				Attr:    "vxlan",
 				Directives: []Directive{
 					{Name: "VNI", Attr: "vni", Class: "string"},
 					{Name: "Id", Attr: "id", Class: "string"},
@@ -21689,7 +21689,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GENEVE",
-				Attr: "geneve",
+				Attr:    "geneve",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -21707,7 +21707,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsec",
-				Attr: "macsec",
+				Attr:    "macsec",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "Encrypt", Attr: "encrypt", Class: "bool"},
@@ -21715,7 +21715,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveChannel",
-				Attr: "macsec_receive_channel",
+				Attr:    "macsec_receive_channel",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -21723,7 +21723,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecTransmitAssociation",
-				Attr: "macsec_transmit_association",
+				Attr:    "macsec_transmit_association",
 				Directives: []Directive{
 					{Name: "PacketNumber", Attr: "packet_number", Class: "string"},
 					{Name: "KeyId", Attr: "key_id", Class: "string"},
@@ -21735,7 +21735,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveAssociation",
-				Attr: "macsec_receive_association",
+				Attr:    "macsec_receive_association",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -21748,7 +21748,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tun",
-				Attr: "tun",
+				Attr:    "tun",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -21761,7 +21761,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tap",
-				Attr: "tap",
+				Attr:    "tap",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -21774,7 +21774,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bond",
-				Attr: "bond",
+				Attr:    "bond",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "TransmitHashPolicy", Attr: "transmit_hash_policy", Class: "string"},
@@ -21803,7 +21803,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "HelloTimeSec", Attr: "hello_time_sec", Class: "timespan"},
 					{Name: "MaxAgeSec", Attr: "max_age_sec", Class: "timespan"},
@@ -21822,7 +21822,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VRF",
-				Attr: "vrf",
+				Attr:    "vrf",
 				Directives: []Directive{
 					{Name: "TableId", Attr: "table_id", Class: "string"},
 					{Name: "Table", Attr: "table", Class: "string"},
@@ -21830,7 +21830,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BareUDP",
-				Attr: "bare_udp",
+				Attr:    "bare_udp",
 				Directives: []Directive{
 					{Name: "DestinationPort", Attr: "destination_port", Class: "string"},
 					{Name: "EtherType", Attr: "ether_type", Class: "string"},
@@ -21838,7 +21838,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuard",
-				Attr: "wireguard",
+				Attr:    "wireguard",
 				Directives: []Directive{
 					{Name: "FirewallMark", Attr: "firewall_mark", Class: "int"},
 					{Name: "FwMark", Attr: "fw_mark", Class: "int"},
@@ -21851,7 +21851,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuardPeer",
-				Attr: "wireguard_peer",
+				Attr:    "wireguard_peer",
 				Directives: []Directive{
 					{Name: "AllowedIPs", Attr: "allowed_ips", Class: "string"},
 					{Name: "Endpoint", Attr: "endpoint", Class: "string"},
@@ -21865,7 +21865,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Xfrm",
-				Attr: "xfrm",
+				Attr:    "xfrm",
 				Directives: []Directive{
 					{Name: "InterfaceId", Attr: "interface_id", Class: "string"},
 					{Name: "Independent", Attr: "independent", Class: "bool"},
@@ -21873,7 +21873,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BatmanAdvanced",
-				Attr: "batman_advanced",
+				Attr:    "batman_advanced",
 				Directives: []Directive{
 					{Name: "Aggregation", Attr: "aggregation", Class: "bool"},
 					{Name: "BridgeLoopAvoidance", Attr: "bridge_loop_avoidance", Class: "bool"},
@@ -21891,7 +21891,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "PartitionKey", Attr: "partition_key", Class: "string"},
 					{Name: "Mode", Attr: "mode", Class: "string"},
@@ -21900,7 +21900,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WLAN",
-				Attr: "wlan",
+				Attr:    "wlan",
 				Directives: []Directive{
 					{Name: "PhysicalDevice", Attr: "physical_device", Class: "string"},
 					{Name: "Type", Attr: "type", Class: "string"},
@@ -21914,7 +21914,7 @@ var NetdevCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "Host", Attr: "host", Class: "string"},
 					{Name: "Virtualization", Attr: "virtualization", Class: "string"},
@@ -21927,7 +21927,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetDev",
-				Attr: "netdev",
+				Attr:    "netdev",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Name", Attr: "name", Class: "string"},
@@ -21938,7 +21938,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VLAN",
-				Attr: "vlan",
+				Attr:    "vlan",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
@@ -21952,7 +21952,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVLAN",
-				Attr: "macvlan",
+				Attr:    "macvlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -21961,7 +21961,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVTAP",
-				Attr: "macvtap",
+				Attr:    "macvtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -21969,7 +21969,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVLAN",
-				Attr: "ip_vlan",
+				Attr:    "ip_vlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -21977,7 +21977,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVTAP",
-				Attr: "ip_vtap",
+				Attr:    "ip_vtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -21985,7 +21985,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tunnel",
-				Attr: "tunnel",
+				Attr:    "tunnel",
 				Directives: []Directive{
 					{Name: "Local", Attr: "local", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -22019,7 +22019,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FooOverUDP",
-				Attr: "foo_over_udp",
+				Attr:    "foo_over_udp",
 				Directives: []Directive{
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
 					{Name: "Encapsulation", Attr: "encapsulation", Class: "string"},
@@ -22031,7 +22031,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TP",
-				Attr: "l2_tp",
+				Attr:    "l2_tp",
 				Directives: []Directive{
 					{Name: "TunnelId", Attr: "tunnel_id", Class: "string"},
 					{Name: "PeerTunnelId", Attr: "peer_tunnel_id", Class: "string"},
@@ -22047,7 +22047,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TPSession",
-				Attr: "l2_tp_session",
+				Attr:    "l2_tp_session",
 				Directives: []Directive{
 					{Name: "SessionId", Attr: "session_id", Class: "string"},
 					{Name: "PeerSessionId", Attr: "peer_session_id", Class: "string"},
@@ -22057,7 +22057,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Peer",
-				Attr: "peer",
+				Attr:    "peer",
 				Directives: []Directive{
 					{Name: "Name", Attr: "name", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -22065,14 +22065,14 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VXCAN",
-				Attr: "vxcan",
+				Attr:    "vxcan",
 				Directives: []Directive{
 					{Name: "Peer", Attr: "peer", Class: "string"},
 				},
 			},
 			{
 				Section: "VXLAN",
-				Attr: "vxlan",
+				Attr:    "vxlan",
 				Directives: []Directive{
 					{Name: "VNI", Attr: "vni", Class: "string"},
 					{Name: "Id", Attr: "id", Class: "string"},
@@ -22108,7 +22108,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GENEVE",
-				Attr: "geneve",
+				Attr:    "geneve",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -22127,7 +22127,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsec",
-				Attr: "macsec",
+				Attr:    "macsec",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "Encrypt", Attr: "encrypt", Class: "bool"},
@@ -22135,7 +22135,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveChannel",
-				Attr: "macsec_receive_channel",
+				Attr:    "macsec_receive_channel",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -22143,7 +22143,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecTransmitAssociation",
-				Attr: "macsec_transmit_association",
+				Attr:    "macsec_transmit_association",
 				Directives: []Directive{
 					{Name: "PacketNumber", Attr: "packet_number", Class: "string"},
 					{Name: "KeyId", Attr: "key_id", Class: "string"},
@@ -22155,7 +22155,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveAssociation",
-				Attr: "macsec_receive_association",
+				Attr:    "macsec_receive_association",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -22168,7 +22168,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tun",
-				Attr: "tun",
+				Attr:    "tun",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -22181,7 +22181,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tap",
-				Attr: "tap",
+				Attr:    "tap",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -22194,7 +22194,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bond",
-				Attr: "bond",
+				Attr:    "bond",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "TransmitHashPolicy", Attr: "transmit_hash_policy", Class: "string"},
@@ -22223,7 +22223,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "HelloTimeSec", Attr: "hello_time_sec", Class: "timespan"},
 					{Name: "MaxAgeSec", Attr: "max_age_sec", Class: "timespan"},
@@ -22242,7 +22242,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VRF",
-				Attr: "vrf",
+				Attr:    "vrf",
 				Directives: []Directive{
 					{Name: "TableId", Attr: "table_id", Class: "string"},
 					{Name: "Table", Attr: "table", Class: "string"},
@@ -22250,7 +22250,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BareUDP",
-				Attr: "bare_udp",
+				Attr:    "bare_udp",
 				Directives: []Directive{
 					{Name: "DestinationPort", Attr: "destination_port", Class: "string"},
 					{Name: "EtherType", Attr: "ether_type", Class: "string"},
@@ -22258,7 +22258,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuard",
-				Attr: "wireguard",
+				Attr:    "wireguard",
 				Directives: []Directive{
 					{Name: "FirewallMark", Attr: "firewall_mark", Class: "int"},
 					{Name: "FwMark", Attr: "fw_mark", Class: "int"},
@@ -22271,7 +22271,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuardPeer",
-				Attr: "wireguard_peer",
+				Attr:    "wireguard_peer",
 				Directives: []Directive{
 					{Name: "AllowedIPs", Attr: "allowed_ips", Class: "string"},
 					{Name: "Endpoint", Attr: "endpoint", Class: "string"},
@@ -22285,7 +22285,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Xfrm",
-				Attr: "xfrm",
+				Attr:    "xfrm",
 				Directives: []Directive{
 					{Name: "InterfaceId", Attr: "interface_id", Class: "string"},
 					{Name: "Independent", Attr: "independent", Class: "bool"},
@@ -22293,7 +22293,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BatmanAdvanced",
-				Attr: "batman_advanced",
+				Attr:    "batman_advanced",
 				Directives: []Directive{
 					{Name: "Aggregation", Attr: "aggregation", Class: "bool"},
 					{Name: "BridgeLoopAvoidance", Attr: "bridge_loop_avoidance", Class: "bool"},
@@ -22311,7 +22311,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "PartitionKey", Attr: "partition_key", Class: "string"},
 					{Name: "Mode", Attr: "mode", Class: "string"},
@@ -22320,7 +22320,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WLAN",
-				Attr: "wlan",
+				Attr:    "wlan",
 				Directives: []Directive{
 					{Name: "PhysicalDevice", Attr: "physical_device", Class: "string"},
 					{Name: "Type", Attr: "type", Class: "string"},
@@ -22334,7 +22334,7 @@ var NetdevCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "Host", Attr: "host", Class: "string"},
 					{Name: "Virtualization", Attr: "virtualization", Class: "string"},
@@ -22347,7 +22347,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetDev",
-				Attr: "netdev",
+				Attr:    "netdev",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Name", Attr: "name", Class: "string"},
@@ -22358,7 +22358,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VLAN",
-				Attr: "vlan",
+				Attr:    "vlan",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
@@ -22372,7 +22372,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVLAN",
-				Attr: "macvlan",
+				Attr:    "macvlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -22381,7 +22381,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVTAP",
-				Attr: "macvtap",
+				Attr:    "macvtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -22389,7 +22389,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVLAN",
-				Attr: "ip_vlan",
+				Attr:    "ip_vlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -22397,7 +22397,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVTAP",
-				Attr: "ip_vtap",
+				Attr:    "ip_vtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -22405,7 +22405,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tunnel",
-				Attr: "tunnel",
+				Attr:    "tunnel",
 				Directives: []Directive{
 					{Name: "Local", Attr: "local", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -22439,7 +22439,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FooOverUDP",
-				Attr: "foo_over_udp",
+				Attr:    "foo_over_udp",
 				Directives: []Directive{
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
 					{Name: "Encapsulation", Attr: "encapsulation", Class: "string"},
@@ -22451,7 +22451,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TP",
-				Attr: "l2_tp",
+				Attr:    "l2_tp",
 				Directives: []Directive{
 					{Name: "TunnelId", Attr: "tunnel_id", Class: "string"},
 					{Name: "PeerTunnelId", Attr: "peer_tunnel_id", Class: "string"},
@@ -22467,7 +22467,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TPSession",
-				Attr: "l2_tp_session",
+				Attr:    "l2_tp_session",
 				Directives: []Directive{
 					{Name: "SessionId", Attr: "session_id", Class: "string"},
 					{Name: "PeerSessionId", Attr: "peer_session_id", Class: "string"},
@@ -22477,7 +22477,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Peer",
-				Attr: "peer",
+				Attr:    "peer",
 				Directives: []Directive{
 					{Name: "Name", Attr: "name", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -22485,14 +22485,14 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VXCAN",
-				Attr: "vxcan",
+				Attr:    "vxcan",
 				Directives: []Directive{
 					{Name: "Peer", Attr: "peer", Class: "string"},
 				},
 			},
 			{
 				Section: "VXLAN",
-				Attr: "vxlan",
+				Attr:    "vxlan",
 				Directives: []Directive{
 					{Name: "VNI", Attr: "vni", Class: "string"},
 					{Name: "Id", Attr: "id", Class: "string"},
@@ -22528,7 +22528,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GENEVE",
-				Attr: "geneve",
+				Attr:    "geneve",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -22547,7 +22547,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsec",
-				Attr: "macsec",
+				Attr:    "macsec",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "Encrypt", Attr: "encrypt", Class: "bool"},
@@ -22555,7 +22555,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveChannel",
-				Attr: "macsec_receive_channel",
+				Attr:    "macsec_receive_channel",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -22563,7 +22563,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecTransmitAssociation",
-				Attr: "macsec_transmit_association",
+				Attr:    "macsec_transmit_association",
 				Directives: []Directive{
 					{Name: "PacketNumber", Attr: "packet_number", Class: "string"},
 					{Name: "KeyId", Attr: "key_id", Class: "string"},
@@ -22575,7 +22575,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveAssociation",
-				Attr: "macsec_receive_association",
+				Attr:    "macsec_receive_association",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -22588,7 +22588,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tun",
-				Attr: "tun",
+				Attr:    "tun",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -22601,7 +22601,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tap",
-				Attr: "tap",
+				Attr:    "tap",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -22614,7 +22614,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bond",
-				Attr: "bond",
+				Attr:    "bond",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "TransmitHashPolicy", Attr: "transmit_hash_policy", Class: "string"},
@@ -22643,7 +22643,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "HelloTimeSec", Attr: "hello_time_sec", Class: "timespan"},
 					{Name: "MaxAgeSec", Attr: "max_age_sec", Class: "timespan"},
@@ -22662,7 +22662,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VRF",
-				Attr: "vrf",
+				Attr:    "vrf",
 				Directives: []Directive{
 					{Name: "TableId", Attr: "table_id", Class: "string"},
 					{Name: "Table", Attr: "table", Class: "string"},
@@ -22670,7 +22670,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BareUDP",
-				Attr: "bare_udp",
+				Attr:    "bare_udp",
 				Directives: []Directive{
 					{Name: "DestinationPort", Attr: "destination_port", Class: "string"},
 					{Name: "EtherType", Attr: "ether_type", Class: "string"},
@@ -22678,7 +22678,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuard",
-				Attr: "wireguard",
+				Attr:    "wireguard",
 				Directives: []Directive{
 					{Name: "FirewallMark", Attr: "firewall_mark", Class: "int"},
 					{Name: "FwMark", Attr: "fw_mark", Class: "int"},
@@ -22691,7 +22691,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuardPeer",
-				Attr: "wireguard_peer",
+				Attr:    "wireguard_peer",
 				Directives: []Directive{
 					{Name: "AllowedIPs", Attr: "allowed_ips", Class: "string"},
 					{Name: "Endpoint", Attr: "endpoint", Class: "string"},
@@ -22705,7 +22705,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Xfrm",
-				Attr: "xfrm",
+				Attr:    "xfrm",
 				Directives: []Directive{
 					{Name: "InterfaceId", Attr: "interface_id", Class: "string"},
 					{Name: "Independent", Attr: "independent", Class: "bool"},
@@ -22713,7 +22713,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BatmanAdvanced",
-				Attr: "batman_advanced",
+				Attr:    "batman_advanced",
 				Directives: []Directive{
 					{Name: "Aggregation", Attr: "aggregation", Class: "bool"},
 					{Name: "BridgeLoopAvoidance", Attr: "bridge_loop_avoidance", Class: "bool"},
@@ -22731,7 +22731,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "PartitionKey", Attr: "partition_key", Class: "string"},
 					{Name: "Mode", Attr: "mode", Class: "string"},
@@ -22740,7 +22740,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WLAN",
-				Attr: "wlan",
+				Attr:    "wlan",
 				Directives: []Directive{
 					{Name: "PhysicalDevice", Attr: "physical_device", Class: "string"},
 					{Name: "Type", Attr: "type", Class: "string"},
@@ -22754,7 +22754,7 @@ var NetdevCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "Host", Attr: "host", Class: "string"},
 					{Name: "Virtualization", Attr: "virtualization", Class: "string"},
@@ -22767,7 +22767,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetDev",
-				Attr: "netdev",
+				Attr:    "netdev",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Name", Attr: "name", Class: "string"},
@@ -22778,7 +22778,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VLAN",
-				Attr: "vlan",
+				Attr:    "vlan",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
@@ -22792,7 +22792,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVLAN",
-				Attr: "macvlan",
+				Attr:    "macvlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -22802,7 +22802,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVTAP",
-				Attr: "macvtap",
+				Attr:    "macvtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -22810,7 +22810,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVLAN",
-				Attr: "ip_vlan",
+				Attr:    "ip_vlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -22818,7 +22818,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVTAP",
-				Attr: "ip_vtap",
+				Attr:    "ip_vtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -22826,7 +22826,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tunnel",
-				Attr: "tunnel",
+				Attr:    "tunnel",
 				Directives: []Directive{
 					{Name: "Local", Attr: "local", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -22860,7 +22860,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FooOverUDP",
-				Attr: "foo_over_udp",
+				Attr:    "foo_over_udp",
 				Directives: []Directive{
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
 					{Name: "Encapsulation", Attr: "encapsulation", Class: "string"},
@@ -22872,7 +22872,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TP",
-				Attr: "l2_tp",
+				Attr:    "l2_tp",
 				Directives: []Directive{
 					{Name: "TunnelId", Attr: "tunnel_id", Class: "string"},
 					{Name: "PeerTunnelId", Attr: "peer_tunnel_id", Class: "string"},
@@ -22888,7 +22888,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TPSession",
-				Attr: "l2_tp_session",
+				Attr:    "l2_tp_session",
 				Directives: []Directive{
 					{Name: "SessionId", Attr: "session_id", Class: "string"},
 					{Name: "PeerSessionId", Attr: "peer_session_id", Class: "string"},
@@ -22898,7 +22898,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Peer",
-				Attr: "peer",
+				Attr:    "peer",
 				Directives: []Directive{
 					{Name: "Name", Attr: "name", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -22906,14 +22906,14 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VXCAN",
-				Attr: "vxcan",
+				Attr:    "vxcan",
 				Directives: []Directive{
 					{Name: "Peer", Attr: "peer", Class: "string"},
 				},
 			},
 			{
 				Section: "VXLAN",
-				Attr: "vxlan",
+				Attr:    "vxlan",
 				Directives: []Directive{
 					{Name: "VNI", Attr: "vni", Class: "string"},
 					{Name: "Id", Attr: "id", Class: "string"},
@@ -22949,7 +22949,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GENEVE",
-				Attr: "geneve",
+				Attr:    "geneve",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -22968,7 +22968,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsec",
-				Attr: "macsec",
+				Attr:    "macsec",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "Encrypt", Attr: "encrypt", Class: "bool"},
@@ -22976,7 +22976,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveChannel",
-				Attr: "macsec_receive_channel",
+				Attr:    "macsec_receive_channel",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -22984,7 +22984,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecTransmitAssociation",
-				Attr: "macsec_transmit_association",
+				Attr:    "macsec_transmit_association",
 				Directives: []Directive{
 					{Name: "PacketNumber", Attr: "packet_number", Class: "string"},
 					{Name: "KeyId", Attr: "key_id", Class: "string"},
@@ -22996,7 +22996,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveAssociation",
-				Attr: "macsec_receive_association",
+				Attr:    "macsec_receive_association",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -23009,7 +23009,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tun",
-				Attr: "tun",
+				Attr:    "tun",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -23022,7 +23022,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tap",
-				Attr: "tap",
+				Attr:    "tap",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -23035,7 +23035,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bond",
-				Attr: "bond",
+				Attr:    "bond",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "TransmitHashPolicy", Attr: "transmit_hash_policy", Class: "string"},
@@ -23066,7 +23066,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "HelloTimeSec", Attr: "hello_time_sec", Class: "timespan"},
 					{Name: "MaxAgeSec", Attr: "max_age_sec", Class: "timespan"},
@@ -23085,7 +23085,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VRF",
-				Attr: "vrf",
+				Attr:    "vrf",
 				Directives: []Directive{
 					{Name: "TableId", Attr: "table_id", Class: "string"},
 					{Name: "Table", Attr: "table", Class: "string"},
@@ -23093,7 +23093,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BareUDP",
-				Attr: "bare_udp",
+				Attr:    "bare_udp",
 				Directives: []Directive{
 					{Name: "DestinationPort", Attr: "destination_port", Class: "string"},
 					{Name: "EtherType", Attr: "ether_type", Class: "string"},
@@ -23101,7 +23101,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuard",
-				Attr: "wireguard",
+				Attr:    "wireguard",
 				Directives: []Directive{
 					{Name: "FirewallMark", Attr: "firewall_mark", Class: "int"},
 					{Name: "FwMark", Attr: "fw_mark", Class: "int"},
@@ -23114,7 +23114,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuardPeer",
-				Attr: "wireguard_peer",
+				Attr:    "wireguard_peer",
 				Directives: []Directive{
 					{Name: "AllowedIPs", Attr: "allowed_ips", Class: "string"},
 					{Name: "Endpoint", Attr: "endpoint", Class: "string"},
@@ -23128,7 +23128,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Xfrm",
-				Attr: "xfrm",
+				Attr:    "xfrm",
 				Directives: []Directive{
 					{Name: "InterfaceId", Attr: "interface_id", Class: "string"},
 					{Name: "Independent", Attr: "independent", Class: "bool"},
@@ -23136,7 +23136,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BatmanAdvanced",
-				Attr: "batman_advanced",
+				Attr:    "batman_advanced",
 				Directives: []Directive{
 					{Name: "Aggregation", Attr: "aggregation", Class: "bool"},
 					{Name: "BridgeLoopAvoidance", Attr: "bridge_loop_avoidance", Class: "bool"},
@@ -23154,7 +23154,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "PartitionKey", Attr: "partition_key", Class: "string"},
 					{Name: "Mode", Attr: "mode", Class: "string"},
@@ -23163,7 +23163,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WLAN",
-				Attr: "wlan",
+				Attr:    "wlan",
 				Directives: []Directive{
 					{Name: "PhysicalDevice", Attr: "physical_device", Class: "string"},
 					{Name: "Type", Attr: "type", Class: "string"},
@@ -23177,7 +23177,7 @@ var NetdevCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "Host", Attr: "host", Class: "string"},
 					{Name: "Virtualization", Attr: "virtualization", Class: "string"},
@@ -23190,7 +23190,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "NetDev",
-				Attr: "netdev",
+				Attr:    "netdev",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Name", Attr: "name", Class: "string"},
@@ -23201,7 +23201,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VLAN",
-				Attr: "vlan",
+				Attr:    "vlan",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
@@ -23215,7 +23215,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVLAN",
-				Attr: "macvlan",
+				Attr:    "macvlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -23225,7 +23225,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACVTAP",
-				Attr: "macvtap",
+				Attr:    "macvtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "SourceMACAddress", Attr: "source_mac_address", Class: "string"},
@@ -23233,7 +23233,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVLAN",
-				Attr: "ip_vlan",
+				Attr:    "ip_vlan",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -23241,7 +23241,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPVTAP",
-				Attr: "ip_vtap",
+				Attr:    "ip_vtap",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "Flags", Attr: "flags", Class: "string"},
@@ -23249,7 +23249,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tunnel",
-				Attr: "tunnel",
+				Attr:    "tunnel",
 				Directives: []Directive{
 					{Name: "Local", Attr: "local", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -23283,7 +23283,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "FooOverUDP",
-				Attr: "foo_over_udp",
+				Attr:    "foo_over_udp",
 				Directives: []Directive{
 					{Name: "Protocol", Attr: "protocol", Class: "string"},
 					{Name: "Encapsulation", Attr: "encapsulation", Class: "string"},
@@ -23295,7 +23295,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TP",
-				Attr: "l2_tp",
+				Attr:    "l2_tp",
 				Directives: []Directive{
 					{Name: "TunnelId", Attr: "tunnel_id", Class: "string"},
 					{Name: "PeerTunnelId", Attr: "peer_tunnel_id", Class: "string"},
@@ -23311,7 +23311,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "L2TPSession",
-				Attr: "l2_tp_session",
+				Attr:    "l2_tp_session",
 				Directives: []Directive{
 					{Name: "SessionId", Attr: "session_id", Class: "string"},
 					{Name: "PeerSessionId", Attr: "peer_session_id", Class: "string"},
@@ -23321,7 +23321,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Peer",
-				Attr: "peer",
+				Attr:    "peer",
 				Directives: []Directive{
 					{Name: "Name", Attr: "name", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -23329,14 +23329,14 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VXCAN",
-				Attr: "vxcan",
+				Attr:    "vxcan",
 				Directives: []Directive{
 					{Name: "Peer", Attr: "peer", Class: "string"},
 				},
 			},
 			{
 				Section: "VXLAN",
-				Attr: "vxlan",
+				Attr:    "vxlan",
 				Directives: []Directive{
 					{Name: "VNI", Attr: "vni", Class: "string"},
 					{Name: "Id", Attr: "id", Class: "string"},
@@ -23372,7 +23372,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "GENEVE",
-				Attr: "geneve",
+				Attr:    "geneve",
 				Directives: []Directive{
 					{Name: "Id", Attr: "id", Class: "string"},
 					{Name: "Remote", Attr: "remote", Class: "string"},
@@ -23391,7 +23391,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsec",
-				Attr: "macsec",
+				Attr:    "macsec",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "Encrypt", Attr: "encrypt", Class: "bool"},
@@ -23399,7 +23399,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveChannel",
-				Attr: "macsec_receive_channel",
+				Attr:    "macsec_receive_channel",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -23407,7 +23407,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecTransmitAssociation",
-				Attr: "macsec_transmit_association",
+				Attr:    "macsec_transmit_association",
 				Directives: []Directive{
 					{Name: "PacketNumber", Attr: "packet_number", Class: "string"},
 					{Name: "KeyId", Attr: "key_id", Class: "string"},
@@ -23419,7 +23419,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "MACsecReceiveAssociation",
-				Attr: "macsec_receive_association",
+				Attr:    "macsec_receive_association",
 				Directives: []Directive{
 					{Name: "Port", Attr: "port", Class: "string"},
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
@@ -23432,7 +23432,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tun",
-				Attr: "tun",
+				Attr:    "tun",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -23445,7 +23445,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Tap",
-				Attr: "tap",
+				Attr:    "tap",
 				Directives: []Directive{
 					{Name: "OneQueue", Attr: "one_queue", Class: "string"},
 					{Name: "MultiQueue", Attr: "multi_queue", Class: "bool"},
@@ -23458,7 +23458,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bond",
-				Attr: "bond",
+				Attr:    "bond",
 				Directives: []Directive{
 					{Name: "Mode", Attr: "mode", Class: "string"},
 					{Name: "TransmitHashPolicy", Attr: "transmit_hash_policy", Class: "string"},
@@ -23489,7 +23489,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Bridge",
-				Attr: "bridge",
+				Attr:    "bridge",
 				Directives: []Directive{
 					{Name: "HelloTimeSec", Attr: "hello_time_sec", Class: "timespan"},
 					{Name: "MaxAgeSec", Attr: "max_age_sec", Class: "timespan"},
@@ -23509,7 +23509,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "VRF",
-				Attr: "vrf",
+				Attr:    "vrf",
 				Directives: []Directive{
 					{Name: "TableId", Attr: "table_id", Class: "string"},
 					{Name: "Table", Attr: "table", Class: "string"},
@@ -23517,7 +23517,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BareUDP",
-				Attr: "bare_udp",
+				Attr:    "bare_udp",
 				Directives: []Directive{
 					{Name: "DestinationPort", Attr: "destination_port", Class: "string"},
 					{Name: "MinSourcePort", Attr: "min_source_port", Class: "string"},
@@ -23526,7 +23526,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuard",
-				Attr: "wireguard",
+				Attr:    "wireguard",
 				Directives: []Directive{
 					{Name: "FirewallMark", Attr: "firewall_mark", Class: "int"},
 					{Name: "FwMark", Attr: "fw_mark", Class: "int"},
@@ -23539,7 +23539,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WireGuardPeer",
-				Attr: "wireguard_peer",
+				Attr:    "wireguard_peer",
 				Directives: []Directive{
 					{Name: "AllowedIPs", Attr: "allowed_ips", Class: "string"},
 					{Name: "Endpoint", Attr: "endpoint", Class: "string"},
@@ -23554,7 +23554,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Xfrm",
-				Attr: "xfrm",
+				Attr:    "xfrm",
 				Directives: []Directive{
 					{Name: "InterfaceId", Attr: "interface_id", Class: "string"},
 					{Name: "Independent", Attr: "independent", Class: "bool"},
@@ -23562,7 +23562,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "BatmanAdvanced",
-				Attr: "batman_advanced",
+				Attr:    "batman_advanced",
 				Directives: []Directive{
 					{Name: "Aggregation", Attr: "aggregation", Class: "bool"},
 					{Name: "BridgeLoopAvoidance", Attr: "bridge_loop_avoidance", Class: "bool"},
@@ -23580,7 +23580,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "IPoIB",
-				Attr: "ipoib",
+				Attr:    "ipoib",
 				Directives: []Directive{
 					{Name: "PartitionKey", Attr: "partition_key", Class: "string"},
 					{Name: "Mode", Attr: "mode", Class: "string"},
@@ -23589,7 +23589,7 @@ var NetdevCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "WLAN",
-				Attr: "wlan",
+				Attr:    "wlan",
 				Directives: []Directive{
 					{Name: "PhysicalDevice", Attr: "physical_device", Class: "string"},
 					{Name: "Type", Attr: "type", Class: "string"},
@@ -23607,7 +23607,7 @@ var LinkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -23625,7 +23625,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "MACAddressPolicy", Attr: "mac_address_policy", Class: "string"},
@@ -23675,7 +23675,7 @@ var LinkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -23693,7 +23693,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "MACAddressPolicy", Attr: "mac_address_policy", Class: "string"},
@@ -23772,7 +23772,7 @@ var LinkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -23792,7 +23792,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "MACAddressPolicy", Attr: "mac_address_policy", Class: "string"},
@@ -23868,7 +23868,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -23888,7 +23888,7 @@ var LinkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -23909,7 +23909,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "MACAddressPolicy", Attr: "mac_address_policy", Class: "string"},
@@ -23985,7 +23985,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -24005,7 +24005,7 @@ var LinkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -24026,7 +24026,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "MACAddressPolicy", Attr: "mac_address_policy", Class: "string"},
@@ -24102,7 +24102,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -24122,7 +24122,7 @@ var LinkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -24143,7 +24143,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "MACAddressPolicy", Attr: "mac_address_policy", Class: "string"},
@@ -24219,7 +24219,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -24239,7 +24239,7 @@ var LinkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -24260,7 +24260,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "MACAddressPolicy", Attr: "mac_address_policy", Class: "string"},
@@ -24336,7 +24336,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -24356,7 +24356,7 @@ var LinkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -24377,7 +24377,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Property", Attr: "property", Class: "string"},
@@ -24457,7 +24457,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -24477,7 +24477,7 @@ var LinkCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Match",
-				Attr: "match",
+				Attr:    "match",
 				Directives: []Directive{
 					{Name: "MACAddress", Attr: "mac_address", Class: "string"},
 					{Name: "PermanentMACAddress", Attr: "permanent_mac_address", Class: "string"},
@@ -24498,7 +24498,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "Link",
-				Attr: "link",
+				Attr:    "link",
 				Directives: []Directive{
 					{Name: "Description", Attr: "description", Class: "string"},
 					{Name: "Property", Attr: "property", Class: "string"},
@@ -24578,7 +24578,7 @@ var LinkCatalogs = []VersionCatalog{
 			},
 			{
 				Section: "SR-IOV",
-				Attr: "sriov",
+				Attr:    "sriov",
 				Directives: []Directive{
 					{Name: "VirtualFunction", Attr: "virtual_function", Class: "string"},
 					{Name: "VLANId", Attr: "vlan_id", Class: "string"},
@@ -24602,7 +24602,7 @@ var ResolvedCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Resolve",
-				Attr: "resolve",
+				Attr:    "resolve",
 				Directives: []Directive{
 					{Name: "DNS", Attr: "dns", Class: "list"},
 					{Name: "FallbackDNS", Attr: "fallback_dns", Class: "list"},
@@ -24626,7 +24626,7 @@ var ResolvedCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Resolve",
-				Attr: "resolve",
+				Attr:    "resolve",
 				Directives: []Directive{
 					{Name: "DNS", Attr: "dns", Class: "list"},
 					{Name: "FallbackDNS", Attr: "fallback_dns", Class: "list"},
@@ -24650,7 +24650,7 @@ var ResolvedCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Resolve",
-				Attr: "resolve",
+				Attr:    "resolve",
 				Directives: []Directive{
 					{Name: "DNS", Attr: "dns", Class: "list"},
 					{Name: "FallbackDNS", Attr: "fallback_dns", Class: "list"},
@@ -24674,7 +24674,7 @@ var ResolvedCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Resolve",
-				Attr: "resolve",
+				Attr:    "resolve",
 				Directives: []Directive{
 					{Name: "DNS", Attr: "dns", Class: "list"},
 					{Name: "FallbackDNS", Attr: "fallback_dns", Class: "list"},
@@ -24698,7 +24698,7 @@ var ResolvedCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Resolve",
-				Attr: "resolve",
+				Attr:    "resolve",
 				Directives: []Directive{
 					{Name: "DNS", Attr: "dns", Class: "list"},
 					{Name: "FallbackDNS", Attr: "fallback_dns", Class: "list"},
@@ -24722,7 +24722,7 @@ var ResolvedCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Resolve",
-				Attr: "resolve",
+				Attr:    "resolve",
 				Directives: []Directive{
 					{Name: "DNS", Attr: "dns", Class: "list"},
 					{Name: "FallbackDNS", Attr: "fallback_dns", Class: "list"},
@@ -24747,7 +24747,7 @@ var ResolvedCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Resolve",
-				Attr: "resolve",
+				Attr:    "resolve",
 				Directives: []Directive{
 					{Name: "DNS", Attr: "dns", Class: "list"},
 					{Name: "FallbackDNS", Attr: "fallback_dns", Class: "list"},
@@ -24772,7 +24772,7 @@ var ResolvedCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Resolve",
-				Attr: "resolve",
+				Attr:    "resolve",
 				Directives: []Directive{
 					{Name: "DNS", Attr: "dns", Class: "list"},
 					{Name: "FallbackDNS", Attr: "fallback_dns", Class: "list"},
@@ -24797,7 +24797,7 @@ var ResolvedCatalogs = []VersionCatalog{
 		Sections: []SectionGroup{
 			{
 				Section: "Resolve",
-				Attr: "resolve",
+				Attr:    "resolve",
 				Directives: []Directive{
 					{Name: "DNS", Attr: "dns", Class: "list"},
 					{Name: "FallbackDNS", Attr: "fallback_dns", Class: "list"},
@@ -24818,4 +24818,3 @@ var ResolvedCatalogs = []VersionCatalog{
 		},
 	},
 }
-
