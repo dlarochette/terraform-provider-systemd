@@ -5,6 +5,7 @@ package provider
 import (
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestAccResolvedDropin(t *testing.T) {
@@ -106,13 +107,23 @@ func TestAccResolveLink(t *testing.T) {
 		t.Fatalf("PutResolveLink: %v", err)
 	}
 
-	dns, err := c.GetResolveLinkDNS(ctx, link)
-	if err != nil {
-		t.Fatalf("GetResolveLinkDNS: %v", err)
-	}
-	joined := strings.Join(dns, " ")
-	if !strings.Contains(joined, "1.1.1.1") {
-		t.Fatalf("dns not applied: %v", dns)
+	// resolvectl may race the apply (NUL-byte output on the SSH transport
+	// occasionally); retry for up to ~5s before giving up.
+	var dns []string
+	var err error
+	deadline := time.Now().Add(5 * time.Second)
+	for {
+		dns, err = c.GetResolveLinkDNS(ctx, link)
+		if err != nil {
+			t.Fatalf("GetResolveLinkDNS: %v", err)
+		}
+		if strings.Contains(strings.Join(dns, " "), "1.1.1.1") {
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("dns not applied: %v", dns)
+		}
+		time.Sleep(250 * time.Millisecond)
 	}
 
 	st, err := c.ResolveStatus(ctx, link)
